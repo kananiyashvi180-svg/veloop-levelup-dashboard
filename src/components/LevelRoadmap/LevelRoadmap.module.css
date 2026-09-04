@@ -1,0 +1,306 @@
+.roadmapSection {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.roadmapHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.headerTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.roadmapTitle {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.legendList {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legendDotCompleted {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--accent-green);
+}
+
+.legendDotCurrent {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--accent-gold);
+  box-shadow: 0 0 6px var(--accent-gold);
+}
+
+.legendDotNext {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--accent-blue);
+}
+
+.legendDotLocked {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--text-dim);
+}
+
+.scrollContainer {
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+  padding: 1.5rem 0.5rem 1rem 0.5rem;
+  scrollbar-width: thin;
+}
+
+.trackLine {
+  position: absolute;
+  top: 52px;
+  left: 30px;
+  right: 30px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  z-index: 1;
+}
+
+.trackProgress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-gold));
+  border-radius: var(--radius-full);
+  transition: width 0.6s ease;
+}
+
+.nodesGrid {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-width: 680px;
+}
+
+.nodeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  background: none;
+  transition: transform var(--transition-fast);
+  width: 85px;
+}
+
+.nodeCard:hover {
+  transform: translateY(-4px);
+}
+
+.nodeCircle {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+  position: relative;
+  border: 2px solid transparent;
+}
+
+/* Completed Node */
+.nodeCompleted .nodeCircle {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+/* Current Node */
+.nodeCurrent .nodeCircle {
+  background: linear-gradient(135deg, var(--accent-gold), #d97706);
+  border-color: #fef08a;
+  color: #0f172a;
+  box-shadow: 0 0 24px rgba(245, 186, 49, 0.5);
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(245, 186, 49, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(245, 186, 49, 0.8);
+  }
+}
+
+.currentBeacon {
+  position: absolute;
+  top: -24px;
+  background: var(--accent-gold);
+  color: #111827;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Next Node */
+.nodeNext .nodeCircle {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: var(--accent-blue);
+  color: var(--accent-blue-soft);
+  border-style: dashed;
+}
+
+/* Locked Node */
+.nodeLocked .nodeCircle {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-dim);
+}
+
+.nodeInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.15rem;
+}
+
+.nodeLevel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.nodeName {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.nodeRewardPill {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-gold-light);
+  margin-top: 0.2rem;
+  white-space: nowrap;
+}
+
+/* Popover Modal for Node details */
+.detailBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.detailCard {
+  background: var(--bg-card);
+  border: 1px solid rgba(245, 186, 49, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.detailHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detailTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.closeBtn {
+  color: var(--text-muted);
+  padding: 0.35rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+}
+
+.closeBtn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border-color-subtle);
+  font-size: 0.88rem;
+}
+
+.detailLabel {
+  color: var(--text-muted);
+}
+
+.detailValue {
+  font-weight: 600;
+  color: var(--text-primary);
+}

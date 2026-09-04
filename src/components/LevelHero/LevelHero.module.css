@@ -1,0 +1,56 @@
+.heroCard {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: var(--transition-normal);
+}
+
+.heroCard:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.ambientGlowTop {
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(245, 186, 49, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ambientGlowBottom {
+  position: absolute;
+  bottom: -90px;
+  left: -60px;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--border-color) 30%,
+    var(--border-color) 70%,
+    transparent 100%
+  );
+}
+
+@media (max-width: 768px) {
+  .heroCard {
+    padding: 1.25rem;
+    gap: 1.25rem;
+  }
+}
