@@ -15,10 +15,9 @@ export function useLevelData() {
   const [gameConfig] = useState(miniGameConfig)
   const [showLevelUpModal, setShowLevelUpModal] = useState(false)
   const [recentLevelUp, setRecentLevelUp] = useState(null)
-  const [uiState, setUiState] = useState('normal') // 'normal' | 'loading' | 'empty' | 'error'
+  const [uiState, setUiState] = useState('normal')
   const [selectedRoadmapNode, setSelectedRoadmapNode] = useState(null)
 
-  // Add XP and check for level up
   const earnXp = useCallback((amount, sourceTitle = 'Bonus XP', category = 'Tasks') => {
     setProgression((prev) => {
       const newXp = prev.currentXp + amount
@@ -43,7 +42,6 @@ export function useLevelData() {
         })
         setShowLevelUpModal(true)
 
-        // Update roadmap statuses
         setRoadmap((prevRoadmap) =>
           prevRoadmap.map((item) => {
             if (item.level < updatedLevel) {
@@ -78,7 +76,6 @@ export function useLevelData() {
       }
     })
 
-    // Prepend to activity feed
     const newActivity = {
       id: `act-${Date.now()}`,
       type: category,
@@ -91,7 +88,6 @@ export function useLevelData() {
     setActivities((prev) => [newActivity, ...prev])
   }, [])
 
-  // Quick level up trigger for demo
   const triggerLevelUpDemo = useCallback(() => {
     earnXp(progression.xpRemaining, 'Level Up Instant Boost', 'Milestone')
   }, [earnXp, progression.xpRemaining])

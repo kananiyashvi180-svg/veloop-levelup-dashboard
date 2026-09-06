@@ -1,0 +1,72 @@
+import styles from './HeroSection.module.css'
+
+export default function HeroSection({ progression }) {
+  const { currentLevel, currentXp, requiredXp, xpPercentage, nextLevel, xpRemaining } = progression
+
+  return (
+    <section className={styles.heroCard}>
+      <div className={styles.ambientGlow} />
+
+      <div className={styles.cardHeader}>
+        <div className={styles.badgeWrapper}>
+          <div className={styles.hexOuter}>
+            <div className={styles.hexInner}>
+              <span className={styles.levelTag}>LVL</span>
+              <span className={styles.levelNum}>{String(currentLevel).padStart(2, '0')}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.levelMeta}>
+          <div className={styles.tierRow}>
+            <span className={styles.tierBadge}>ACTIVE TIER</span>
+            <span className={styles.rankName}>Gold Tier Champion</span>
+          </div>
+
+          <div className={styles.xpRow}>
+            <span className={styles.xpBig}>{currentXp.toLocaleString()}</span>
+            <span className={styles.xpUnit}>XP</span>
+            <span className={styles.xpSeparator}>•</span>
+            <span className={styles.xpTarget}>
+              {xpRemaining?.toLocaleString() || (requiredXp - currentXp).toLocaleString()} XP to Level {String(nextLevel).padStart(2, '0')}
+            </span>
+          </div>
+        </div>
+
+        <div className={styles.statusPill}>
+          <span className={styles.statusDot} />
+          <span className={styles.statusText}>{Math.round(xpPercentage)}% Completed</span>
+        </div>
+      </div>
+
+      <div className={styles.progressContainer}>
+        <div className={styles.progressTrack}>
+          <div
+            className={styles.progressFill}
+            style={{ width: `${Math.min(100, xpPercentage)}%` }}
+          >
+            <div className={styles.progressShimmer} />
+          </div>
+        </div>
+
+        <div className={styles.milestoneRow}>
+          <div className={styles.milestoneItem}>
+            <span className={styles.milestoneCircle}>04</span>
+            <span className={styles.milestoneLabel}>Current Level</span>
+          </div>
+
+          <div className={styles.progressStats}>
+            <span className={styles.progressStatCurrent}>{currentXp.toLocaleString()} XP</span>
+            <span className={styles.progressStatSlash}>/</span>
+            <span className={styles.progressStatTotal}>{requiredXp.toLocaleString()} XP</span>
+          </div>
+
+          <div className={styles.milestoneItem}>
+            <span className={styles.milestoneCircleActive}>05</span>
+            <span className={styles.milestoneLabel}>Next Milestone</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

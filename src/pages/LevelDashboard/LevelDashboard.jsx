@@ -1,76 +1,59 @@
+import { useState } from 'react'
 import { useLevelData } from '../../hooks/useLevelData'
+import Sidebar from '../../components/Sidebar/Sidebar'
+import AppHeader from '../../components/Header/AppHeader'
+import HeroSection from '../../components/LevelHero/HeroSection'
+import TodaysBoost from '../../components/TodaysBoost/TodaysBoost'
+import EarnMoreXP from '../../components/EarnMoreXP/EarnMoreXP'
+import LevelRewards from '../../components/LevelRewardCard/LevelRewards'
+import BottomNav from '../../components/BottomNav/BottomNav'
 import styles from './LevelDashboard.module.css'
 
 export default function LevelDashboard() {
-  const { progression, roadmap, activities, earningOpportunities, gameConfig } = useLevelData()
+  const { progression, earningOpportunities } = useLevelData()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
 
   return (
-    <div className={styles.dashboardWrapper}>
-      <div className={styles.dashboardContainer}>
-        <header className={styles.header}>
-          <div className={styles.brand}>
-            <span className={styles.brandTitle}>VELOOP Rewards</span>
-          </div>
-          <span className={styles.badge}>Day 1 Foundation</span>
-        </header>
+    <div className={styles.appContainer}>
+      <Sidebar
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        userSummary={progression?.userSummary}
+        activeSection={activeSection}
+        onSelectSection={setActiveSection}
+      />
 
-        <main className={styles.foundationCard}>
-          <div className={styles.cardGlow}></div>
-          <h1 className={styles.foundationTitle}>Level-Up Dashboard</h1>
-          <p className={styles.foundationSubtitle}>
-            Frontend foundation initialized with centralized demo data and modular component architecture.
-          </p>
+      <div className={styles.mainWrapper}>
+        <AppHeader
+          progression={progression}
+          onOpenMenu={() => setMobileMenuOpen(true)}
+        />
 
-          <div className={styles.metaGrid}>
-            <div className={styles.metaCard}>
-              <span className={styles.metaLabel}>Current Level</span>
-              <span className={styles.metaValue}>
-                Level <span className={styles.metaAccent}>{progression.currentLevel}</span>
-              </span>
+        <main className={styles.contentArea}>
+          <div className={styles.layoutDeck}>
+            <div className={styles.heroColumn}>
+              <HeroSection progression={progression} />
             </div>
-            <div className={styles.metaCard}>
-              <span className={styles.metaLabel}>XP Progress</span>
-              <span className={styles.metaValue}>
-                {progression.currentXp.toLocaleString()} / {progression.requiredXp.toLocaleString()} XP
-              </span>
-            </div>
-            <div className={styles.metaCard}>
-              <span className={styles.metaLabel}>Next Reward</span>
-              <span className={styles.metaValue}>
-                <span className={styles.metaAccent}>{progression.nextLevelReward.label}</span>
-              </span>
-            </div>
-            <div className={styles.metaCard}>
-              <span className={styles.metaLabel}>Roadmap Nodes</span>
-              <span className={styles.metaValue}>
-                {roadmap.length} Levels
-              </span>
-            </div>
-            <div className={styles.metaCard}>
-              <span className={styles.metaLabel}>Activities</span>
-              <span className={styles.metaValue}>
-                {activities.length} Recorded
-              </span>
-            </div>
-            <div className={styles.metaCard}>
-              <span className={styles.metaLabel}>Earn Channels</span>
-              <span className={styles.metaValue}>
-                {earningOpportunities.length} Available
-              </span>
-            </div>
-            <div className={styles.metaCard}>
-              <span className={styles.metaLabel}>Game Engine</span>
-              <span className={styles.metaValue}>
-                {gameConfig.title}
-              </span>
+            <div className={styles.boostColumn}>
+              <TodaysBoost progression={progression} />
             </div>
           </div>
 
-          <div className={styles.statusIndicator}>
-            <span className={styles.statusDot}></span>
-            <span>Architecture & Routing Ready for Day 2</span>
+          <div className={styles.mainDeck}>
+            <div className={styles.activitiesColumn}>
+              <EarnMoreXP opportunities={earningOpportunities} />
+            </div>
+            <div className={styles.rewardsColumn}>
+              <LevelRewards progression={progression} />
+            </div>
           </div>
         </main>
+
+        <BottomNav
+          activeSection={activeSection}
+          onSelectSection={setActiveSection}
+        />
       </div>
     </div>
   )

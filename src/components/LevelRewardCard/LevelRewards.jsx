@@ -1,0 +1,59 @@
+import styles from './LevelRewards.module.css'
+
+export default function LevelRewards({ progression }) {
+  const { nextLevel, nextLevelReward } = progression
+
+  return (
+    <section className={styles.section}>
+      <div className={styles.sectionHeader}>
+        <div>
+          <h2 className={styles.sectionTitle}>
+            Level {String(nextLevel).padStart(2, '0')} Rewards
+          </h2>
+          <p className={styles.sectionSub}>Upcoming Milestone Rewards</p>
+        </div>
+        <span className={styles.unlocksTag}>Unlocks at 8,000 XP</span>
+      </div>
+
+      <div className={styles.rewardCard}>
+        <div className={styles.cardGlow} />
+
+        <div className={styles.cardContent}>
+          <div className={styles.chestArea}>
+            <div className={styles.chestIcon}>🏆</div>
+            <div className={styles.coinsRow}>
+              <span className={styles.coinIcon}>🪙</span>
+              <span className={styles.coinIcon}>🪙</span>
+              <span className={styles.coinIcon}>🪙</span>
+            </div>
+          </div>
+
+          <div className={styles.rewardInfo}>
+            <span className={styles.milestoneTag}>MILESTONE BONUS</span>
+            <p className={styles.rewardAmount}>{nextLevelReward.label}</p>
+            <p className={styles.rewardDesc}>{nextLevelReward.description}</p>
+          </div>
+        </div>
+
+        <div className={styles.perksList}>
+          <div className={styles.perkItem}>
+            <span className={styles.perkIcon}>✓</span>
+            <span className={styles.perkText}>Exclusive Level 05 Badge</span>
+          </div>
+          <div className={styles.perkItem}>
+            <span className={styles.perkIcon}>✓</span>
+            <span className={styles.perkText}>1.5x Multiplier for 48 Hours</span>
+          </div>
+          <div className={styles.perkItem}>
+            <span className={styles.perkIcon}>✓</span>
+            <span className={styles.perkText}>Instant Access to Premium Drops</span>
+          </div>
+        </div>
+
+        <button className={styles.viewBtn} type="button">
+          View All Rewards →
+        </button>
+      </div>
+    </section>
+  )
+}

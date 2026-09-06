@@ -141,14 +141,12 @@
   border: 2px solid transparent;
 }
 
-/* Completed Node */
 .nodeCompleted .nodeCircle {
   background: rgba(16, 185, 129, 0.15);
   border-color: var(--accent-green);
   color: var(--accent-green);
 }
 
-/* Current Node */
 .nodeCurrent .nodeCircle {
   background: linear-gradient(135deg, var(--accent-gold), #d97706);
   border-color: #fef08a;
@@ -180,7 +178,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Next Node */
 .nodeNext .nodeCircle {
   background: rgba(59, 130, 246, 0.12);
   border-color: var(--accent-blue);
@@ -188,7 +185,6 @@
   border-style: dashed;
 }
 
-/* Locked Node */
 .nodeLocked .nodeCircle {
   background: rgba(15, 23, 42, 0.6);
   border-color: rgba(255, 255, 255, 0.08);
@@ -225,7 +221,6 @@
   white-space: nowrap;
 }
 
-/* Popover Modal for Node details */
 .detailBackdrop {
   position: fixed;
   inset: 0;

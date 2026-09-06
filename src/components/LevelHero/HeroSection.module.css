@@ -1,0 +1,298 @@
+.heroCard {
+  background: linear-gradient(135deg, #1b1e33 0%, #17192b 100%);
+  border: 1px solid rgba(245, 186, 49, 0.2);
+  border-radius: 20px;
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.ambientGlow {
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(245, 186, 49, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 24px;
+}
+
+.badgeWrapper {
+  flex-shrink: 0;
+}
+
+.hexOuter {
+  width: 76px;
+  height: 76px;
+  background: linear-gradient(145deg, #fed268, #f5ba31, #d98205);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 25px rgba(245, 186, 49, 0.4);
+}
+
+.hexInner {
+  width: 62px;
+  height: 62px;
+  background: linear-gradient(145deg, #1f2237, #131524);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.levelTag {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--accent-gold);
+  line-height: 1;
+  margin-bottom: 1px;
+}
+
+.levelNum {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.levelMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.tierRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.tierBadge {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: rgba(245, 186, 49, 0.15);
+  color: var(--accent-gold);
+  border: 1px solid rgba(245, 186, 49, 0.3);
+}
+
+.rankName {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.xpRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.xpBig {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.xpUnit {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent-gold);
+}
+
+.xpSeparator {
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+.xpTarget {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.statusPill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  box-shadow: 0 0 8px var(--accent-gold);
+}
+
+.statusText {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.progressContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.progressTrack {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #d98205 0%, #f5ba31 50%, #fed268 100%);
+  border-radius: 99px;
+  position: relative;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px rgba(245, 186, 49, 0.5);
+}
+
+.progressShimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2.4s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.milestoneRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.milestoneItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.milestoneCircle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.milestoneCircleActive {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(245, 186, 49, 0.2);
+  border: 1px solid var(--accent-gold);
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(245, 186, 49, 0.3);
+}
+
+.milestoneLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.progressStats {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.progressStatCurrent {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.progressStatSlash {
+  color: var(--text-dim);
+}
+
+.progressStatTotal {
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .heroCard {
+    padding: 18px 16px;
+    border-radius: 16px;
+  }
+
+  .cardHeader {
+    flex-direction: row;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .statusPill {
+    display: none;
+  }
+
+  .xpBig {
+    font-size: 24px;
+  }
+
+  .xpTarget {
+    font-size: 11px;
+  }
+
+  .milestoneLabel {
+    display: none;
+  }
+}

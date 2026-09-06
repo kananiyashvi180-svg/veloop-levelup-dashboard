@@ -1,0 +1,157 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.sectionSub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.viewAllBtn {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.viewAllBtn:hover {
+  opacity: 0.8;
+  transform: translateX(2px);
+}
+
+.earnGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.earnCard {
+  background: #1b1e33;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+
+.earnCard:hover {
+  transform: translateY(-3px);
+  background: #20243d;
+  border-color: rgba(245, 186, 49, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.iconCircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.earnIcon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.xpPill {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.02em;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.earnLabel {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.earnDesc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+@media (max-width: 1200px) {
+  .earnGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .viewAllBtn {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .earnGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .earnCard {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .iconCircle {
+    width: 38px;
+    height: 38px;
+  }
+
+  .earnIcon {
+    font-size: 18px;
+  }
+
+  .earnLabel {
+    font-size: 12px;
+  }
+
+  .earnDesc {
+    display: none;
+  }
+}

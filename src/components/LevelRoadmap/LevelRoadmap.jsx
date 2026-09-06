@@ -82,8 +82,6 @@ export default function LevelRoadmap({ roadmap = [], currentLevel = 4 }) {
           })}
         </div>
       </div>
-
-      {/* Node Detail Modal */}
       {selectedNode && (
         <div className={styles.detailBackdrop} onClick={() => setSelectedNode(null)}>
           <div className={styles.detailCard} onClick={(e) => e.stopPropagation()}>
