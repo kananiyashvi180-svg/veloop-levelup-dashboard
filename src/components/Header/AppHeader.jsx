@@ -1,4 +1,8 @@
+import { useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
+import { useNotifications } from '../../context/NotificationContext'
 import GamerAvatar from '../Profile/GamerAvatar'
+import NotificationPanel from '../Notifications/NotificationPanel'
 import styles from './AppHeader.module.css'
 
 function getGreeting() {
@@ -9,12 +13,15 @@ function getGreeting() {
 }
 
 export default function AppHeader({ progression, onOpenMenu, onSelectSection }) {
+  const { user } = useAuth()
+  const { unreadCount } = useNotifications()
+  const [notifOpen, setNotifOpen] = useState(false)
+
   const currentLevel = progression?.currentLevel || 4
   const userSummary = progression?.userSummary
   const avatarId = userSummary?.avatarId || 'vanguard'
-  const username = userSummary?.username || 'VeLooper'
+  const username = user?.fullName || userSummary?.username || 'VeLooper'
   const greeting = getGreeting()
-
   const greetEmoji = greeting === 'Good Morning' ? '☀️' : greeting === 'Good Afternoon' ? '👋' : '🌙'
 
   return (
@@ -49,13 +56,26 @@ export default function AppHeader({ progression, onOpenMenu, onSelectSection }) 
           <span className={styles.balanceUnit}>VEs</span>
         </div>
 
-        <button className={styles.bellBtn} aria-label="Notifications" type="button">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-          </svg>
-          <span className={styles.bellDot} />
-        </button>
+        <div className={styles.bellWrap}>
+          <button
+            className={`${styles.bellBtn} ${notifOpen ? styles.bellBtnActive : ''}`}
+            aria-label="Notifications"
+            type="button"
+            id="header-notifications-btn"
+            onClick={() => setNotifOpen((v) => !v)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            {unreadCount > 0 ? (
+              <span className={styles.bellCount}>{unreadCount > 9 ? '9+' : unreadCount}</span>
+            ) : (
+              <span className={styles.bellDot} />
+            )}
+          </button>
+          <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
+        </div>
 
         <button
           className={styles.profileBadge}
@@ -70,4 +90,3 @@ export default function AppHeader({ progression, onOpenMenu, onSelectSection }) 
     </header>
   )
 }
-

@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLevelData } from '../../hooks/useLevelData'
+import { useUserState } from '../../context/UserStateContext'
+import { useNotifications } from '../../context/NotificationContext'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import AppHeader from '../../components/Header/AppHeader'
 import HeroSection from '../../components/LevelHero/HeroSection'
@@ -18,85 +20,52 @@ import { levelRoadmapData } from '../../data/levelData'
 import styles from './LevelDashboard.module.css'
 
 export default function LevelDashboard() {
-  const { progression, earningOpportunities } = useLevelData()
+  const { earningOpportunities } = useLevelData()
+  const {
+    activeProgression,
+    activities,
+    userProfile,
+    toastMsg,
+    showLevelUpModal,
+    levelUpData,
+    pendingNotification,
+    consumePendingNotification,
+    earnXP,
+    claimReward,
+    claimLevelUpReward,
+    closeLevelUpModal,
+    updateUserProfile,
+    setShowLevelUpModal
+  } = useUserState()
+  const { addNotification } = useNotifications()
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
-
-  // Reactive user and progression state
-  const [currentLevel, setCurrentLevel] = useState(4)
-  const [currentXp, setCurrentXp] = useState(6420)
-  const requiredXp = 8000
-  const [totalEarnedVEs, setTotalEarnedVEs] = useState(1850)
-  const [totalGems, setTotalGems] = useState(48)
   const [roadmapOpen, setRoadmapOpen] = useState(false)
-  const [levelUpModalOpen, setLevelUpModalOpen] = useState(false)
-  const [toastMsg, setToastMsg] = useState(null)
-  
-  const [userProfile, setUserProfile] = useState({
-    avatarId: 'vanguard',
-    bio: 'Pushing for Level 5 Vanguard Master • Daily Streak Hunter ⚡',
-    username: 'AlexRider',
-    tag: '#VEL-7402',
-    rank: 'Gold Tier'
-  })
 
-  const handleUpdateProfile = (fields) => {
-    setUserProfile((prev) => ({ ...prev, ...fields }))
-  }
-
-  const xpPercentage = Math.min(100, Math.round((currentXp / requiredXp) * 100 * 10) / 10)
-  const xpRemaining = Math.max(0, requiredXp - currentXp)
+  useEffect(() => {
+    if (pendingNotification) {
+      addNotification(pendingNotification)
+      consumePendingNotification()
+    }
+  }, [pendingNotification, addNotification, consumePendingNotification])
 
   const handleEarnXP = (amount, source) => {
-    setCurrentXp((prev) => {
-      const nextXp = prev + amount
-      if (nextXp >= requiredXp && currentLevel < 5) {
-        setCurrentLevel(5)
-        setLevelUpModalOpen(true)
-      }
-      return nextXp
-    })
-    setToastMsg({ text: `+${amount} XP (${source})`, type: 'xp' })
-    setTimeout(() => setToastMsg(null), 3500)
+    earnXP(amount, source)
   }
 
   const handleClaimReward = (reward) => {
-    if (reward.cost && reward.cost > 0) {
-      setTotalEarnedVEs((prev) => Math.max(0, prev - reward.cost))
-    }
-    if (reward.amount && reward.amount.includes('VEs')) {
-      const added = parseInt(reward.amount.replace(/\D/g, '')) || 500
-      setTotalEarnedVEs((prev) => prev + added)
-    }
-    if (reward.amount && reward.amount.includes('Gems')) {
-      const added = parseInt(reward.amount.replace(/\D/g, '')) || 25
-      setTotalGems((prev) => prev + added)
-    }
-    setToastMsg({ text: `Unlocked: ${reward.title}!`, type: 'reward' })
-    setTimeout(() => setToastMsg(null), 3500)
+    claimReward(reward)
+    addNotification({
+      type: 'reward',
+      icon: '🎁',
+      title: `Reward Unlocked!`,
+      body: `${reward.title} has been added to your account.`
+    })
   }
 
-  const handleLevelUpClaim = () => {
-    setTotalEarnedVEs((prev) => prev + 500)
-    setTotalGems((prev) => prev + 25)
-    setToastMsg({ text: '🎉 Level 05 Milestone Bonus Credited! (+500 VEs & +25 Gems)', type: 'milestone' })
-    setTimeout(() => setToastMsg(null), 4000)
-  }
-
-  const activeProgression = {
-    ...progression,
-    currentLevel,
-    currentXp,
-    requiredXp,
-    nextLevel: currentLevel >= 5 ? 6 : 5,
-    xpRemaining,
-    xpPercentage,
-    userSummary: {
-      ...progression?.userSummary,
-      ...userProfile,
-      totalEarnedVEs,
-      totalGems
-    }
+  const handleUpdateProfile = (fields) => {
+    updateUserProfile(fields)
   }
 
   const isAltPage =
@@ -108,7 +77,6 @@ export default function LevelDashboard() {
 
   return (
     <div className={styles.appContainer}>
-      {/* Floating Notification Toast */}
       {toastMsg && (
         <div style={{
           position: 'fixed',
@@ -160,9 +128,23 @@ export default function LevelDashboard() {
               onNavigate={setActiveSection}
             />
           ) : activeSection === 'activity' ? (
-            <ActivityPage progression={activeProgression} />
+            <ActivityPage
+              progression={activeProgression}
+              activities={activities}
+            />
           ) : activeSection === 'play-earn' ? (
-            <PlayAndEarnPage onBack={() => setActiveSection('home')} />
+            <PlayAndEarnPage
+              onBack={() => setActiveSection('home')}
+              onGameComplete={(rewards) => {
+                if (rewards.xp > 0) earnXP(rewards.xp, 'XP Catcher Game', 'Game')
+                addNotification({
+                  type: 'game',
+                  icon: '🎮',
+                  title: `XP Catcher Complete!`,
+                  body: `You earned +${rewards.xp} XP, +${rewards.ves} VEs, +${rewards.gems} Gems.`
+                })
+              }}
+            />
           ) : activeSection === 'profile' ? (
             <ProfilePage
               progression={activeProgression}
@@ -177,7 +159,7 @@ export default function LevelDashboard() {
                   <HeroSection
                     progression={activeProgression}
                     onOpenRoadmap={() => setRoadmapOpen(true)}
-                    onTriggerLevelUp={() => setLevelUpModalOpen(true)}
+                    onTriggerLevelUp={() => setShowLevelUpModal(true)}
                   />
                 </div>
                 <div className={styles.boostColumn}>
@@ -213,15 +195,13 @@ export default function LevelDashboard() {
         />
       </div>
 
-      {/* Level-Up Celebration Modal */}
       <LevelUpModal
-        isOpen={levelUpModalOpen}
-        onClose={() => setLevelUpModalOpen(false)}
-        level={currentLevel >= 5 ? currentLevel : 5}
-        onClaim={handleLevelUpClaim}
+        isOpen={showLevelUpModal}
+        onClose={closeLevelUpModal}
+        level={levelUpData?.newLevel || activeProgression.currentLevel}
+        onClaim={claimLevelUpReward}
       />
 
-      {/* Level Roadmap Modal Overlay */}
       {roadmapOpen && (
         <div
           className={styles.roadmapOverlay}
@@ -258,12 +238,10 @@ export default function LevelDashboard() {
               </button>
             </div>
 
-            <LevelRoadmap roadmap={levelRoadmapData} currentLevel={currentLevel} />
+            <LevelRoadmap roadmap={levelRoadmapData} currentLevel={activeProgression.currentLevel} />
           </div>
         </div>
       )}
     </div>
   )
 }
-
-

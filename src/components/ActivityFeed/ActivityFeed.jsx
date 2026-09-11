@@ -224,15 +224,31 @@ function groupByTime(items) {
   return groups
 }
 
-export default function ActivityFeed({ filter, showAll = false }) {
+export default function ActivityFeed({ filter, showAll = false, activities }) {
   const [selectedItem, setSelectedItem] = useState(null)
 
-  const rawList = showAll ? allActivities : allActivities.slice(0, 6)
+  const liveItems = activities
+    ? activities.map((a) => ({
+        id: a.id,
+        type: a.type?.toLowerCase() === 'game' ? 'games' : a.type?.toLowerCase() === 'tasks' || a.type?.toLowerCase() === 'daily task' ? 'tasks' : 'xp',
+        icon: a.type?.toLowerCase() === 'game' ? <XpCatcherIcon /> : a.type?.toLowerCase() === 'referral' ? <ReferralIcon /> : <StreakIcon />,
+        title: a.title,
+        description: a.subtitle || '',
+        amount: `+${a.xpAmount} XP`,
+        amountType: 'xp',
+        time: a.timestamp || 'Just now',
+        timeGroup: a.timestamp || 'Just now',
+        status: a.status || 'completed',
+      }))
+    : allActivities
+
+  const rawList = showAll ? liveItems : liveItems.slice(0, 6)
   const filtered = filter === 'all'
     ? rawList
     : rawList.filter((a) => a.type === filter)
 
   const groups = groupByTime(filtered)
+
 
   if (filtered.length === 0) {
     return (

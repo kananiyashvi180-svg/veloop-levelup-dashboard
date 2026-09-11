@@ -14,7 +14,7 @@ function formatTime(s) {
   return `${mins}:${secs}`
 }
 
-export default function GameContainer({ onBack }) {
+export default function GameContainer({ onBack, onGameComplete }) {
   const [phase, setPhase] = useState('idle')
   const [rewards, setRewards] = useState(initialScore())
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION)
@@ -63,11 +63,15 @@ export default function GameContainer({ onBack }) {
   const handleGameOver = useCallback((finalState) => {
     setFinalRewards(finalState)
     setPhase('done')
-  }, [])
+    if (onGameComplete && finalState) {
+      onGameComplete(finalState)
+    }
+  }, [onGameComplete])
 
   const handlePlayAgain = useCallback(() => {
     setPhase('idle')
   }, [])
+
 
   return (
     <div className={styles.gameContainer}>

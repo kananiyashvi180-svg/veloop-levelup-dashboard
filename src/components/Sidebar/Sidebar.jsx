@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import GamerAvatar from '../Profile/GamerAvatar'
 import styles from './Sidebar.module.css'
 
@@ -76,6 +79,15 @@ const navSections = [
 ]
 
 export default function Sidebar({ isOpen, onClose, userSummary, activeSection = 'home', onSelectSection }) {
+  const { logout } = useAuth()
+  const navigate = useNavigate()
+  const [confirmLogout, setConfirmLogout] = useState(false)
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
+  }
+
   return (
     <>
       <div
@@ -161,6 +173,43 @@ export default function Sidebar({ isOpen, onClose, userSummary, activeSection = 
               </span>
             </div>
           </div>
+
+          {confirmLogout ? (
+            <div className={styles.logoutConfirm}>
+              <span className={styles.logoutConfirmText}>Sign out?</span>
+              <div className={styles.logoutConfirmBtns}>
+                <button
+                  type="button"
+                  className={styles.logoutYesBtn}
+                  id="sidebar-logout-confirm-btn"
+                  onClick={handleLogout}
+                >
+                  Yes, Sign Out
+                </button>
+                <button
+                  type="button"
+                  className={styles.logoutCancelBtn}
+                  onClick={() => setConfirmLogout(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              type="button"
+              className={styles.logoutBtn}
+              id="sidebar-logout-btn"
+              onClick={() => setConfirmLogout(true)}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              <span>Sign Out</span>
+            </button>
+          )}
         </div>
       </aside>
     </>

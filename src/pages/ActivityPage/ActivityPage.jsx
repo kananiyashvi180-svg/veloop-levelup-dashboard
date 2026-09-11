@@ -4,7 +4,7 @@ import ActivityFeed from '../../components/ActivityFeed/ActivityFeed'
 import ActivityFilters from '../../components/ActivityFilters/ActivityFilters'
 import styles from './ActivityPage.module.css'
 
-export default function ActivityPage({ progression }) {
+export default function ActivityPage({ progression, activities }) {
   const [activeFilter, setActiveFilter] = useState('all')
   const [showAll, setShowAll] = useState(false)
 
@@ -37,12 +37,12 @@ export default function ActivityPage({ progression }) {
           <div className={styles.feedHeader}>
             <div className={styles.feedTitleGroup}>
               <h2 className={styles.feedTitle}>Recent Activity</h2>
-              <span className={styles.feedCount}>{showAll ? '12 events' : '6 recent'}</span>
+              <span className={styles.feedCount}>{activities ? `${showAll ? activities.length : Math.min(6, activities.length)} events` : showAll ? '12 events' : '6 recent'}</span>
             </div>
             <ActivityFilters active={activeFilter} onChange={setActiveFilter} />
           </div>
 
-          <ActivityFeed filter={activeFilter} showAll={showAll} />
+          <ActivityFeed filter={activeFilter} showAll={showAll} activities={activities} />
         </section>
 
         <div className={styles.viewAllRow}>
