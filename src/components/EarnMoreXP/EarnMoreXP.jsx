@@ -1,16 +1,19 @@
 import { useState } from 'react'
+import { useUserState } from '../../context/UserStateContext'
 import styles from './EarnMoreXP.module.css'
 
 const earnItems = [
-  { id: 'watch',   icon: '👁️',  label: 'Watch & Earn',  xpReward: 50,  desc: 'Watch partner streams', color: '#8b5cf6' },
-  { id: 'tasks',   icon: '✅',  label: 'Daily Tasks',   xpReward: 120, desc: '4 tasks remaining',    color: '#3b82f6' },
-  { id: 'refer',   icon: '🤝',  label: 'Refer & Earn',  xpReward: 250, desc: 'Invite teammates',       color: '#10b981' },
-  { id: 'catcher', icon: '💰',  label: 'XP Catcher',    xpReward: 75,  desc: 'Catch falling tokens',  color: '#f5ba31' },
-  { id: 'games',   icon: '🎮',  label: 'Mini Games',    xpReward: 180, desc: 'Play arcade rounds',    color: '#ef4444' },
-  { id: 'streak',  icon: '🎬',  label: 'Streak Bonus',  xpReward: 100, desc: 'Day 7 milestone',       color: '#f97316' },
+  { id: 'watch', icon: '👁️', label: 'Watch & Earn', xpReward: 50, desc: 'Watch partner streams', color: '#8b5cf6' },
+  { id: 'tasks', icon: '✅', label: 'Daily Tasks', xpReward: 120, desc: '4 tasks remaining', color: '#3b82f6' },
+  { id: 'refer', icon: '🤝', label: 'Refer & Earn', xpReward: 250, desc: 'Invite teammates', color: '#10b981' },
+  { id: 'catcher', icon: '💰', label: 'XP Catcher', xpReward: 75, desc: 'Catch falling tokens', color: '#f5ba31' },
+  { id: 'games', icon: '🎮', label: 'Mini Games', xpReward: 180, desc: 'Play arcade rounds', color: '#ef4444' },
+  { id: 'streak', icon: '🎬', label: 'Streak Bonus', xpReward: 100, desc: 'Day 7 milestone', color: '#f97316' },
 ]
 
 export default function EarnMoreXP({ opportunities, onNavigate, onEarnXP }) {
+  const userState = useUserState()
+  const username = userState?.userProfile?.username || 'AlexRider'
   const [claimedCards, setClaimedCards] = useState({})
 
   const handleCardClick = (item) => {
@@ -29,7 +32,7 @@ export default function EarnMoreXP({ opportunities, onNavigate, onEarnXP }) {
     setClaimedCards((prev) => ({ ...prev, [item.id]: true }))
 
     if (item.id === 'refer') {
-      navigator.clipboard?.writeText('https://veloop.io/join/AlexRider')
+      navigator.clipboard?.writeText(`https://veloop.io/join/${username}`)
     }
 
     if (onEarnXP) {
@@ -87,4 +90,3 @@ export default function EarnMoreXP({ opportunities, onNavigate, onEarnXP }) {
     </section>
   )
 }
-

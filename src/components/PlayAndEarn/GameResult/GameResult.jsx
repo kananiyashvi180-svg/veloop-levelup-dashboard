@@ -14,6 +14,13 @@ export default function GameResult({ finalRewards, onPlayAgain }) {
   const ves = finalRewards?.ves ?? 0
   const gems = finalRewards?.gems ?? 0
   const maxMultiplier = finalRewards?.maxMultiplier ?? 1
+  const itemsCaught = finalRewards?.itemsCaught ?? 0
+  const bestStreak = finalRewards?.bestStreak ?? maxMultiplier
+  const didLevelUp = finalRewards?.didLevelUp
+  const newLevel = finalRewards?.newLevel
+  const previousLevel = finalRewards?.previousLevel
+  const rewardUnlocked = finalRewards?.rewardUnlocked
+
   const perf = getPerformanceMessage(score)
 
   return (
@@ -40,10 +47,35 @@ export default function GameResult({ finalRewards, onPlayAgain }) {
         {maxMultiplier > 1 && (
           <div className={styles.multiplierPeak}>
             <span>🚀</span>
-            <span>Peak {maxMultiplier}X Multiplier</span>
+            <span>Peak {maxMultiplier}X Multiplier (Best Streak: {bestStreak})</span>
           </div>
         )}
       </div>
+
+      {didLevelUp && (
+        <div
+          style={{
+            background: 'linear-gradient(135deg, rgba(245, 186, 49, 0.15), rgba(168, 85, 247, 0.15))',
+            border: '1px solid rgba(245, 186, 49, 0.4)',
+            borderRadius: '12px',
+            padding: '10px 14px',
+            textAlign: 'center',
+            margin: '4px 0'
+          }}
+        >
+          <div style={{ color: '#f5ba31', fontWeight: '900', fontSize: '13px', letterSpacing: '0.08em' }}>
+            🎉 LEVEL UP!
+          </div>
+          <div style={{ color: '#ffffff', fontSize: '12px', marginTop: '2px', fontWeight: '700' }}>
+            Level {previousLevel} → Level {newLevel}
+          </div>
+          {rewardUnlocked && (
+            <div style={{ color: '#a78bfa', fontSize: '11px', marginTop: '3px' }}>
+              Reward Unlocked: {rewardUnlocked.label || rewardUnlocked}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className={styles.rewardsColumn}>
         <div className={styles.rewardRow}>
@@ -67,6 +99,30 @@ export default function GameResult({ finalRewards, onPlayAgain }) {
           <div className={styles.rewardMeta}>
             <span className={styles.rewardLabel}>Gems Earned</span>
             <span className={styles.rewardAmount} style={{ color: '#4ade80' }}>+{gems} Gems</span>
+          </div>
+        </div>
+
+        <div className={styles.rewardRow}>
+          <div
+            style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              background: 'rgba(59, 130, 246, 0.3)',
+              border: '1.5px solid #60a5fa',
+              color: '#60a5fa',
+              fontSize: '11px',
+              fontWeight: '900',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            🎯
+          </div>
+          <div className={styles.rewardMeta}>
+            <span className={styles.rewardLabel}>Items Caught</span>
+            <span className={styles.rewardAmount} style={{ color: '#60a5fa' }}>{itemsCaught} Items</span>
           </div>
         </div>
       </div>

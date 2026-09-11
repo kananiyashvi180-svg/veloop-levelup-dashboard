@@ -43,11 +43,11 @@ const benefits = [
   },
 ]
 
-export default function LevelBenefits() {
+export default function LevelBenefits({ level = 5 }) {
   return (
     <div className={styles.section}>
       <div className={styles.sectionHeader}>
-        <span className={styles.sectionLabel}>LEVEL 05 BENEFITS</span>
+        <span className={styles.sectionLabel}>LEVEL {String(level).padStart(2, '0')} BENEFITS</span>
         <span className={styles.sectionLine} />
       </div>
 

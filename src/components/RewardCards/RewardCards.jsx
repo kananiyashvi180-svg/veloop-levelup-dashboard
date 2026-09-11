@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { useUserState } from '../../context/UserStateContext'
 import styles from './RewardCards.module.css'
 
-const initialRewards = [
+const baseRewards = [
   {
     id: 've-pack',
     type: 'gold',
@@ -10,8 +11,8 @@ const initialRewards = [
     amount: '+500',
     unit: 'VEs',
     cost: 0,
-    note: 'Level 04 Milestone Reward',
-    claimed: false,
+    requiredLevel: 1,
+    note: 'Starter Milestone Reward',
     icon: '🪙',
   },
   {
@@ -22,8 +23,8 @@ const initialRewards = [
     amount: '+25',
     unit: 'Gems',
     cost: 0,
+    requiredLevel: 2,
     note: 'Premium Multiplier Currency',
-    claimed: false,
     icon: '💎',
   },
   {
@@ -35,8 +36,8 @@ const initialRewards = [
     unit: 'Role',
     cost: 150,
     costCurrency: 'VEs',
+    requiredLevel: 3,
     note: 'Exclusive colored name & lounge access',
-    claimed: false,
     icon: '🛡️',
   },
   {
@@ -48,8 +49,8 @@ const initialRewards = [
     unit: 'Off',
     cost: 350,
     costCurrency: 'VEs',
+    requiredLevel: 4,
     note: 'Applicable on gaming gears & merch',
-    claimed: false,
     icon: '🎟️',
   },
   {
@@ -61,8 +62,8 @@ const initialRewards = [
     unit: 'Box',
     cost: 500,
     costCurrency: 'VEs',
+    requiredLevel: 4,
     note: 'Guaranteed 250+ XP and rare collectibles',
-    claimed: false,
     icon: '📦',
   },
   {
@@ -73,30 +74,47 @@ const initialRewards = [
     amount: 'PASS',
     unit: 'Lvl 5',
     cost: 0,
+    requiredLevel: 5,
     note: 'Unlocks upon reaching Level 05',
-    claimed: false,
-    isLocked: true,
     icon: '👑',
   },
 ]
 
 export default function RewardCards({ userBalance = 1850, onClaimReward }) {
-  const [catalog, setCatalog] = useState(initialRewards)
+  const userState = useUserState()
+  const currentLevel = userState?.activeProgression?.currentLevel ?? 4
+  const claimedRewards = userState?.claimedRewards || []
   const [redeemedToast, setRedeemedToast] = useState(null)
+
+  const catalog = useMemo(() => {
+    return baseRewards.map((r) => {
+      const isLocked = currentLevel < r.requiredLevel
+      const isClaimed = claimedRewards.includes(r.id)
+      return {
+        ...r,
+        isLocked,
+        claimed: isClaimed,
+        type: isLocked ? 'locked' : r.type
+      }
+    })
+  }, [currentLevel, claimedRewards])
 
   const handleClaim = (reward) => {
     if (reward.claimed || reward.isLocked) return
 
-    setCatalog((prev) =>
-      prev.map((r) => (r.id === reward.id ? { ...r, claimed: true } : r))
-    )
+    if (reward.cost > 0 && userBalance < reward.cost) {
+      alert(`Insufficient VEs! You need ${reward.cost} VEs to redeem this reward.`)
+      return
+    }
+
+    if (userState?.claimReward) {
+      userState.claimReward(reward)
+    } else if (onClaimReward) {
+      onClaimReward(reward)
+    }
 
     setRedeemedToast(reward.title)
     setTimeout(() => setRedeemedToast(null), 3000)
-
-    if (onClaimReward) {
-      onClaimReward(reward)
-    }
   }
 
   return (
@@ -133,7 +151,7 @@ export default function RewardCards({ userBalance = 1850, onClaimReward }) {
             <div className={styles.cardFooter}>
               {item.isLocked ? (
                 <button type="button" className={styles.lockedBtn} disabled>
-                  🔒 Unlocks at Level 05
+                  🔒 Unlocks at Level {String(item.requiredLevel).padStart(2, '0')}
                 </button>
               ) : item.claimed ? (
                 <button type="button" className={styles.claimedBtn} disabled>

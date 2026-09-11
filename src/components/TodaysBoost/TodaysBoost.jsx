@@ -1,38 +1,44 @@
-import { useState } from 'react'
+import { useUserState } from '../../context/UserStateContext'
 import styles from './TodaysBoost.module.css'
 
-const boostItems = (progression, isClaimed) => [
-  {
-    icon: '⭐',
-    label: 'XP Earned Today',
-    value: isClaimed ? '365 XP' : '215 XP',
-    badge: isClaimed ? '+38%' : '+12%',
-    iconBg: '#f5ba31',
-  },
-  {
-    icon: '📋',
-    label: 'Tasks Completed',
-    value: isClaimed ? '5 / 8' : '4 / 8',
-    badge: isClaimed ? '62%' : '50%',
-    iconBg: '#3b82f6',
-  },
-  {
-    icon: '🔥',
-    label: 'Current Streak',
-    value: '7 Days',
-    badge: 'Active 2.5X',
-    iconBg: '#ef4444',
-  },
-]
-
 export default function TodaysBoost({ progression, onClaimBoost }) {
-  const [claimed, setClaimed] = useState(false)
-  const items = boostItems(progression, claimed)
+  const userState = useUserState()
+  const xpEarnedToday = userState?.state?.xpEarnedToday ?? 215
+  const tasksCompleted = userState?.state?.tasksCompleted ?? 4
+  const currentStreak = userState?.state?.currentStreak ?? 7
+  const claimed = userState?.state?.todaysBoostClaimed ?? false
+
+  const taskPercentage = Math.min(100, Math.round((tasksCompleted / 8) * 100))
+
+  const items = [
+    {
+      icon: '⭐',
+      label: 'XP Earned Today',
+      value: `${xpEarnedToday.toLocaleString()} XP`,
+      badge: `+${Math.max(12, Math.round(xpEarnedToday / 15))}%`,
+      iconBg: '#f5ba31',
+    },
+    {
+      icon: '📋',
+      label: 'Tasks Completed',
+      value: `${tasksCompleted} / 8`,
+      badge: `${taskPercentage}%`,
+      iconBg: '#3b82f6',
+    },
+    {
+      icon: '🔥',
+      label: 'Current Streak',
+      value: `${currentStreak} Days`,
+      badge: 'Active 2.5X',
+      iconBg: '#ef4444',
+    },
+  ]
 
   const handleClaim = () => {
     if (claimed) return
-    setClaimed(true)
-    if (onClaimBoost) {
+    if (userState?.claimTodaysBoost) {
+      userState.claimTodaysBoost()
+    } else if (onClaimBoost) {
       onClaimBoost(150, "Today's 2.5X Streak Boost")
     }
   }
@@ -76,4 +82,3 @@ export default function TodaysBoost({ progression, onClaimBoost }) {
     </section>
   )
 }
-

@@ -54,7 +54,7 @@ function PurpleGem({ size }) {
   )
 }
 
-export default function RewardsHero() {
+export default function RewardsHero({ nextLevel = 5 }) {
   return (
     <section className={styles.hero}>
       <div className={styles.bgGlowGold} />
@@ -130,7 +130,7 @@ export default function RewardsHero() {
             <div className={styles.hexOuter}>
               <div className={styles.hexInner}>
                 <span className={styles.levelTag}>LEVEL</span>
-                <span className={styles.levelNum}>05</span>
+                <span className={styles.levelNum}>{String(nextLevel).padStart(2, '0')}</span>
               </div>
             </div>
           </div>

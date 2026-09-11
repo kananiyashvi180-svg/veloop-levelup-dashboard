@@ -27,10 +27,10 @@ const baseIcons = {
 }
 
 export default function ActivitySummary({ progression }) {
-  const lifetimeXp = progression?.userSummary?.lifetimeXp ?? 18450
+  const lifetimeXp = progression?.userSummary?.lifetimeXp ?? 6670
   const totalVEs = progression?.userSummary?.totalEarnedVEs ?? 1850
   const streak = progression?.userSummary?.longestStreak ?? 7
-  const tasksCompleted = progression?.userSummary?.tasksCompleted ?? 38
+  const tasksCompleted = progression?.userSummary?.tasksCompleted ?? 4
 
   const summaryItems = [
     {
@@ -38,7 +38,7 @@ export default function ActivitySummary({ progression }) {
       label: 'XP Earned (Total)',
       value: lifetimeXp.toLocaleString(),
       unit: 'XP',
-      delta: '+340 this week',
+      delta: 'Active total',
       deltaUp: true,
       accent: 'purple',
       icon: baseIcons.xp,
@@ -48,7 +48,7 @@ export default function ActivitySummary({ progression }) {
       label: 'Rewards Earned',
       value: totalVEs.toLocaleString(),
       unit: 'VEs',
-      delta: '+500 this week',
+      delta: 'Total balance',
       deltaUp: true,
       accent: 'gold',
       icon: baseIcons.rewards,
@@ -58,7 +58,7 @@ export default function ActivitySummary({ progression }) {
       label: 'Current Streak',
       value: String(streak),
       unit: 'days',
-      delta: 'Personal best!',
+      delta: 'Active streak',
       deltaUp: true,
       accent: 'orange',
       icon: baseIcons.streak,
@@ -68,7 +68,7 @@ export default function ActivitySummary({ progression }) {
       label: 'Tasks Done',
       value: String(tasksCompleted),
       unit: 'total',
-      delta: '+6 this week',
+      delta: 'Completed',
       deltaUp: true,
       accent: 'green',
       icon: baseIcons.tasks,

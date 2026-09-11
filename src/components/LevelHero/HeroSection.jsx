@@ -1,7 +1,9 @@
 import styles from './HeroSection.module.css'
 
 export default function HeroSection({ progression, onOpenRoadmap, onTriggerLevelUp }) {
-  const { currentLevel, currentXp, requiredXp, xpPercentage, nextLevel, xpRemaining } = progression
+  const { currentLevel, currentXp, requiredXp, xpPercentage, nextLevel, xpRemaining, currentLevelConfig, userSummary } = progression
+
+  const tierLabel = currentLevelConfig ? `${currentLevelConfig.tier} ${currentLevelConfig.name}` : userSummary?.rank || 'Gold Tier'
 
   return (
     <section className={styles.heroCard}>
@@ -20,7 +22,7 @@ export default function HeroSection({ progression, onOpenRoadmap, onTriggerLevel
         <div className={styles.levelMeta}>
           <div className={styles.tierRow}>
             <span className={styles.tierBadge}>ACTIVE TIER</span>
-            <span className={styles.rankName}>Gold Tier Champion</span>
+            <span className={styles.rankName}>{tierLabel}</span>
           </div>
 
           <div className={styles.xpRow}>
@@ -66,7 +68,7 @@ export default function HeroSection({ progression, onOpenRoadmap, onTriggerLevel
         <div className={styles.progressTrack}>
           <div
             className={styles.progressFill}
-            style={{ width: `${Math.min(100, xpPercentage)}%` }}
+            style={{ width: `${Math.min(100, Math.max(0, xpPercentage))}%` }}
           >
             <div className={styles.progressShimmer} />
           </div>
@@ -74,7 +76,7 @@ export default function HeroSection({ progression, onOpenRoadmap, onTriggerLevel
 
         <div className={styles.milestoneRow}>
           <div className={styles.milestoneItem}>
-            <span className={styles.milestoneCircle}>04</span>
+            <span className={styles.milestoneCircle}>{String(currentLevel).padStart(2, '0')}</span>
             <span className={styles.milestoneLabel}>Current Level</span>
           </div>
 
@@ -85,7 +87,7 @@ export default function HeroSection({ progression, onOpenRoadmap, onTriggerLevel
           </div>
 
           <div className={styles.milestoneItem}>
-            <span className={styles.milestoneCircleActive}>05</span>
+            <span className={styles.milestoneCircleActive}>{String(nextLevel).padStart(2, '0')}</span>
             <span className={styles.milestoneLabel}>Next Milestone</span>
           </div>
         </div>

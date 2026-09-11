@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react'
+import { getLevelConfig } from '../../data/levelConfig'
 import styles from './LevelUpModal.module.css'
 
 export default function LevelUpModal({ isOpen, onClose, level = 5, onClaim }) {
   const [particles, setParticles] = useState([])
+
+  const config = getLevelConfig(level)
+  const vesAmount = config?.reward?.amount || 500
+  const gemsAmount = config?.reward?.gems || 25
 
   useEffect(() => {
     if (isOpen) {
@@ -24,7 +29,6 @@ export default function LevelUpModal({ isOpen, onClose, level = 5, onClaim }) {
   return (
     <div className={styles.overlay} onClick={onClose} role="dialog" aria-modal="true">
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        {/* Confetti Particles */}
         <div className={styles.particleContainer}>
           {particles.map((p) => (
             <span
@@ -59,11 +63,10 @@ export default function LevelUpModal({ isOpen, onClose, level = 5, onClaim }) {
 
         <h2 className={styles.congratsTitle}>CONGRATULATIONS!</h2>
         <p className={styles.congratsDesc}>
-          You have achieved <strong>Level {String(level).padStart(2, '0')} Vanguard Master</strong>!
+          You have achieved <strong>Level {String(level).padStart(2, '0')} {config.name}</strong>!
           Your dedication unlocked new VIP tier perks and reward bonuses.
         </p>
 
-        {/* Milestone Rewards Card */}
         <div className={styles.rewardBox}>
           <div className={styles.rewardHeader}>
             <span>🎁 UNLOCKED MILESTONE REWARDS</span>
@@ -72,14 +75,14 @@ export default function LevelUpModal({ isOpen, onClose, level = 5, onClaim }) {
             <div className={styles.rewardItem}>
               <span className={styles.rewardIcon}>🪙</span>
               <div>
-                <span className={styles.rewardVal}>+500 VEs</span>
+                <span className={styles.rewardVal}>+{vesAmount} VEs</span>
                 <span className={styles.rewardSub}>Added to Balance</span>
               </div>
             </div>
             <div className={styles.rewardItem}>
               <span className={styles.rewardIcon}>💎</span>
               <div>
-                <span className={styles.rewardVal}>+25 Gems</span>
+                <span className={styles.rewardVal}>+{gemsAmount} Gems</span>
                 <span className={styles.rewardSub}>Rare Boosters</span>
               </div>
             </div>
@@ -93,7 +96,6 @@ export default function LevelUpModal({ isOpen, onClose, level = 5, onClaim }) {
           </div>
         </div>
 
-        {/* Action Button */}
         <div className={styles.actionRow}>
           <button
             type="button"

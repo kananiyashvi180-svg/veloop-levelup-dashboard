@@ -1,11 +1,13 @@
 import styles from './LevelRewards.module.css'
 
 export default function LevelRewards({ progression, onNavigate }) {
-  const nextLevel = progression?.nextLevel ?? (progression?.currentLevel ? progression.currentLevel + 1 : 5)
-  const nextLevelReward = progression?.nextLevelReward || {
-    label: '500 VEs',
-    description: `Level ${String(nextLevel).padStart(2, '0')} Milestone Bonus`
-  }
+  const { nextLevel, nextLevelReward, requiredXp, nextLevelConfig } = progression
+
+  const perks = nextLevelConfig?.benefits || [
+    `Exclusive Level ${String(nextLevel).padStart(2, '0')} Badge`,
+    '1.5x Multiplier for 48 Hours',
+    'Instant Access to Premium Drops'
+  ]
 
   return (
     <section className={styles.section}>
@@ -16,7 +18,7 @@ export default function LevelRewards({ progression, onNavigate }) {
           </h2>
           <p className={styles.sectionSub}>Upcoming Milestone Rewards</p>
         </div>
-        <span className={styles.unlocksTag}>Unlocks at 8,000 XP</span>
+        <span className={styles.unlocksTag}>Unlocks at {requiredXp?.toLocaleString()} XP</span>
       </div>
 
       <div className={styles.rewardCard}>
@@ -35,23 +37,17 @@ export default function LevelRewards({ progression, onNavigate }) {
           <div className={styles.rewardInfo}>
             <span className={styles.milestoneTag}>MILESTONE BONUS</span>
             <p className={styles.rewardAmount}>{nextLevelReward?.label || '500 VEs'}</p>
-            <p className={styles.rewardDesc}>{nextLevelReward?.description || 'Upcoming Milestone Bonus'}</p>
+            <p className={styles.rewardDesc}>{nextLevelReward?.description || `Level ${String(nextLevel).padStart(2, '0')} Milestone Bonus`}</p>
           </div>
         </div>
 
         <div className={styles.perksList}>
-          <div className={styles.perkItem}>
-            <span className={styles.perkIcon}>✓</span>
-            <span className={styles.perkText}>Exclusive Level 05 Badge</span>
-          </div>
-          <div className={styles.perkItem}>
-            <span className={styles.perkIcon}>✓</span>
-            <span className={styles.perkText}>1.5x Multiplier for 48 Hours</span>
-          </div>
-          <div className={styles.perkItem}>
-            <span className={styles.perkIcon}>✓</span>
-            <span className={styles.perkText}>Instant Access to Premium Drops</span>
-          </div>
+          {perks.map((perk, i) => (
+            <div className={styles.perkItem} key={i}>
+              <span className={styles.perkIcon}>✓</span>
+              <span className={styles.perkText}>{perk}</span>
+            </div>
+          ))}
         </div>
 
         <button

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { useUserState } from '../../context/UserStateContext'
 import styles from './EarnXPPage.module.css'
 
 const initialTasks = [
@@ -11,7 +12,6 @@ const initialTasks = [
     badge: 'Daily',
     color: '#f97316',
     actionText: 'Claim +100 XP',
-    completed: false,
   },
   {
     id: 'catcher',
@@ -23,7 +23,6 @@ const initialTasks = [
     color: '#3b82f6',
     actionText: 'Play Game Now',
     isGame: true,
-    completed: false,
   },
   {
     id: 'watch',
@@ -34,7 +33,6 @@ const initialTasks = [
     badge: 'Quick',
     color: '#8b5cf6',
     actionText: 'Watch & Claim +50 XP',
-    completed: false,
   },
   {
     id: 'refer',
@@ -45,7 +43,6 @@ const initialTasks = [
     badge: 'High Yield',
     color: '#10b981',
     actionText: 'Copy Link & Claim +250 XP',
-    completed: false,
   },
   {
     id: 'survey',
@@ -56,7 +53,6 @@ const initialTasks = [
     badge: 'Instant',
     color: '#f59e0b',
     actionText: 'Submit Rating & Claim +75 XP',
-    completed: false,
   },
   {
     id: 'milestone',
@@ -67,17 +63,27 @@ const initialTasks = [
     badge: 'Bonus',
     color: '#ec4899',
     actionText: 'Claim +150 XP',
-    completed: false,
   },
 ]
 
 export default function EarnXPPage({ progression, onEarnXP, onNavigate }) {
-  const [tasks, setTasks] = useState(initialTasks)
+  const userState = useUserState()
   const [watchingId, setWatchingId] = useState(null)
 
-  const currentXp = progression?.currentXp || 6420
-  const requiredXp = progression?.requiredXp || 8000
-  const xpRemaining = progression?.xpRemaining || (requiredXp - currentXp)
+  const currentLevel = progression?.currentLevel ?? 4
+  const nextLevel = progression?.nextLevel ?? 5
+  const currentXp = progression?.currentXp ?? 2170
+  const requiredXp = progression?.requiredXp ?? 3500
+  const xpRemaining = progression?.xpRemaining ?? (requiredXp - currentXp)
+  const username = progression?.userSummary?.username || 'AlexRider'
+  const completedTaskIds = userState?.completedTaskIds || ['checkin']
+
+  const tasks = useMemo(() => {
+    return initialTasks.map((t) => ({
+      ...t,
+      completed: completedTaskIds.includes(t.id)
+    }))
+  }, [completedTaskIds])
 
   const handleTaskAction = (task) => {
     if (task.completed) return
@@ -91,28 +97,30 @@ export default function EarnXPPage({ progression, onEarnXP, onNavigate }) {
       setWatchingId(task.id)
       setTimeout(() => {
         setWatchingId(null)
-        setTasks((prev) =>
-          prev.map((t) => (t.id === task.id ? { ...t, completed: true } : t))
-        )
-        if (onEarnXP) onEarnXP(task.xp, task.title)
-      }, 1800)
+        if (userState?.completeTask) {
+          userState.completeTask(task.id, task.xp, task.title)
+        } else if (onEarnXP) {
+          onEarnXP(task.xp, task.title)
+        }
+      }, 1500)
       return
     }
 
     if (task.id === 'refer') {
-      navigator.clipboard?.writeText('https://veloop.io/join/AlexRider')
-      setTasks((prev) =>
-        prev.map((t) => (t.id === task.id ? { ...t, completed: true } : t))
-      )
-      if (onEarnXP) onEarnXP(task.xp, 'Referral Link Copied')
+      navigator.clipboard?.writeText(`https://veloop.io/join/${username}`)
+      if (userState?.completeTask) {
+        userState.completeTask(task.id, task.xp, 'Referral Link Copied')
+      } else if (onEarnXP) {
+        onEarnXP(task.xp, 'Referral Link Copied')
+      }
       return
     }
 
-    // Default instant claim
-    setTasks((prev) =>
-      prev.map((t) => (t.id === task.id ? { ...t, completed: true } : t))
-    )
-    if (onEarnXP) onEarnXP(task.xp, task.title)
+    if (userState?.completeTask) {
+      userState.completeTask(task.id, task.xp, task.title)
+    } else if (onEarnXP) {
+      onEarnXP(task.xp, task.title)
+    }
   }
 
   const completedCount = tasks.filter((t) => t.completed).length
@@ -135,13 +143,12 @@ export default function EarnXPPage({ progression, onEarnXP, onNavigate }) {
           </div>
         </div>
 
-        {/* Live Progress Banner */}
         <div className={styles.progressionBanner}>
           <div className={styles.bannerInfo}>
-            <span className={styles.bannerLabel}>Active Level 04 Progress</span>
+            <span className={styles.bannerLabel}>Active Level {String(currentLevel).padStart(2, '0')} Progress</span>
             <span className={styles.bannerXp}>
               <strong>{currentXp.toLocaleString()}</strong> / {requiredXp.toLocaleString()} XP
-              <span className={styles.bannerRemaining}>({xpRemaining.toLocaleString()} XP needed for Level 05)</span>
+              <span className={styles.bannerRemaining}>({xpRemaining.toLocaleString()} XP needed for Level {String(nextLevel).padStart(2, '0')})</span>
             </span>
           </div>
           <div className={styles.bannerTrack}>
@@ -153,7 +160,6 @@ export default function EarnXPPage({ progression, onEarnXP, onNavigate }) {
         </div>
       </header>
 
-      {/* Task Grid */}
       <div className={styles.taskGrid}>
         {tasks.map((task) => {
           const isWatching = watchingId === task.id

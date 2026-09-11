@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { useLevelData } from '../../hooks/useLevelData'
 import { useUserState } from '../../context/UserStateContext'
-import { useNotifications } from '../../context/NotificationContext'
+import { generateRoadmapData } from '../../data/levelConfig'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import AppHeader from '../../components/Header/AppHeader'
 import HeroSection from '../../components/LevelHero/HeroSection'
@@ -16,7 +16,6 @@ import ProfilePage from '../ProfilePage/ProfilePage'
 import EarnXPPage from '../EarnXPPage/EarnXPPage'
 import LevelUpModal from '../../components/LevelUpModal/LevelUpModal'
 import LevelRoadmap from '../../components/LevelRoadmap/LevelRoadmap'
-import { levelRoadmapData } from '../../data/levelData'
 import styles from './LevelDashboard.module.css'
 
 export default function LevelDashboard() {
@@ -28,27 +27,23 @@ export default function LevelDashboard() {
     toastMsg,
     showLevelUpModal,
     levelUpData,
-    pendingNotification,
-    consumePendingNotification,
     earnXP,
     claimReward,
     claimLevelUpReward,
     closeLevelUpModal,
     updateUserProfile,
+    recordGameComplete,
     setShowLevelUpModal
   } = useUserState()
-  const { addNotification } = useNotifications()
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [roadmapOpen, setRoadmapOpen] = useState(false)
 
-  useEffect(() => {
-    if (pendingNotification) {
-      addNotification(pendingNotification)
-      consumePendingNotification()
-    }
-  }, [pendingNotification, addNotification, consumePendingNotification])
+  const roadmap = useMemo(
+    () => generateRoadmapData(activeProgression.currentLevel),
+    [activeProgression.currentLevel]
+  )
 
   const handleEarnXP = (amount, source) => {
     earnXP(amount, source)
@@ -56,12 +51,6 @@ export default function LevelDashboard() {
 
   const handleClaimReward = (reward) => {
     claimReward(reward)
-    addNotification({
-      type: 'reward',
-      icon: '🎁',
-      title: `Reward Unlocked!`,
-      body: `${reward.title} has been added to your account.`
-    })
   }
 
   const handleUpdateProfile = (fields) => {
@@ -136,13 +125,7 @@ export default function LevelDashboard() {
             <PlayAndEarnPage
               onBack={() => setActiveSection('home')}
               onGameComplete={(rewards) => {
-                if (rewards.xp > 0) earnXP(rewards.xp, 'XP Catcher Game', 'Game')
-                addNotification({
-                  type: 'game',
-                  icon: '🎮',
-                  title: `XP Catcher Complete!`,
-                  body: `You earned +${rewards.xp} XP, +${rewards.ves} VEs, +${rewards.gems} Gems.`
-                })
+                recordGameComplete(rewards)
               }}
             />
           ) : activeSection === 'profile' ? (
@@ -238,7 +221,7 @@ export default function LevelDashboard() {
               </button>
             </div>
 
-            <LevelRoadmap roadmap={levelRoadmapData} currentLevel={activeProgression.currentLevel} />
+            <LevelRoadmap roadmap={roadmap} currentLevel={activeProgression.currentLevel} />
           </div>
         </div>
       )}

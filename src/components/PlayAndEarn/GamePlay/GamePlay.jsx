@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { playSound } from '../utils/gameAudio'
+import { getLevelConfig } from '../../../data/levelConfig'
 import styles from './GamePlay.module.css'
 
 const OBJECT_SIZE = 48
@@ -93,6 +94,7 @@ export default function GamePlay({
   duration,
   rewards,
   isMuted,
+  currentLevel = 4,
   onCatch,
   onTimerTick,
   onGameOver
@@ -110,10 +112,15 @@ export default function GamePlay({
   const timeLeftRef = useRef(duration)
   const activeRef = useRef(true)
   const comboRef = useRef(0)
+  const bestStreakRef = useRef(0)
+  const itemsCaughtRef = useRef(0)
   const maxMultiplierRef = useRef(1)
   const rewardsRef = useRef({ score: 0, xp: 0, ves: 0, gems: 0 })
 
   const [activeMultiplier, setActiveMultiplier] = useState(1)
+
+  const levelConfig = getLevelConfig(currentLevel)
+  const difficulty = levelConfig.gameDifficulty || { speedMin: 2.5, speedMax: 3.5, spawnInterval: 800 }
 
   const syncCatcherPos = useCallback(() => {
     if (!arenaRef.current || !catcherRef.current || !floorRingsRef.current) return
@@ -185,8 +192,8 @@ export default function GamePlay({
     const x = margin + Math.random() * (arenaW - margin * 2)
     const timeElapsed = duration - timeLeftRef.current
     const isLate = timeElapsed > 10
-    const speedMin = isLate ? 3.0 : 2.0
-    const speedMax = isLate ? 4.5 : 3.2
+    const speedMin = isLate ? difficulty.speedMin * 1.25 : difficulty.speedMin
+    const speedMax = isLate ? difficulty.speedMax * 1.25 : difficulty.speedMax
     const speed = speedMin + Math.random() * (speedMax - speedMin)
     const def = pickRandom(OBJECT_TYPES)
 
@@ -198,10 +205,10 @@ export default function GamePlay({
 
     arenaRef.current.appendChild(wrapper)
     objectsRef.current.push({ el: wrapper, y: -(OBJECT_SIZE + 20), speed, def, x })
-  }, [duration])
+  }, [duration, difficulty])
 
   const startSpawner = useCallback(() => {
-    const getInterval = () => (duration - timeLeftRef.current > 10 ? 750 : 950)
+    const getInterval = () => (duration - timeLeftRef.current > 10 ? difficulty.spawnInterval * 0.75 : difficulty.spawnInterval)
 
     const scheduleNext = () => {
       if (!activeRef.current) return
@@ -210,7 +217,7 @@ export default function GamePlay({
     }
 
     spawnRef.current = setTimeout(scheduleNext, 250)
-  }, [duration, spawnObject])
+  }, [duration, difficulty, spawnObject])
 
   const gameLoop = useCallback(() => {
     if (!activeRef.current || !arenaRef.current || !catcherRef.current) return
@@ -249,7 +256,12 @@ export default function GamePlay({
 
       if (hitH && hitV) {
         toRemove.push(obj)
+        itemsCaughtRef.current += 1
         comboRef.current += 1
+        if (comboRef.current > bestStreakRef.current) {
+          bestStreakRef.current = comboRef.current
+        }
+
         let currentMult = 1
         if (comboRef.current >= 15) currentMult = 4
         else if (comboRef.current >= 10) currentMult = 3
@@ -321,6 +333,8 @@ export default function GamePlay({
     activeRef.current = true
     timeLeftRef.current = duration
     comboRef.current = 0
+    bestStreakRef.current = 0
+    itemsCaughtRef.current = 0
     maxMultiplierRef.current = 1
     objectsRef.current = []
     rewardsRef.current = { score: 0, xp: 0, ves: 0, gems: 0 }
@@ -347,6 +361,9 @@ export default function GamePlay({
         const snapshot = {
           ...rewardsRef.current,
           maxMultiplier: maxMultiplierRef.current,
+          itemsCaught: itemsCaughtRef.current,
+          bestStreak: bestStreakRef.current,
+          duration
         }
         setTimeout(() => onGameOver(snapshot), 400)
       }

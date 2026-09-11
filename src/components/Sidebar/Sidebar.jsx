@@ -88,6 +88,9 @@ export default function Sidebar({ isOpen, onClose, userSummary, activeSection = 
     navigate('/login', { replace: true })
   }
 
+  const balanceVEs = userSummary?.totalEarnedVEs !== undefined ? userSummary.totalEarnedVEs : 1850
+  const userRank = userSummary?.rank || 'Gold Tier'
+
   return (
     <>
       <div
@@ -148,8 +151,8 @@ export default function Sidebar({ isOpen, onClose, userSummary, activeSection = 
             <span className={styles.promoIcon}>⚡</span>
             <span className={styles.promoTag}>CURRENT TIER</span>
           </div>
-          <p className={styles.promoTitle}>Gold Tier</p>
-          <p className={styles.promoDesc}>Earn 1.2x XP on all tasks and access exclusive drops.</p>
+          <p className={styles.promoTitle}>{userRank}</p>
+          <p className={styles.promoDesc}>Earn bonuses on all tasks and access exclusive drops.</p>
         </div>
 
         <div className={styles.sidebarFooter}>
@@ -169,7 +172,7 @@ export default function Sidebar({ isOpen, onClose, userSummary, activeSection = 
               <span className={styles.userName}>{userSummary?.username || 'AlexRider'}</span>
               <span className={styles.userBalance}>
                 <span className={styles.balanceCoin}>🪙</span>
-                {userSummary?.totalEarnedVEs?.toLocaleString() || '1,850'} VEs
+                {balanceVEs.toLocaleString()} VEs
               </span>
             </div>
           </div>

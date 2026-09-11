@@ -227,19 +227,53 @@ function groupByTime(items) {
 export default function ActivityFeed({ filter, showAll = false, activities }) {
   const [selectedItem, setSelectedItem] = useState(null)
 
-  const liveItems = activities
-    ? activities.map((a) => ({
-        id: a.id,
-        type: a.type?.toLowerCase() === 'game' ? 'games' : a.type?.toLowerCase() === 'tasks' || a.type?.toLowerCase() === 'daily task' ? 'tasks' : 'xp',
-        icon: a.type?.toLowerCase() === 'game' ? <XpCatcherIcon /> : a.type?.toLowerCase() === 'referral' ? <ReferralIcon /> : <StreakIcon />,
-        title: a.title,
-        description: a.subtitle || '',
-        amount: `+${a.xpAmount} XP`,
-        amountType: 'xp',
-        time: a.timestamp || 'Just now',
-        timeGroup: a.timestamp || 'Just now',
-        status: a.status || 'completed',
-      }))
+  const liveItems = activities && activities.length > 0
+    ? activities.map((a) => {
+        const typeLower = (a.type || '').toLowerCase()
+        let filterType = 'xp'
+        let icon = <StreakIcon />
+        let amount = a.xpAmount > 0 ? `+${a.xpAmount} XP` : 'Completed'
+        let amountType = 'xp'
+
+        if (typeLower === 'game') {
+          filterType = 'games'
+          icon = <XpCatcherIcon />
+          amount = a.xpAmount > 0 ? `+${a.xpAmount} XP` : 'Finished'
+          amountType = 'xp'
+        } else if (typeLower === 'daily task' || typeLower === 'tasks') {
+          filterType = 'tasks'
+          icon = <TaskIcon />
+          amount = `+${a.xpAmount} XP`
+          amountType = 'xp'
+        } else if (typeLower === 'level up') {
+          filterType = 'xp'
+          icon = <LevelIcon />
+          amount = 'Level Up!'
+          amountType = 'level'
+        } else if (typeLower === 'reward') {
+          filterType = 'rewards'
+          icon = <RewardIcon />
+          amount = 'Claimed'
+          amountType = 'ves'
+        } else if (typeLower === 'referral') {
+          filterType = 'xp'
+          icon = <ReferralIcon />
+          amount = `+${a.xpAmount} XP`
+        }
+
+        return {
+          id: a.id,
+          type: filterType,
+          icon,
+          title: a.title,
+          description: a.subtitle || '',
+          amount,
+          amountType,
+          time: a.timestamp || 'Just now',
+          timeGroup: a.timestamp?.includes('Yesterday') ? 'Yesterday' : a.timestamp?.includes('Today') || a.timestamp === 'Just now' ? 'Today' : a.timestamp || 'Recent',
+          status: a.status || 'completed',
+        }
+      })
     : allActivities
 
   const rawList = showAll ? liveItems : liveItems.slice(0, 6)

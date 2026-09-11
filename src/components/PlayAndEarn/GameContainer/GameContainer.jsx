@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { useUserState } from '../../../context/UserStateContext'
 import GameStart from '../GameStart/GameStart'
 import GamePlay from '../GamePlay/GamePlay'
 import GameResult from '../GameResult/GameResult'
@@ -15,6 +16,9 @@ function formatTime(s) {
 }
 
 export default function GameContainer({ onBack, onGameComplete }) {
+  const userState = useUserState()
+  const currentLevel = userState?.activeProgression?.currentLevel || 4
+
   const [phase, setPhase] = useState('idle')
   const [rewards, setRewards] = useState(initialScore())
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION)
@@ -71,7 +75,6 @@ export default function GameContainer({ onBack, onGameComplete }) {
   const handlePlayAgain = useCallback(() => {
     setPhase('idle')
   }, [])
-
 
   return (
     <div className={styles.gameContainer}>
@@ -167,6 +170,7 @@ export default function GameContainer({ onBack, onGameComplete }) {
             duration={GAME_DURATION}
             rewards={rewards}
             isMuted={isMuted}
+            currentLevel={currentLevel}
             onCatch={handleCatch}
             onTimerTick={handleTimerTick}
             onGameOver={handleGameOver}

@@ -1,12 +1,14 @@
 import { useState } from 'react'
+import { useUserState } from '../../context/UserStateContext'
 import GamerAvatar from '../../components/Profile/GamerAvatar'
 import AvatarVault from '../../components/Profile/AvatarVault'
 import { gamerAvatars, profileAchievements } from '../../data/levelData'
 import styles from './ProfilePage.module.css'
 
 export default function ProfilePage({ progression, userProfile, onUpdateProfile, onNavigate }) {
+  const userState = useUserState()
   const [vaultOpen, setVaultOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('all') // 'all', 'unlocked', 'in-progress'
+  const [activeTab, setActiveTab] = useState('all')
   const [isEditingBio, setIsEditingBio] = useState(false)
   const [bioText, setBioText] = useState(
     userProfile?.bio || progression?.userSummary?.bio || 'Pushing for Level 5 Vanguard Master • Daily Streak Hunter ⚡'
@@ -19,14 +21,20 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
   const currentAvatarMeta = gamerAvatars.find((a) => a.id === activeAvatarId) || gamerAvatars[0]
   const username = userProfile?.username || progression?.userSummary?.username || 'AlexRider'
   const tag = userProfile?.tag || progression?.userSummary?.tag || '#VEL-7402'
-  const rank = userProfile?.rank || progression?.userSummary?.rank || 'Gold Tier'
+  const rank = progression?.currentLevelConfig?.tier || userProfile?.rank || progression?.userSummary?.rank || 'Gold Tier'
   const totalEarnedVEs = progression?.userSummary?.totalEarnedVEs ?? 1850
-  const totalGems = userProfile?.totalGems || progression?.userSummary?.totalGems || 48
-  const lifetimeXp = userProfile?.lifetimeXp || progression?.userSummary?.lifetimeXp || 18450
-  const currentLevel = progression?.currentLevel || 4
-  const currentXp = progression?.currentXp || 6420
-  const requiredXp = progression?.requiredXp || 8000
-  const xpPercentage = progression?.xpPercentage || 80.25
+  const totalGems = progression?.userSummary?.totalGems ?? 48
+  const lifetimeXp = progression?.userSummary?.lifetimeXp ?? 6670
+  const currentLevel = progression?.currentLevel ?? 4
+  const nextLevel = progression?.nextLevel ?? 5
+  const currentXp = progression?.currentXp ?? 2170
+  const requiredXp = progression?.requiredXp ?? 3500
+  const xpPercentage = progression?.xpPercentage ?? 62
+  const longestStreak = progression?.userSummary?.longestStreak ?? 7
+  const miniGameHighScore = progression?.userSummary?.miniGameHighScore ?? 165
+  const tasksCompleted = progression?.userSummary?.tasksCompleted ?? 4
+  const vouchersClaimed = progression?.userSummary?.vouchersClaimed ?? 0
+  const playerTitle = progression?.userSummary?.title || `Level ${String(currentLevel).padStart(2, '0')} Vanguard`
 
   const handleSelectAvatar = (avatarId) => {
     if (onUpdateProfile) {
@@ -41,6 +49,14 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
     }
   }
 
+  const handleReset = () => {
+    if (window.confirm('Reset demo progression back to initial state?')) {
+      if (userState?.resetProgression) {
+        userState.resetProgression()
+      }
+    }
+  }
+
   const filteredAchievements = profileAchievements.filter((ach) => {
     if (activeTab === 'unlocked') return ach.unlocked
     if (activeTab === 'in-progress') return !ach.unlocked
@@ -49,7 +65,6 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
 
   return (
     <div className={styles.container}>
-      {/* 1. PLAYER HERO CARD */}
       <section className={styles.heroCard}>
         <div className={styles.heroBackgroundMesh} />
         
@@ -88,14 +103,13 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
             </div>
 
             <div className={styles.subMeta}>
-              <span className={styles.playerTitle}>⚔️ Level {String(currentLevel).padStart(2, '0')} Vanguard</span>
+              <span className={styles.playerTitle}>⚔️ {playerTitle}</span>
               <span className={styles.dotSeparator}>•</span>
               <span className={styles.joinDate}>Member since Aug 2026</span>
               <span className={styles.dotSeparator}>•</span>
               <span className={styles.vipStatus}>⭐ VIP Verified</span>
             </div>
 
-            {/* Editable Bio / Motto */}
             <div className={styles.bioContainer}>
               {isEditingBio ? (
                 <div className={styles.bioEditRow}>
@@ -124,10 +138,9 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
               )}
             </div>
 
-            {/* Level XP Progress strip */}
             <div className={styles.progressionBarArea}>
               <div className={styles.progressBarMeta}>
-                <span className={styles.progressLabel}>Progress to Level 05</span>
+                <span className={styles.progressLabel}>Progress to Level {String(nextLevel).padStart(2, '0')}</span>
                 <span className={styles.progressNums}>
                   <strong>{currentXp.toLocaleString()}</strong> / {requiredXp.toLocaleString()} XP ({xpPercentage}%)
                 </span>
@@ -140,7 +153,6 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
         </div>
       </section>
 
-      {/* QUICK ACTIONS ROW */}
       {onNavigate && (
         <section className={styles.quickActionsRow}>
           <button
@@ -186,7 +198,6 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
         </section>
       )}
 
-      {/* 2. STATS & ASSET VAULT GRID */}
       <section className={styles.statsGrid}>
         <div className={styles.statCard}>
           <div className={styles.statIconWrap} style={{ background: 'rgba(192, 132, 252, 0.15)', color: '#c084fc' }}>
@@ -195,7 +206,7 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
           <div className={styles.statInfo}>
             <span className={styles.statLabel}>Lifetime XP</span>
             <span className={styles.statValue}>{lifetimeXp.toLocaleString()} XP</span>
-            <span className={styles.statSub}>Top 5% on VELOOP</span>
+            <span className={styles.statSub}>Total points earned</span>
           </div>
         </div>
 
@@ -227,21 +238,20 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
           </div>
           <div className={styles.statInfo}>
             <span className={styles.statLabel}>Active Streak</span>
-            <span className={styles.statValue}>7 Days</span>
+            <span className={styles.statValue}>{longestStreak} Days</span>
             <span className={styles.statSub}>2.5X active boost</span>
           </div>
         </div>
       </section>
 
-      {/* 3. PERFORMANCE & RECORDS ROW */}
       <section className={styles.recordsSection}>
         <div className={styles.recordItem}>
           <div className={styles.recordHeader}>
             <span className={styles.recordEmoji}>🎮</span>
             <span className={styles.recordTitle}>XP Catcher Record</span>
           </div>
-          <span className={styles.recordScore}>165 Pts</span>
-          <span className={styles.recordTag}>Elite Rating Achieved</span>
+          <span className={styles.recordScore}>{miniGameHighScore} Pts</span>
+          <span className={styles.recordTag}>Top arcade performance</span>
         </div>
 
         <div className={styles.recordItem}>
@@ -249,21 +259,20 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
             <span className={styles.recordEmoji}>🎯</span>
             <span className={styles.recordTitle}>Quests Completed</span>
           </div>
-          <span className={styles.recordScore}>24 Tasks</span>
+          <span className={styles.recordScore}>{tasksCompleted} Tasks</span>
           <span className={styles.recordTag}>100% on-time completion</span>
         </div>
 
         <div className={styles.recordItem}>
           <div className={styles.recordHeader}>
             <span className={styles.recordEmoji}>🎁</span>
-            <span className={styles.recordTitle}>Vouchers Unlocked</span>
+            <span className={styles.recordTitle}>Vouchers Claimed</span>
           </div>
-          <span className={styles.recordScore}>5 Vouchers</span>
-          <span className={styles.recordTag}>All perks claimed</span>
+          <span className={styles.recordScore}>{vouchersClaimed} Vouchers</span>
+          <span className={styles.recordTag}>Claimed from catalog</span>
         </div>
       </section>
 
-      {/* 4. ACHIEVEMENTS SHOWCASE */}
       <section className={styles.achievementsCard}>
         <div className={styles.sectionHeader}>
           <div>
@@ -336,7 +345,6 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
         </div>
       </section>
 
-      {/* 5. GAMER SETTINGS & QUICK PREFERENCES */}
       <section className={styles.settingsCard}>
         <div className={styles.sectionHeader}>
           <div>
@@ -390,10 +398,33 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
               <span className={styles.toggleThumb} />
             </button>
           </div>
+
+          <div className={styles.settingRow}>
+            <div className={styles.settingInfo}>
+              <span className={styles.settingName}>Development &amp; Demo Reset</span>
+              <span className={styles.settingDesc}>Safely reset demo progression, level, XP, coins, and game history.</span>
+            </div>
+            <button
+              type="button"
+              onClick={handleReset}
+              style={{
+                padding: '0.55rem 1.1rem',
+                borderRadius: '10px',
+                border: '1px solid rgba(239, 68, 68, 0.4)',
+                background: 'rgba(239, 68, 68, 0.12)',
+                color: '#f87171',
+                fontWeight: '800',
+                fontSize: '0.85rem',
+                cursor: 'pointer'
+              }}
+              id="profile-reset-progression-btn"
+            >
+              Reset Demo Data
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* AVATAR SELECTOR VAULT MODAL */}
       <AvatarVault
         isOpen={vaultOpen}
         onClose={() => setVaultOpen(false)}

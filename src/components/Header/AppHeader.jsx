@@ -17,12 +17,13 @@ export default function AppHeader({ progression, onOpenMenu, onSelectSection }) 
   const { unreadCount } = useNotifications()
   const [notifOpen, setNotifOpen] = useState(false)
 
-  const currentLevel = progression?.currentLevel || 4
+  const currentLevel = progression?.currentLevel ?? 4
   const userSummary = progression?.userSummary
   const avatarId = userSummary?.avatarId || 'vanguard'
   const username = user?.fullName || userSummary?.username || 'VeLooper'
   const greeting = getGreeting()
   const greetEmoji = greeting === 'Good Morning' ? '☀️' : greeting === 'Good Afternoon' ? '👋' : '🌙'
+  const totalEarnedVEs = userSummary?.totalEarnedVEs !== undefined ? userSummary.totalEarnedVEs : 1850
 
   return (
     <header className={styles.header}>
@@ -52,7 +53,7 @@ export default function AppHeader({ progression, onOpenMenu, onSelectSection }) 
 
         <div className={styles.balancePill}>
           <span className={styles.balanceIcon}>🪙</span>
-          <span className={styles.balanceAmount}>{userSummary?.totalEarnedVEs?.toLocaleString() || '1,850'}</span>
+          <span className={styles.balanceAmount}>{totalEarnedVEs.toLocaleString()}</span>
           <span className={styles.balanceUnit}>VEs</span>
         </div>
 

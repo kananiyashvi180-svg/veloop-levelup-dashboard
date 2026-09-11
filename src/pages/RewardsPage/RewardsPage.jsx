@@ -1,20 +1,28 @@
 import { useState } from 'react'
+import { useUserState } from '../../context/UserStateContext'
 import styles from './RewardsPage.module.css'
 import RewardsHero from '../../components/RewardsHero/RewardsHero'
 import RewardCards from '../../components/RewardCards/RewardCards'
 import LevelBenefits from '../../components/LevelBenefits/LevelBenefits'
 
 export default function RewardsPage({ progression, onClaimReward }) {
+  const userState = useUserState()
   const [claimedAll, setClaimedAll] = useState(false)
   const [toastMsg, setToastMsg] = useState(null)
 
+  const currentLevel = progression?.currentLevel ?? 4
+  const nextLevel = progression?.nextLevel ?? 5
+  const userBalance = progression?.userSummary?.totalEarnedVEs ?? 1850
+
   const handleClaimAll = () => {
     setClaimedAll(true)
-    setToastMsg('All available Tier 4 perks & milestone bonuses have been credited to your account!')
-    setTimeout(() => setToastMsg(null), 4000)
-    if (onClaimReward) {
-      onClaimReward({ title: 'Tier 04 Full Bundle', amount: '+500 VEs' })
+    if (userState?.claimReward) {
+      userState.claimReward({ id: 'bundle-tier', title: `Tier ${String(currentLevel).padStart(2, '0')} Bundle`, amount: '+500 VEs', note: 'All active milestone rewards' })
+    } else if (onClaimReward) {
+      onClaimReward({ title: `Tier ${String(currentLevel).padStart(2, '0')} Bundle`, amount: '+500 VEs' })
     }
+    setToastMsg(`All available Tier ${String(currentLevel).padStart(2, '0')} perks & milestone bonuses have been credited!`)
+    setTimeout(() => setToastMsg(null), 4000)
   }
 
   return (
@@ -38,12 +46,12 @@ export default function RewardsPage({ progression, onClaimReward }) {
       )}
 
       <div className={styles.pageInner}>
-        <RewardsHero />
+        <RewardsHero nextLevel={nextLevel} />
         <RewardCards
-          userBalance={progression?.userSummary?.totalEarnedVEs ?? 1850}
+          userBalance={userBalance}
           onClaimReward={onClaimReward}
         />
-        <LevelBenefits />
+        <LevelBenefits level={nextLevel} />
 
         <div className={styles.ctaWrapper}>
           <button
@@ -63,4 +71,3 @@ export default function RewardsPage({ progression, onClaimReward }) {
     </div>
   )
 }
-

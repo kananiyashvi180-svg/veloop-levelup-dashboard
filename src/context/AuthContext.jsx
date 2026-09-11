@@ -5,17 +5,39 @@ const AuthContext = createContext(null)
 const USERS_KEY = 'veloop_users'
 const SESSION_KEY = 'veloop_session'
 
+const DEFAULT_DEMO_USER = {
+  id: 'user_alex_rider',
+  fullName: 'AlexRider',
+  email: 'alex@veloop.io',
+  password: 'password123',
+  createdAt: 1725148800000
+}
+
 function getStoredUsers() {
   try {
-    return JSON.parse(localStorage.getItem(USERS_KEY)) || []
+    const list = JSON.parse(localStorage.getItem(USERS_KEY))
+    if (Array.isArray(list) && list.length > 0) return list
+    const initialList = [DEFAULT_DEMO_USER]
+    localStorage.setItem(USERS_KEY, JSON.stringify(initialList))
+    return initialList
   } catch {
-    return []
+    return [DEFAULT_DEMO_USER]
   }
 }
 
 function getStoredSession() {
   try {
-    return JSON.parse(localStorage.getItem(SESSION_KEY)) || null
+    const session = JSON.parse(localStorage.getItem(SESSION_KEY))
+    if (session) return session
+    const defaultSession = {
+      userId: DEFAULT_DEMO_USER.id,
+      fullName: DEFAULT_DEMO_USER.fullName,
+      email: DEFAULT_DEMO_USER.email,
+      remember: true,
+      loginAt: Date.now()
+    }
+    localStorage.setItem(SESSION_KEY, JSON.stringify(defaultSession))
+    return defaultSession
   } catch {
     return null
   }
@@ -54,7 +76,7 @@ export function AuthProvider({ children }) {
           setAuthLoading(false)
           reject(new Error('Invalid email or password.'))
         }
-      }, 900)
+      }, 500)
     })
   }
 
@@ -90,7 +112,7 @@ export function AuthProvider({ children }) {
         setUser(session)
         setAuthLoading(false)
         resolve(session)
-      }, 900)
+      }, 500)
     })
   }
 
