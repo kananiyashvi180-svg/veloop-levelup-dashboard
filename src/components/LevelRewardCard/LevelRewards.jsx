@@ -1,7 +1,11 @@
 import styles from './LevelRewards.module.css'
 
 export default function LevelRewards({ progression, onNavigate }) {
-  const { nextLevel, nextLevelReward } = progression
+  const nextLevel = progression?.nextLevel ?? (progression?.currentLevel ? progression.currentLevel + 1 : 5)
+  const nextLevelReward = progression?.nextLevelReward || {
+    label: '500 VEs',
+    description: `Level ${String(nextLevel).padStart(2, '0')} Milestone Bonus`
+  }
 
   return (
     <section className={styles.section}>
@@ -30,8 +34,8 @@ export default function LevelRewards({ progression, onNavigate }) {
 
           <div className={styles.rewardInfo}>
             <span className={styles.milestoneTag}>MILESTONE BONUS</span>
-            <p className={styles.rewardAmount}>{nextLevelReward.label}</p>
-            <p className={styles.rewardDesc}>{nextLevelReward.description}</p>
+            <p className={styles.rewardAmount}>{nextLevelReward?.label || '500 VEs'}</p>
+            <p className={styles.rewardDesc}>{nextLevelReward?.description || 'Upcoming Milestone Bonus'}</p>
           </div>
         </div>
 

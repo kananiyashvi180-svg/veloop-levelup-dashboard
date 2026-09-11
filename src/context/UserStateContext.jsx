@@ -23,6 +23,7 @@ function loadProgression(userId) {
     requiredXp: levelProgressionData.requiredXp,
     totalEarnedVEs: levelProgressionData.userSummary.totalEarnedVEs,
     totalGems: levelProgressionData.userSummary.totalGems,
+    nextLevelReward: levelProgressionData.nextLevelReward,
     activities: xpActivityData
   }
 }
@@ -197,6 +198,12 @@ export function UserStateProvider({ children }) {
     nextLevel: progression.currentLevel + 1,
     xpRemaining,
     xpPercentage,
+    nextLevelReward: progression.nextLevelReward || {
+      amount: 500,
+      currency: 'VEs',
+      label: '500 VEs',
+      description: `Level ${String(progression.currentLevel + 1).padStart(2, '0')} Milestone Bonus`
+    },
     userSummary: {
       ...userProfile,
       totalEarnedVEs: progression.totalEarnedVEs,
