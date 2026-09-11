@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import styles from './RegisterPage.module.css'
@@ -6,11 +6,6 @@ import styles from './RegisterPage.module.css'
 export default function RegisterPage() {
   const { register, user } = useAuth()
   const navigate = useNavigate()
-
-  if (user) {
-    navigate('/Lvl-Dashboard', { replace: true })
-    return null
-  }
 
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
@@ -21,6 +16,12 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [fieldErrors, setFieldErrors] = useState({})
+
+  useEffect(() => {
+    if (user) navigate('/Lvl-Dashboard', { replace: true })
+  }, [user, navigate])
+
+  if (user) return null
 
   const getStrength = (p) => {
     if (!p) return 0
@@ -58,7 +59,7 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       await register(fullName.trim(), email.trim(), password)
-      navigate('/login', { replace: true, state: { registered: true } })
+      navigate('/Lvl-Dashboard', { replace: true })
     } catch (err) {
       setError(err.message)
     } finally {

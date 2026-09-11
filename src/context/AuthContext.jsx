@@ -78,8 +78,18 @@ export function AuthProvider({ children }) {
         }
         users.push(newUser)
         localStorage.setItem(USERS_KEY, JSON.stringify(users))
+
+        const session = {
+          userId: newUser.id,
+          fullName: newUser.fullName,
+          email: newUser.email,
+          remember: true,
+          loginAt: Date.now()
+        }
+        localStorage.setItem(SESSION_KEY, JSON.stringify(session))
+        setUser(session)
         setAuthLoading(false)
-        resolve(newUser)
+        resolve(session)
       }, 900)
     })
   }

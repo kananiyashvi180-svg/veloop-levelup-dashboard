@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import styles from './LoginPage.module.css'
@@ -6,11 +6,6 @@ import styles from './LoginPage.module.css'
 export default function LoginPage() {
   const { login, user } = useAuth()
   const navigate = useNavigate()
-
-  if (user) {
-    navigate('/Lvl-Dashboard', { replace: true })
-    return null
-  }
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -22,6 +17,12 @@ export default function LoginPage() {
   const [forgotMode, setForgotMode] = useState(false)
   const [forgotEmail, setForgotEmail] = useState('')
   const [forgotSent, setForgotSent] = useState(false)
+
+  useEffect(() => {
+    if (user) navigate('/Lvl-Dashboard', { replace: true })
+  }, [user, navigate])
+
+  if (user) return null
 
   const validate = () => {
     const errs = {}
