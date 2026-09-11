@@ -1,31 +1,41 @@
+import { useState } from 'react'
 import styles from './TodaysBoost.module.css'
 
-const boostItems = (progression) => [
+const boostItems = (progression, isClaimed) => [
   {
     icon: '⭐',
     label: 'XP Earned Today',
-    value: '215 XP',
-    badge: '+12%',
+    value: isClaimed ? '365 XP' : '215 XP',
+    badge: isClaimed ? '+38%' : '+12%',
     iconBg: '#f5ba31',
   },
   {
     icon: '📋',
     label: 'Tasks Completed',
-    value: '4 / 8',
-    badge: '50%',
+    value: isClaimed ? '5 / 8' : '4 / 8',
+    badge: isClaimed ? '62%' : '50%',
     iconBg: '#3b82f6',
   },
   {
     icon: '🔥',
     label: 'Current Streak',
     value: '7 Days',
-    badge: 'Active',
+    badge: 'Active 2.5X',
     iconBg: '#ef4444',
   },
 ]
 
-export default function TodaysBoost({ progression }) {
-  const items = boostItems(progression)
+export default function TodaysBoost({ progression, onClaimBoost }) {
+  const [claimed, setClaimed] = useState(false)
+  const items = boostItems(progression, claimed)
+
+  const handleClaim = () => {
+    if (claimed) return
+    setClaimed(true)
+    if (onClaimBoost) {
+      onClaimBoost(150, "Today's 2.5X Streak Boost")
+    }
+  }
 
   return (
     <section className={styles.section}>
@@ -53,6 +63,17 @@ export default function TodaysBoost({ progression }) {
           </div>
         ))}
       </div>
+
+      <button
+        type="button"
+        className={`${styles.claimBoostBtn} ${claimed ? styles.claimedBoostBtn : ''}`}
+        onClick={handleClaim}
+        disabled={claimed}
+        id="claim-todays-boost-btn"
+      >
+        {claimed ? '✓ Boost Active: +150 XP Claimed' : '⚡ Claim Today\'s 2.5X Boost (+150 XP)'}
+      </button>
     </section>
   )
 }
+

@@ -1,0 +1,266 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 6, 18, 0.88);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: linear-gradient(135deg, rgba(28, 33, 58, 0.98), rgba(12, 16, 32, 0.99));
+  border: 2px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 0 60px rgba(245, 158, 11, 0.25), 0 25px 60px rgba(0, 0, 0, 0.8);
+  border-radius: 28px;
+  width: 100%;
+  max-width: 580px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.particleContainer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 4px;
+  opacity: 0.85;
+  animation: fallDown linear infinite;
+}
+
+@keyframes fallDown {
+  0% { transform: translateY(-30px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+}
+
+.topBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+}
+
+.sparkle {
+  color: #fef08a;
+  font-size: 0.9rem;
+}
+
+.badgeArea {
+  position: relative;
+  margin: 0.5rem 0;
+}
+
+.outerAura {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, transparent 70%);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 0.9; }
+}
+
+.hexShield {
+  width: 90px;
+  height: 98px;
+  background: linear-gradient(135deg, #f59e0b, #b45309);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 35px rgba(245, 158, 11, 0.6);
+  position: relative;
+  z-index: 2;
+  border: 2px solid #fef08a;
+}
+
+.shieldLvl {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #451a03;
+  letter-spacing: 0.1em;
+}
+
+.shieldNum {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.congratsTitle {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.congratsDesc {
+  font-size: 0.92rem;
+  color: #cbd5e1;
+  max-width: 440px;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.congratsDesc strong {
+  color: #fbbf24;
+}
+
+.rewardBox {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.rewardHeader {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  text-align: left;
+}
+
+.rewardRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.rewardItem {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 0.75rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.rewardIcon {
+  font-size: 1.5rem;
+}
+
+.rewardVal {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.rewardSub {
+  display: block;
+  font-size: 0.68rem;
+  color: #94a3b8;
+}
+
+.actionRow {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.claimBtn {
+  width: 100%;
+  padding: 0.9rem;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #0f172a;
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.claimBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.6);
+}
+
+@media (max-width: 520px) {
+  .modal {
+    padding: 1.75rem 1.25rem;
+    border-radius: 22px;
+    gap: 1rem;
+  }
+
+  .congratsTitle {
+    font-size: 1.6rem;
+  }
+
+  .congratsDesc {
+    font-size: 0.85rem;
+  }
+
+  .hexShield {
+    width: 75px;
+    height: 82px;
+  }
+
+  .shieldNum {
+    font-size: 1.8rem;
+  }
+
+  .rewardRow {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.45rem;
+  }
+
+  .rewardItem {
+    padding: 0.6rem 0.35rem;
+  }
+
+  .rewardVal {
+    font-size: 0.78rem;
+  }
+
+  .rewardSub {
+    font-size: 0.62rem;
+  }
+}

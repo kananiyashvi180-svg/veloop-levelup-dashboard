@@ -1,6 +1,6 @@
 import styles from './LevelRewards.module.css'
 
-export default function LevelRewards({ progression }) {
+export default function LevelRewards({ progression, onNavigate }) {
   const { nextLevel, nextLevelReward } = progression
 
   return (
@@ -50,7 +50,12 @@ export default function LevelRewards({ progression }) {
           </div>
         </div>
 
-        <button className={styles.viewBtn} type="button">
+        <button
+          className={styles.viewBtn}
+          type="button"
+          onClick={() => onNavigate && onNavigate('rewards')}
+          id="level-rewards-view-all-btn"
+        >
           View All Rewards →
         </button>
       </div>

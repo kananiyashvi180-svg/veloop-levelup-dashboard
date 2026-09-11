@@ -1,3 +1,4 @@
+import GamerAvatar from '../Profile/GamerAvatar'
 import styles from './Sidebar.module.css'
 
 const navSections = [
@@ -15,7 +16,6 @@ const navSections = [
   {
     id: 'rewards',
     label: 'Rewards',
-    badge: 'New',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="20 12 20 22 4 22 4 12" />
@@ -37,6 +37,17 @@ const navSections = [
         <line x1="8" y1="10" x2="8" y2="14" />
         <circle cx="17" cy="10" r="1" fill="currentColor" />
         <circle cx="15" cy="14" r="1" fill="currentColor" />
+      </svg>
+    ),
+    active: false,
+  },
+  {
+    id: 'earn-xp',
+    label: 'Earn XP',
+    badge: 'Hot',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
       </svg>
     ),
     active: false,
@@ -130,12 +141,18 @@ export default function Sidebar({ isOpen, onClose, userSummary, activeSection = 
         </div>
 
         <div className={styles.sidebarFooter}>
-          <div className={styles.userCard}>
-            <img
-              className={styles.userAvatar}
-              src={userSummary?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
-              alt={userSummary?.username || 'User'}
-            />
+          <div
+            className={styles.userCard}
+            onClick={() => {
+              if (onSelectSection) onSelectSection('profile')
+              if (onClose) onClose()
+            }}
+            role="button"
+            tabIndex={0}
+            title="Go to Profile"
+            style={{ cursor: 'pointer' }}
+          >
+            <GamerAvatar avatarId={userSummary?.avatarId || 'vanguard'} size={42} />
             <div className={styles.userInfo}>
               <span className={styles.userName}>{userSummary?.username || 'AlexRider'}</span>
               <span className={styles.userBalance}>

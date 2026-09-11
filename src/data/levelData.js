@@ -13,11 +13,137 @@ export const levelProgressionData = {
   },
   userSummary: {
     username: 'AlexRider',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    avatarId: 'vanguard',
+    tag: '#VEL-7402',
+    bio: 'Pushing for Level 5 Vanguard Master • Daily Streak Hunter ⚡',
+    title: 'Level 04 Vanguard',
+    memberSince: 'August 2026',
     totalEarnedVEs: 1850,
-    rank: 'Gold Tier'
+    totalGems: 48,
+    lifetimeXp: 18450,
+    rank: 'Gold Tier',
+    longestStreak: 7,
+    miniGameHighScore: 165,
+    tasksCompleted: 24,
+    vouchersClaimed: 5
   }
 }
+
+export const gamerAvatars = [
+  {
+    id: 'vanguard',
+    name: 'Golden Vanguard',
+    tier: 'Gold Tier',
+    theme: '#f59e0b',
+    glow: 'rgba(245, 158, 11, 0.4)',
+    desc: 'Armored cyber crest with radiant gold visor.'
+  },
+  {
+    id: 'phoenix',
+    name: 'Cyber Phoenix',
+    tier: 'Elite',
+    theme: '#f43f5e',
+    glow: 'rgba(244, 63, 94, 0.4)',
+    desc: 'Blazing flame armor with hypersonic ocular optics.'
+  },
+  {
+    id: 'cosmic',
+    name: 'Cosmic Pilot',
+    tier: 'Astral',
+    theme: '#8b5cf6',
+    glow: 'rgba(139, 92, 246, 0.4)',
+    desc: 'Deep space explorer with nebula quantum visor.'
+  },
+  {
+    id: 'ronin',
+    name: 'Shadow Ronin',
+    tier: 'Stealth',
+    theme: '#ef4444',
+    glow: 'rgba(239, 68, 68, 0.4)',
+    desc: 'Tactical stealth shinobi with crimson energy mask.'
+  },
+  {
+    id: 'crystal',
+    name: 'Crystal Sentinel',
+    tier: 'Prism',
+    theme: '#10b981',
+    glow: 'rgba(16, 185, 129, 0.4)',
+    desc: 'Emerald crystalline defender with reinforced plating.'
+  },
+  {
+    id: 'synth',
+    name: 'Quantum Synth',
+    tier: 'Cyber',
+    theme: '#06b6d4',
+    glow: 'rgba(6, 182, 212, 0.4)',
+    desc: 'High-frequency AI cyber pilot with cyan luminescence.'
+  }
+]
+
+export const profileAchievements = [
+  {
+    id: 'first-flight',
+    title: 'First Flight',
+    desc: 'Completed Level 1 progression milestone',
+    icon: '🚀',
+    category: 'Progression',
+    unlocked: true,
+    date: 'Aug 14, 2026',
+    xpReward: '+100 XP'
+  },
+  {
+    id: 'streak-master',
+    title: '7-Day Streak Master',
+    desc: 'Maintained a consecutive 7-day login streak',
+    icon: '🔥',
+    category: 'Engagement',
+    unlocked: true,
+    date: 'Sep 02, 2026',
+    xpReward: '+250 XP'
+  },
+  {
+    id: 'arcade-champion',
+    title: 'XP Catcher Ace',
+    desc: 'Scored 150+ in a single Play & Earn run',
+    icon: '🎮',
+    category: 'Mini-Game',
+    unlocked: true,
+    date: 'Sep 06, 2026',
+    xpReward: '+200 XP'
+  },
+  {
+    id: 'gem-hoarder',
+    title: 'Crystal Hunter',
+    desc: 'Accumulated 40+ Rare Gems',
+    icon: '💎',
+    category: 'Assets',
+    unlocked: true,
+    date: 'Sep 08, 2026',
+    xpReward: '+150 XP'
+  },
+  {
+    id: 'master-tier',
+    title: 'Vanguard Master',
+    desc: 'Reach Level 05 to unlock VIP lounge access',
+    icon: '👑',
+    category: 'Progression',
+    unlocked: false,
+    progress: 80,
+    progressLabel: '6,420 / 8,000 XP',
+    xpReward: '+500 VEs'
+  },
+  {
+    id: 'social-ambassador',
+    title: 'Community Ambassador',
+    desc: 'Invite 3 teammates to VELOOP Rewards',
+    icon: '🤝',
+    category: 'Social',
+    unlocked: false,
+    progress: 66,
+    progressLabel: '2 / 3 Friends Joined',
+    xpReward: '+300 XP'
+  }
+]
 
 export const levelRoadmapData = [
   {

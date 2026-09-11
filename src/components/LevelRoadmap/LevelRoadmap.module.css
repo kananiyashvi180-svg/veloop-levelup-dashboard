@@ -82,6 +82,7 @@
   overflow-x: auto;
   padding: 1.5rem 0.5rem 1rem 0.5rem;
   scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 }
 
 .trackLine {

@@ -1,8 +1,21 @@
+import GamerAvatar from '../Profile/GamerAvatar'
 import styles from './AppHeader.module.css'
 
-export default function AppHeader({ progression, onOpenMenu }) {
+function getGreeting() {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Good Morning'
+  if (hour < 17) return 'Good Afternoon'
+  return 'Good Evening'
+}
+
+export default function AppHeader({ progression, onOpenMenu, onSelectSection }) {
   const currentLevel = progression?.currentLevel || 4
   const userSummary = progression?.userSummary
+  const avatarId = userSummary?.avatarId || 'vanguard'
+  const username = userSummary?.username || 'VeLooper'
+  const greeting = getGreeting()
+
+  const greetEmoji = greeting === 'Good Morning' ? '☀️' : greeting === 'Good Afternoon' ? '👋' : '🌙'
 
   return (
     <header className={styles.header}>
@@ -19,7 +32,7 @@ export default function AppHeader({ progression, onOpenMenu }) {
         </button>
 
         <div className={styles.greetingBlock}>
-          <h1 className={styles.greeting}>Good Morning, VeLooper! 👋</h1>
+          <h1 className={styles.greeting}>{greeting}, {username}! {greetEmoji}</h1>
           <p className={styles.subtitle}>Level up your journey and unlock epic rewards every day.</p>
         </div>
       </div>
@@ -44,14 +57,17 @@ export default function AppHeader({ progression, onOpenMenu }) {
           <span className={styles.bellDot} />
         </button>
 
-        <div className={styles.profileBadge}>
-          <img
-            className={styles.profileAvatar}
-            src={userSummary?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
-            alt="Profile"
-          />
-        </div>
+        <button
+          className={styles.profileBadge}
+          type="button"
+          onClick={() => onSelectSection && onSelectSection('profile')}
+          aria-label="Open profile"
+          title="Open Profile"
+        >
+          <GamerAvatar avatarId={avatarId} size={38} />
+        </button>
       </div>
     </header>
   )
 }
+

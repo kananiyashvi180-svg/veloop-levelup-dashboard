@@ -1,19 +1,17 @@
 import { Shield, Sparkles, Coins } from 'lucide-react'
+import GamerAvatar from '../Profile/GamerAvatar'
 import styles from './CurrentLevel.module.css'
 
 export default function CurrentLevel({ progression, roadmap = [] }) {
   const currentItem = roadmap.find((r) => r.level === progression.currentLevel) || {}
   const currentTitle = currentItem.name || 'Champion'
+  const avatarId = progression?.userSummary?.avatarId || 'vanguard'
 
   return (
     <div className={styles.currentLevelContainer}>
       <div className={styles.profileAvatarWrapper}>
         <div className={styles.avatarRing}>
-          <img
-            src={progression.userSummary.avatar}
-            alt={progression.userSummary.username}
-            className={styles.avatarImage}
-          />
+          <GamerAvatar avatarId={avatarId} size={54} />
         </div>
         <div className={styles.levelShieldBadge} title={`Level ${progression.currentLevel}`}>
           <Shield size={13} />

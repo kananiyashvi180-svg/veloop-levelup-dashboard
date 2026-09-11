@@ -32,3 +32,8 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+@keyframes xpPopRise {
+  0% { opacity: 1; transform: translateX(-50%) translateY(0px); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-48px); }
+}

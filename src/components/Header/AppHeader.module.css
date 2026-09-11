@@ -161,14 +161,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 14px;
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-.profileAvatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  object-fit: cover;
-  border: 2px solid rgba(245, 186, 49, 0.4);
+.profileBadge:hover {
+  transform: scale(1.06);
+  filter: brightness(1.15);
 }
 
 @media (max-width: 1024px) {
