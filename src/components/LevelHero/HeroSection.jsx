@@ -26,8 +26,10 @@ export default function HeroSection({ progression, onOpenRoadmap, onTriggerLevel
           </div>
 
           <div className={styles.xpRow}>
-            <span className={styles.xpBig}>{currentXp.toLocaleString()}</span>
-            <span className={styles.xpUnit}>XP</span>
+            <span className={styles.xpValue}>
+              <span className={styles.xpBig}>{currentXp.toLocaleString()}</span>
+              <span className={styles.xpUnit}>XP</span>
+            </span>
             <span className={styles.xpSeparator}>•</span>
             <span className={styles.xpTarget}>
               {xpRemaining?.toLocaleString() || (requiredXp - currentXp).toLocaleString()} XP to Level {String(nextLevel).padStart(2, '0')}

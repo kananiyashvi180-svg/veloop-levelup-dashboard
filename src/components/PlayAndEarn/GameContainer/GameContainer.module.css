@@ -244,7 +244,7 @@
 @media (max-width: 768px) {
   .gameContainer {
     min-height: 0;
-    height: calc(100dvh - 134px);
+    height: calc(100dvh - 128px);
   }
 
   .topNavRow {

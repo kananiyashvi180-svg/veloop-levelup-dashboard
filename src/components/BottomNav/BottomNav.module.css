@@ -11,7 +11,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: calc(68px + env(safe-area-inset-bottom));
+    height: calc(62px + env(safe-area-inset-bottom));
     background: rgba(13, 16, 29, 0.98);
     backdrop-filter: blur(18px);
     border-top: 1px solid rgba(245, 186, 49, 0.14);
@@ -27,7 +27,7 @@
     justify-content: center;
     gap: 4px;
     min-width: 56px;
-    min-height: 56px;
+    min-height: 52px;
     padding: 6px 8px;
     border: 0;
     background: transparent;
