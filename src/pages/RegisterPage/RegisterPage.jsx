@@ -59,7 +59,10 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       await register(fullName.trim(), email.trim(), password)
-      navigate('/Lvl-Dashboard', { replace: true })
+      navigate('/login', {
+        replace: true,
+        state: { message: 'Registration successful. Please login to continue.' }
+      })
     } catch (err) {
       setError(err.message)
     } finally {

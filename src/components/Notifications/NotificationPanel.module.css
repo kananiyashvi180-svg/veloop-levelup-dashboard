@@ -251,7 +251,17 @@
     left: 8px;
     right: 8px;
     width: auto;
-    max-height: calc(100vh - 90px);
+    max-height: calc(100dvh - 90px);
     border-radius: 16px;
+  }
+
+  .panelHeader {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .item {
+    padding-left: 14px;
+    padding-right: 14px;
   }
 }

@@ -133,7 +133,7 @@
 
 @media (max-width: 640px) {
   .boostGrid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
   }
 
@@ -158,5 +158,23 @@
 
   .value {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .boostGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .boostCard {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    text-align: left;
+    column-gap: 10px;
+  }
+
+  .boostCard .claimBoostBtn {
+    grid-column: 1 / -1;
   }
 }

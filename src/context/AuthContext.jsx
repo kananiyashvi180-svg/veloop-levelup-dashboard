@@ -4,40 +4,25 @@ const AuthContext = createContext(null)
 
 const USERS_KEY = 'veloop_users'
 const SESSION_KEY = 'veloop_session'
-
-const DEFAULT_DEMO_USER = {
-  id: 'user_alex_rider',
-  fullName: 'AlexRider',
-  email: 'alex@veloop.io',
-  password: 'password123',
-  createdAt: 1725148800000
-}
+const LEGACY_DEFAULT_USER_ID = 'user_alex_rider'
 
 function getStoredUsers() {
   try {
     const list = JSON.parse(localStorage.getItem(USERS_KEY))
-    if (Array.isArray(list) && list.length > 0) return list
-    const initialList = [DEFAULT_DEMO_USER]
-    localStorage.setItem(USERS_KEY, JSON.stringify(initialList))
-    return initialList
+    return Array.isArray(list) ? list : []
   } catch {
-    return [DEFAULT_DEMO_USER]
+    return []
   }
 }
 
 function getStoredSession() {
   try {
     const session = JSON.parse(localStorage.getItem(SESSION_KEY))
-    if (session) return session
-    const defaultSession = {
-      userId: DEFAULT_DEMO_USER.id,
-      fullName: DEFAULT_DEMO_USER.fullName,
-      email: DEFAULT_DEMO_USER.email,
-      remember: true,
-      loginAt: Date.now()
+    if (session?.userId === LEGACY_DEFAULT_USER_ID && session.email === 'alex@veloop.io') {
+      localStorage.removeItem(SESSION_KEY)
+      return null
     }
-    localStorage.setItem(SESSION_KEY, JSON.stringify(defaultSession))
-    return defaultSession
+    return session || null
   } catch {
     return null
   }
@@ -101,17 +86,9 @@ export function AuthProvider({ children }) {
         users.push(newUser)
         localStorage.setItem(USERS_KEY, JSON.stringify(users))
 
-        const session = {
-          userId: newUser.id,
-          fullName: newUser.fullName,
-          email: newUser.email,
-          remember: true,
-          loginAt: Date.now()
-        }
-        localStorage.setItem(SESSION_KEY, JSON.stringify(session))
-        setUser(session)
+        setUser(null)
         setAuthLoading(false)
-        resolve(session)
+        resolve(newUser)
       }, 500)
     })
   }

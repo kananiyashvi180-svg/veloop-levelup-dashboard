@@ -240,6 +240,10 @@
   flex-wrap: wrap;
 }
 
+.email {
+  color: #cbd5e1;
+}
+
 .playerTitle {
   color: #fbbf24;
   font-weight: 700;
@@ -252,6 +256,160 @@
 
 .dotSeparator {
   opacity: 0.4;
+}
+
+.progressSummary {
+  background: linear-gradient(135deg, rgba(25, 31, 56, 0.84), rgba(13, 17, 32, 0.92));
+  border: 1px solid rgba(192, 132, 252, 0.2);
+  border-radius: 20px;
+  padding: 1.35rem 1.5rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.progressSummaryHeader,
+.progressSummaryMeta,
+.preferenceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.progressSummaryHeader {
+  align-items: flex-start;
+}
+
+.progressPercent {
+  color: #c084fc;
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.progressSummaryMeta {
+  margin: 1rem 0 0.55rem;
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.progressSummaryMeta strong {
+  color: #f8fafc;
+  font-size: 0.9rem;
+  letter-spacing: 0;
+}
+
+.progressSummaryTrack {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.progressSummaryBar {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8b5cf6, #c084fc);
+  transition: width 0.45s ease;
+}
+
+.progressSummaryNote {
+  margin: 0.55rem 0 0;
+  color: #a5b4fc;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.profileMenuCard,
+.legacyResetCard {
+  background: linear-gradient(135deg, rgba(26, 31, 56, 0.58), rgba(15, 18, 34, 0.78));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+
+.profileMenuList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+}
+
+.profileMenuRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.025);
+  color: #f1f5f9;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.profileMenuRow:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(245, 186, 49, 0.2);
+}
+
+.profileMenuIcon {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: rgba(245, 186, 49, 0.1);
+  color: #f5ba31;
+  font-weight: 800;
+}
+
+.profileMenuArrow {
+  margin-left: auto;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.logoutRow .profileMenuIcon,
+.logoutRow .settingName {
+  color: #fb7185;
+}
+
+.preferencePanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0.1rem 0 0.25rem 3.55rem;
+  padding: 0.8rem 0.9rem;
+  border-left: 1px solid rgba(192, 132, 252, 0.3);
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.legacyResetCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+}
+
+.resetButton {
+  padding: 0.55rem 1rem;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 /* Bio */
@@ -775,6 +933,12 @@
     border-radius: 20px;
   }
 
+  .progressSummary,
+  .profileMenuCard,
+  .legacyResetCard {
+    border-radius: 18px;
+  }
+
   .heroContent {
     flex-direction: column;
     text-align: center;
@@ -822,5 +986,43 @@
 
   .achievementsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .progressSummary {
+    padding: 1.2rem 1rem;
+  }
+
+  .progressSummaryMeta {
+    gap: 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .progressSummaryMeta strong {
+    font-size: 0.78rem;
+  }
+
+  .profileMenuCard {
+    padding: 1.25rem 1rem;
+  }
+
+  .profileMenuRow {
+    padding: 0.8rem 0.55rem;
+  }
+
+  .settingName {
+    font-size: 0.88rem;
+  }
+
+  .settingDesc {
+    font-size: 0.75rem;
+  }
+
+  .preferencePanel {
+    margin-left: 2.9rem;
+  }
+
+  .legacyResetCard {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

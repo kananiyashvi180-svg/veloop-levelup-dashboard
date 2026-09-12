@@ -11,7 +11,7 @@
   flex: 1;
   position: relative;
   width: 100%;
-  min-height: 440px;
+  min-height: clamp(300px, 58dvh, 620px);
   overflow: hidden;
   background:
     radial-gradient(ellipse 75% 35% at 50% 98%, rgba(245, 186, 49, 0.09) 0%, transparent 60%),
@@ -265,5 +265,30 @@
 
   .multiplierStat {
     padding: 3px 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .arena {
+    min-height: 280px;
+  }
+
+  .catcher {
+    width: 124px;
+    height: 68px;
+  }
+
+  .fallingObject {
+    width: 40px;
+    height: 40px;
+  }
+
+  .scoreBottomRow {
+    gap: 8px;
+  }
+
+  .statText,
+  .multiplierText {
+    font-size: 11px;
   }
 }

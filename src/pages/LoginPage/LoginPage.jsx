@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import styles from './LoginPage.module.css'
 
 export default function LoginPage() {
   const { login, user } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -13,6 +14,7 @@ export default function LoginPage() {
   const [remember, setRemember] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState(location.state?.message || '')
   const [fieldErrors, setFieldErrors] = useState({})
   const [forgotMode, setForgotMode] = useState(false)
   const [forgotEmail, setForgotEmail] = useState('')
@@ -83,6 +85,13 @@ export default function LoginPage() {
               <div className={styles.errorBanner}>
                 <span className={styles.errorIcon}>⚠</span>
                 <span>{error}</span>
+              </div>
+            )}
+
+            {successMessage && (
+              <div className={styles.successBanner}>
+                <span>✓</span>
+                <span>{successMessage}</span>
               </div>
             )}
 

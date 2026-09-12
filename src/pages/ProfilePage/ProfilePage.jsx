@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import { useUserState } from '../../context/UserStateContext'
 import GamerAvatar from '../../components/Profile/GamerAvatar'
 import AvatarVault from '../../components/Profile/AvatarVault'
@@ -6,10 +8,13 @@ import { gamerAvatars, profileAchievements } from '../../data/levelData'
 import styles from './ProfilePage.module.css'
 
 export default function ProfilePage({ progression, userProfile, onUpdateProfile, onNavigate }) {
+  const { logout } = useAuth()
+  const navigate = useNavigate()
   const userState = useUserState()
   const [vaultOpen, setVaultOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('all')
   const [isEditingBio, setIsEditingBio] = useState(false)
+  const [preferencesOpen, setPreferencesOpen] = useState(false)
   const [bioText, setBioText] = useState(
     userProfile?.bio || progression?.userSummary?.bio || 'Pushing for Level 5 Vanguard Master • Daily Streak Hunter ⚡'
   )
@@ -20,6 +25,7 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
   const activeAvatarId = userProfile?.avatarId || progression?.userSummary?.avatarId || 'vanguard'
   const currentAvatarMeta = gamerAvatars.find((a) => a.id === activeAvatarId) || gamerAvatars[0]
   const username = userProfile?.username || progression?.userSummary?.username || 'AlexRider'
+  const email = userProfile?.email || progression?.userSummary?.email || ''
   const tag = userProfile?.tag || progression?.userSummary?.tag || '#VEL-7402'
   const rank = progression?.currentLevelConfig?.tier || userProfile?.rank || progression?.userSummary?.rank || 'Gold Tier'
   const totalEarnedVEs = progression?.userSummary?.totalEarnedVEs ?? 1850
@@ -33,6 +39,7 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
   const longestStreak = progression?.userSummary?.longestStreak ?? 7
   const miniGameHighScore = progression?.userSummary?.miniGameHighScore ?? 165
   const tasksCompleted = progression?.userSummary?.tasksCompleted ?? 4
+  const gamesPlayed = progression?.userSummary?.gamesPlayed ?? 0
   const vouchersClaimed = progression?.userSummary?.vouchersClaimed ?? 0
   const playerTitle = progression?.userSummary?.title || `Level ${String(currentLevel).padStart(2, '0')} Vanguard`
 
@@ -55,6 +62,11 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
         userState.resetProgression()
       }
     }
+  }
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
   }
 
   const filteredAchievements = profileAchievements.filter((ach) => {
@@ -103,6 +115,8 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
             </div>
 
             <div className={styles.subMeta}>
+              {email && <span className={styles.email}>{email}</span>}
+              <span className={styles.dotSeparator}>•</span>
               <span className={styles.playerTitle}>⚔️ {playerTitle}</span>
               <span className={styles.dotSeparator}>•</span>
               <span className={styles.joinDate}>Member since Aug 2026</span>
@@ -151,6 +165,25 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
             </div>
           </div>
         </div>
+      </section>
+
+      <section className={styles.progressSummary}>
+        <div className={styles.progressSummaryHeader}>
+          <div>
+            <span className={styles.sectionPill}>LEVEL PROGRESS</span>
+            <h2 className={styles.sectionTitle}>Your next milestone</h2>
+          </div>
+          <span className={styles.progressPercent}>{xpPercentage}% Complete</span>
+        </div>
+        <div className={styles.progressSummaryMeta}>
+          <span>LEVEL {String(currentLevel).padStart(2, '0')}</span>
+          <strong>{currentXp.toLocaleString()} / {requiredXp.toLocaleString()} XP</strong>
+          <span>LEVEL {String(nextLevel).padStart(2, '0')}</span>
+        </div>
+        <div className={styles.progressSummaryTrack}>
+          <div className={styles.progressSummaryBar} style={{ width: `${xpPercentage}%` }} />
+        </div>
+        <p className={styles.progressSummaryNote}>{xpPercentage >= 100 ? 'Next level unlocked' : `${Math.max(0, requiredXp - currentXp).toLocaleString()} XP to Level ${String(nextLevel).padStart(2, '0')}`}</p>
       </section>
 
       {onNavigate && (
@@ -233,13 +266,13 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
         </div>
 
         <div className={styles.statCard}>
-          <div className={styles.statIconWrap} style={{ background: 'rgba(244, 63, 94, 0.15)', color: '#f43f5e' }}>
-            🔥
+          <div className={styles.statIconWrap} style={{ background: 'rgba(96, 165, 250, 0.15)', color: '#60a5fa' }}>
+            🎮
           </div>
           <div className={styles.statInfo}>
-            <span className={styles.statLabel}>Active Streak</span>
-            <span className={styles.statValue}>{longestStreak} Days</span>
-            <span className={styles.statSub}>2.5X active boost</span>
+            <span className={styles.statLabel}>Games Played</span>
+            <span className={styles.statValue}>{gamesPlayed}</span>
+            <span className={styles.statSub}>XP Catcher sessions</span>
           </div>
         </div>
       </section>
@@ -345,84 +378,86 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
         </div>
       </section>
 
-      <section className={styles.settingsCard}>
+      <section className={styles.profileMenuCard}>
         <div className={styles.sectionHeader}>
           <div>
-            <span className={styles.sectionPill}>SYSTEM CONFIG</span>
-            <h2 className={styles.sectionTitle}>Gaming & Experience Preferences</h2>
+            <span className={styles.sectionPill}>ACCOUNT</span>
+            <h2 className={styles.sectionTitle}>Profile menu</h2>
           </div>
         </div>
 
-        <div className={styles.settingsList}>
-          <div className={styles.settingRow}>
+        <div className={styles.profileMenuList}>
+          <div className={styles.profileMenuRow}>
+            <div className={styles.profileMenuIcon}>◉</div>
             <div className={styles.settingInfo}>
-              <span className={styles.settingName}>Mini-Game Sound Effects & Music</span>
-              <span className={styles.settingDesc}>Play audio on catching XP Orbs and triggering streak multipliers.</span>
+              <span className={styles.settingName}>Account</span>
+              <span className={styles.settingDesc}>{email}</span>
             </div>
-            <button
-              type="button"
-              className={`${styles.toggleSwitch} ${soundEnabled ? styles.toggleActive : ''}`}
-              onClick={() => setSoundEnabled(!soundEnabled)}
-              aria-label="Toggle sound effects"
-            >
-              <span className={styles.toggleThumb} />
-            </button>
           </div>
-
-          <div className={styles.settingRow}>
+          <button type="button" className={styles.profileMenuRow} onClick={() => onNavigate && onNavigate('activity')}>
+            <div className={styles.profileMenuIcon}>◌</div>
             <div className={styles.settingInfo}>
-              <span className={styles.settingName}>Daily Streak & Multiplier Reminders</span>
-              <span className={styles.settingDesc}>Get notified before your 2.5X streak timer resets at midnight.</span>
+              <span className={styles.settingName}>Notifications</span>
+              <span className={styles.settingDesc}>Review your latest rewards and XP updates</span>
             </div>
-            <button
-              type="button"
-              className={`${styles.toggleSwitch} ${streakAlerts ? styles.toggleActive : ''}`}
-              onClick={() => setStreakAlerts(!streakAlerts)}
-              aria-label="Toggle streak alerts"
-            >
-              <span className={styles.toggleThumb} />
-            </button>
-          </div>
-
-          <div className={styles.settingRow}>
+            <span className={styles.profileMenuArrow}>→</span>
+          </button>
+          <button type="button" className={styles.profileMenuRow} onClick={() => setPreferencesOpen((value) => !value)}>
+            <div className={styles.profileMenuIcon}>⚙</div>
             <div className={styles.settingInfo}>
-              <span className={styles.settingName}>Exclusive Reward Drop Notifications</span>
-              <span className={styles.settingDesc}>Instant alerts when Gold Tier limited voucher drops become claimable.</span>
+              <span className={styles.settingName}>Preferences</span>
+              <span className={styles.settingDesc}>Game sounds, streak alerts, and reward drops</span>
             </div>
-            <button
-              type="button"
-              className={`${styles.toggleSwitch} ${rewardDrops ? styles.toggleActive : ''}`}
-              onClick={() => setRewardDrops(!rewardDrops)}
-              aria-label="Toggle reward notifications"
-            >
-              <span className={styles.toggleThumb} />
-            </button>
-          </div>
-
-          <div className={styles.settingRow}>
+            <span className={styles.profileMenuArrow}>{preferencesOpen ? '−' : '+'}</span>
+          </button>
+          {preferencesOpen && (
+            <div className={styles.preferencePanel}>
+              <div className={styles.preferenceRow}>
+                <span>Game sound effects</span>
+                <button type="button" className={`${styles.toggleSwitch} ${soundEnabled ? styles.toggleActive : ''}`} onClick={() => setSoundEnabled(!soundEnabled)} aria-label="Toggle sound effects"><span className={styles.toggleThumb} /></button>
+              </div>
+              <div className={styles.preferenceRow}>
+                <span>Streak reminders</span>
+                <button type="button" className={`${styles.toggleSwitch} ${streakAlerts ? styles.toggleActive : ''}`} onClick={() => setStreakAlerts(!streakAlerts)} aria-label="Toggle streak alerts"><span className={styles.toggleThumb} /></button>
+              </div>
+              <div className={styles.preferenceRow}>
+                <span>Reward drop alerts</span>
+                <button type="button" className={`${styles.toggleSwitch} ${rewardDrops ? styles.toggleActive : ''}`} onClick={() => setRewardDrops(!rewardDrops)} aria-label="Toggle reward notifications"><span className={styles.toggleThumb} /></button>
+              </div>
+            </div>
+          )}
+          <button type="button" className={styles.profileMenuRow} onClick={() => window.alert('VELOOP Support is available from your account team.') }>
+            <div className={styles.profileMenuIcon}>?</div>
             <div className={styles.settingInfo}>
-              <span className={styles.settingName}>Development &amp; Demo Reset</span>
-              <span className={styles.settingDesc}>Safely reset demo progression, level, XP, coins, and game history.</span>
+              <span className={styles.settingName}>Help &amp; Support</span>
+              <span className={styles.settingDesc}>Get help with rewards and your account</span>
             </div>
-            <button
-              type="button"
-              onClick={handleReset}
-              style={{
-                padding: '0.55rem 1.1rem',
-                borderRadius: '10px',
-                border: '1px solid rgba(239, 68, 68, 0.4)',
-                background: 'rgba(239, 68, 68, 0.12)',
-                color: '#f87171',
-                fontWeight: '800',
-                fontSize: '0.85rem',
-                cursor: 'pointer'
-              }}
-              id="profile-reset-progression-btn"
-            >
-              Reset Demo Data
-            </button>
-          </div>
+            <span className={styles.profileMenuArrow}>→</span>
+          </button>
+          <button type="button" className={`${styles.profileMenuRow} ${styles.logoutRow}`} onClick={handleLogout}>
+            <div className={styles.profileMenuIcon}>↪</div>
+            <div className={styles.settingInfo}>
+              <span className={styles.settingName}>Logout</span>
+              <span className={styles.settingDesc}>Sign out of this device</span>
+            </div>
+            <span className={styles.profileMenuArrow}>→</span>
+          </button>
         </div>
+      </section>
+
+      <section className={styles.legacyResetCard}>
+        <div className={styles.settingInfo}>
+          <span className={styles.settingName}>Development &amp; Demo Reset</span>
+          <span className={styles.settingDesc}>Reset demo progression, level, coins, and game history.</span>
+        </div>
+        <button
+          type="button"
+          onClick={handleReset}
+          className={styles.resetButton}
+          id="profile-reset-progression-btn"
+        >
+          Reset Demo Data
+        </button>
       </section>
 
       <AvatarVault

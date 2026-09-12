@@ -67,7 +67,7 @@ export default function LevelDashboard() {
   return (
     <div className={styles.appContainer}>
       {toastMsg && (
-        <div style={{
+        <div className={styles.toast} style={{
           position: 'fixed',
           top: '20px',
           right: '20px',

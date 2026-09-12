@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100dvh - 64px);
   background: #08080c;
   box-sizing: border-box;
   position: relative;
@@ -56,6 +56,8 @@
   align-items: center;
   text-align: center;
   gap: 2px;
+  min-width: 0;
+  flex: 1;
 }
 
 .titleWithInfo {
@@ -74,6 +76,10 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .infoButton {
@@ -251,5 +257,38 @@
 
   .subtitle {
     display: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .topNavRow {
+    padding: 10px;
+    gap: 6px;
+  }
+
+  .topActions {
+    gap: 6px;
+  }
+
+  .timerPill {
+    padding: 7px 9px;
+  }
+
+  .timerPill svg {
+    display: none;
+  }
+
+  .gameTitle {
+    font-size: clamp(15px, 5vw, 18px);
+  }
+}
+
+@media (max-width: 360px) {
+  .timerPill {
+    display: none;
+  }
+
+  .headerBlock {
+    align-items: flex-start;
   }
 }

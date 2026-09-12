@@ -23,10 +23,12 @@
   border-radius: 28px;
   width: 100%;
   max-width: 580px;
+  max-height: calc(100dvh - 2rem);
   padding: 2.5rem 2rem;
   text-align: center;
   position: relative;
   overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -238,6 +240,25 @@
     font-size: 0.85rem;
   }
 
+  .rewardRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+
+@media (max-width: 360px) {
+  .overlay {
+    padding: 0.5rem;
+  }
+
+  .modal {
+    padding: 1.25rem 0.85rem;
+    border-radius: 18px;
+  }
+
+  .rewardRow {
+    grid-template-columns: 1fr;
+  }
+}
   .hexShield {
     width: 75px;
     height: 82px;

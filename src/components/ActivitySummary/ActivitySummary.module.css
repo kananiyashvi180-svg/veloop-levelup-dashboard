@@ -148,6 +148,25 @@
   }
 }
 
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .card {
+    padding: 14px 12px;
+  }
+
+  .value {
+    font-size: clamp(20px, 7vw, 26px);
+  }
+
+  .label {
+    font-size: 10px;
+  }
+}
+
 @media (max-width: 480px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
