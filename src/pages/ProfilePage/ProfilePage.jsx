@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { useUserState } from '../../context/UserStateContext'
 import GamerAvatar from '../../components/Profile/GamerAvatar'
 import AvatarVault from '../../components/Profile/AvatarVault'
 import { gamerAvatars, profileAchievements } from '../../data/levelData'
@@ -10,7 +9,6 @@ import styles from './ProfilePage.module.css'
 export default function ProfilePage({ progression, userProfile, onUpdateProfile, onNavigate }) {
   const { logout } = useAuth()
   const navigate = useNavigate()
-  const userState = useUserState()
   const [vaultOpen, setVaultOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('all')
   const [isEditingBio, setIsEditingBio] = useState(false)
@@ -53,14 +51,6 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
     setIsEditingBio(false)
     if (onUpdateProfile) {
       onUpdateProfile({ bio: bioText })
-    }
-  }
-
-  const handleReset = () => {
-    if (window.confirm('Reset demo progression back to initial state?')) {
-      if (userState?.resetProgression) {
-        userState.resetProgression()
-      }
     }
   }
 
@@ -443,21 +433,6 @@ export default function ProfilePage({ progression, userProfile, onUpdateProfile,
             <span className={styles.profileMenuArrow}>→</span>
           </button>
         </div>
-      </section>
-
-      <section className={styles.legacyResetCard}>
-        <div className={styles.settingInfo}>
-          <span className={styles.settingName}>Development &amp; Demo Reset</span>
-          <span className={styles.settingDesc}>Reset demo progression, level, coins, and game history.</span>
-        </div>
-        <button
-          type="button"
-          onClick={handleReset}
-          className={styles.resetButton}
-          id="profile-reset-progression-btn"
-        >
-          Reset Demo Data
-        </button>
       </section>
 
       <AvatarVault

@@ -65,11 +65,11 @@ export default function GameContainer({ onBack, onGameComplete }) {
   }, [])
 
   const handleGameOver = useCallback((finalState) => {
-    setFinalRewards(finalState)
+    const updatedResult = onGameComplete && finalState
+      ? onGameComplete(finalState) || finalState
+      : finalState
+    setFinalRewards(updatedResult)
     setPhase('done')
-    if (onGameComplete && finalState) {
-      onGameComplete(finalState)
-    }
   }, [onGameComplete])
 
   const handlePlayAgain = useCallback(() => {

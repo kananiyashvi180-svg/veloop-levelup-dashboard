@@ -4,67 +4,9 @@ import { useAuth } from './AuthContext'
 
 const UserStateContext = createContext(null)
 
-const INITIAL_ACTIVITIES = [
-  {
-    id: 'act-init-1',
-    type: 'Daily Task',
-    title: 'Daily Check-In Completed',
-    subtitle: 'Maintained 7-day streak',
-    xpAmount: 50,
-    timestamp: 'Today, 9:00 AM',
-    status: 'completed'
-  },
-  {
-    id: 'act-init-2',
-    type: 'Game',
-    title: 'XP Catcher Mini-Game',
-    subtitle: 'Score: 165 • Peak 3X Multiplier',
-    xpAmount: 75,
-    timestamp: 'Yesterday, 8:40 PM',
-    status: 'completed'
-  },
-  {
-    id: 'act-init-3',
-    type: 'Referral',
-    title: 'Referral Bonus',
-    subtitle: 'Teammate joined via invite link',
-    xpAmount: 100,
-    timestamp: 'Yesterday, 3:15 PM',
-    status: 'completed'
-  }
-]
-
-const INITIAL_NOTIFICATIONS = [
-  {
-    id: 'notif-init-1',
-    type: 'level',
-    icon: '⚡',
-    title: 'Level 04 Milestone Active',
-    body: 'You are progressing through Level 04 Champion tier.',
-    timestamp: 'Today, 9:00 AM',
-    read: false
-  },
-  {
-    id: 'notif-init-2',
-    type: 'game',
-    icon: '🎮',
-    title: 'XP Catcher Ready',
-    body: 'Play XP Catcher to catch falling tokens and earn real rewards.',
-    timestamp: 'Today, 8:30 AM',
-    read: false
-  },
-  {
-    id: 'notif-init-3',
-    type: 'reward',
-    icon: '🎁',
-    title: 'Milestone Rewards Waiting',
-    body: 'Reach Level 05 to unlock the VIP Tournament & Lounge Pass.',
-    timestamp: 'Yesterday, 6:00 PM',
-    read: true
-  }
-]
-
-const INITIAL_UNLOCKED_REWARDS = ['ve-pack', 'gem-pack', 'discord-badge', 'store-discount', 'mystery-crate']
+const INITIAL_ACTIVITIES = []
+const INITIAL_NOTIFICATIONS = []
+const INITIAL_UNLOCKED_REWARDS = []
 const INITIAL_CLAIMED_REWARDS = []
 
 function getStorageKey(userId) {
@@ -76,22 +18,22 @@ function createDefaultState(userId, fullName, email) {
     userName: fullName || 'AlexRider',
     email: email || 'alex@veloop.io',
     avatarId: 'vanguard',
-    bio: 'Pushing for Level 5 Vanguard Master • Daily Streak Hunter ⚡',
+    bio: '',
     tag: '#VEL-7402',
     rank: 'Gold Tier',
-    currentLevel: 4,
-    currentXp: 2170,
-    totalXp: 6670,
-    ves: 1850,
-    gems: 48,
-    currentStreak: 7,
-    tasksCompleted: 4,
-    completedTaskIds: ['checkin'],
-    xpEarnedToday: 215,
+    currentLevel: 1,
+    currentXp: 0,
+    totalXp: 0,
+    ves: 0,
+    gems: 0,
+    currentStreak: 0,
+    tasksCompleted: 0,
+    completedTaskIds: [],
+    xpEarnedToday: 0,
     todaysBoostClaimed: false,
-    gamesPlayed: 12,
-    totalGameScore: 1420,
-    miniGameHighScore: 165,
+    gamesPlayed: 0,
+    totalGameScore: 0,
+    miniGameHighScore: 0,
     activities: INITIAL_ACTIVITIES,
     notifications: INITIAL_NOTIFICATIONS,
     unlockedRewards: INITIAL_UNLOCKED_REWARDS,
@@ -135,10 +77,11 @@ export function UserStateProvider({ children }) {
   }, [userId, fullName, email])
 
   useEffect(() => {
+    if (!user) return
     try {
       localStorage.setItem(getStorageKey(userId), JSON.stringify(state))
     } catch {}
-  }, [state, userId])
+  }, [state, user, userId])
 
   const showToast = useCallback((text, type = 'xp') => {
     setToastMsg({ text, type })
@@ -365,6 +308,27 @@ export function UserStateProvider({ children }) {
     }
   }, [checkAndApplyLevelUp, showToast])
 
+  const getGameCompletionPreview = useCallback((gameStats) => {
+    const addedXp = gameStats?.xp || 0
+    let previewXp = state.currentXp + addedXp
+    let previewLevel = state.currentLevel
+    let previousLevel = previewLevel
+    let rewardUnlocked = null
+
+    while (previewXp >= getLevelConfig(previewLevel).xpRequired) {
+      previewXp -= getLevelConfig(previewLevel).xpRequired
+      previewLevel += 1
+      rewardUnlocked = getLevelConfig(previewLevel).reward
+    }
+
+    return {
+      didLevelUp: previewLevel > previousLevel,
+      previousLevel,
+      newLevel: previewLevel,
+      rewardUnlocked
+    }
+  }, [state.currentLevel, state.currentXp])
+
   const earnVEs = useCallback((amount) => {
     setState((prev) => ({ ...prev, ves: prev.ves + amount }))
   }, [])
@@ -490,6 +454,23 @@ export function UserStateProvider({ children }) {
     }))
   }, [])
 
+  const addNotification = useCallback((notification) => {
+    if (!notification) return
+    const nextNotification = {
+      id: notification.id || `notif-${Date.now()}`,
+      type: notification.type || 'system',
+      icon: notification.icon || '🔔',
+      title: notification.title || 'New update',
+      body: notification.body || '',
+      timestamp: notification.timestamp || 'Just now',
+      read: false
+    }
+    setState((prev) => ({
+      ...prev,
+      notifications: [nextNotification, ...prev.notifications]
+    }))
+  }, [])
+
   const resetProgression = useCallback(() => {
     const cleanState = createDefaultState(userId, fullName, email)
     setState(cleanState)
@@ -551,6 +532,7 @@ export function UserStateProvider({ children }) {
         earnGems,
         spendVEs,
         recordGameComplete,
+        getGameCompletionPreview,
         claimReward,
         claimLevelUpReward,
         claimTodaysBoost,
@@ -560,6 +542,7 @@ export function UserStateProvider({ children }) {
         resetProgression,
         markNotificationRead,
         markAllNotificationsRead,
+        addNotification,
         setShowLevelUpModal
       }}
     >

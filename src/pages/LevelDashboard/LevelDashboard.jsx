@@ -33,7 +33,7 @@ export default function LevelDashboard() {
     closeLevelUpModal,
     updateUserProfile,
     recordGameComplete,
-    setShowLevelUpModal
+    getGameCompletionPreview,
   } = useUserState()
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -55,6 +55,12 @@ export default function LevelDashboard() {
 
   const handleUpdateProfile = (fields) => {
     updateUserProfile(fields)
+  }
+
+  const handleGameComplete = (rewards) => {
+    const completion = getGameCompletionPreview(rewards)
+    recordGameComplete(rewards)
+    return { ...rewards, ...completion }
   }
 
   const isAltPage =
@@ -124,9 +130,7 @@ export default function LevelDashboard() {
           ) : activeSection === 'play-earn' ? (
             <PlayAndEarnPage
               onBack={() => setActiveSection('home')}
-              onGameComplete={(rewards) => {
-                recordGameComplete(rewards)
-              }}
+              onGameComplete={handleGameComplete}
             />
           ) : activeSection === 'profile' ? (
             <ProfilePage
@@ -142,7 +146,6 @@ export default function LevelDashboard() {
                   <HeroSection
                     progression={activeProgression}
                     onOpenRoadmap={() => setRoadmapOpen(true)}
-                    onTriggerLevelUp={() => setShowLevelUpModal(true)}
                   />
                 </div>
                 <div className={styles.boostColumn}>

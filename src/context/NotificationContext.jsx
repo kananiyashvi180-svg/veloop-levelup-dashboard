@@ -21,7 +21,11 @@ export function NotificationProvider({ children }) {
     }
   }
 
-  const addNotification = () => {}
+  const addNotification = (notification) => {
+    if (userState?.addNotification) {
+      userState.addNotification(notification)
+    }
+  }
 
   return (
     <NotificationContext.Provider value={{ notifications, unreadCount, markRead, markAllRead, addNotification }}>

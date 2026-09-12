@@ -1,6 +1,6 @@
 import styles from './HeroSection.module.css'
 
-export default function HeroSection({ progression, onOpenRoadmap, onTriggerLevelUp }) {
+export default function HeroSection({ progression, onOpenRoadmap }) {
   const { currentLevel, currentXp, requiredXp, xpPercentage, nextLevel, xpRemaining, currentLevelConfig, userSummary } = progression
 
   const tierLabel = currentLevelConfig ? `${currentLevelConfig.tier} ${currentLevelConfig.name}` : userSummary?.rank || 'Gold Tier'
@@ -52,15 +52,6 @@ export default function HeroSection({ progression, onOpenRoadmap, onTriggerLevel
               title="View Level Progression Roadmap"
             >
               🗺️ Roadmap
-            </button>
-            <button
-              type="button"
-              className={styles.levelUpDemoBtn}
-              onClick={onTriggerLevelUp}
-              id="hero-level-up-demo-btn"
-              title="Simulate Level Up Celebration"
-            >
-              🎉 Test Level Up
             </button>
           </div>
         </div>
