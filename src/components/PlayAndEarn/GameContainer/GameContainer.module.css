@@ -242,6 +242,11 @@
 }
 
 @media (max-width: 768px) {
+  .gameContainer {
+    min-height: 0;
+    height: calc(100dvh - 134px);
+  }
+
   .topNavRow {
     padding: 12px 16px;
     gap: 10px;
@@ -257,6 +262,11 @@
 
   .subtitle {
     display: none;
+  }
+
+  .innerContent {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 

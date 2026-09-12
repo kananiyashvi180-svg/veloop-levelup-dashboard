@@ -2,13 +2,15 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: clamp(16px, 4vh, 30px);
   padding: 16px 20px 18px;
   background:
     radial-gradient(ellipse 80% 50% at 50% 25%, rgba(168, 85, 247, 0.08) 0%, transparent 70%),
     radial-gradient(ellipse 70% 40% at 50% 80%, rgba(245, 186, 49, 0.06) 0%, transparent 60%),
     #08080c;
   box-sizing: border-box;
+  min-height: 100%;
 }
 
 .heroCenter {
@@ -124,6 +126,7 @@
   align-items: center;
   gap: 10px;
   margin-top: 10px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
 }
 
 .startBtn {
@@ -178,4 +181,81 @@
   color: #64748b;
   font-weight: 500;
   text-align: center;
+}
+
+@media (max-width: 360px) {
+  .container {
+    gap: 8px;
+    padding: 10px 12px 12px;
+  }
+
+  .heroCenter {
+    gap: 6px;
+    margin-top: 0;
+  }
+
+  .basketPreview {
+    width: 112px;
+    height: 60px;
+  }
+
+  .missionText {
+    max-width: 270px;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .objectsGrid {
+    gap: 6px;
+    margin: 4px 0;
+  }
+
+  .objectCard {
+    gap: 3px;
+    padding: 7px 3px;
+  }
+
+  .svgHolder {
+    height: 30px;
+  }
+
+  .svgHolder svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .objName {
+    font-size: 9px;
+  }
+
+  .objReward {
+    font-size: 10px;
+  }
+
+  .bonusBadge {
+    gap: 6px;
+    padding: 7px 9px;
+  }
+
+  .bonusRocket {
+    font-size: 16px;
+  }
+
+  .bonusText {
+    font-size: 10px;
+  }
+
+  .footerActions {
+    gap: 5px;
+    margin-top: 2px;
+  }
+
+  .startBtn {
+    padding: 11px 14px;
+    font-size: 13px;
+  }
+
+  .controlsHint {
+    font-size: 9px;
+  }
 }
