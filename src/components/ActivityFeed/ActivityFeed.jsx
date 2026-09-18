@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { X } from 'lucide-react'
 import styles from './ActivityFeed.module.css'
 
 const TaskIcon = () => (
@@ -382,7 +383,7 @@ export default function ActivityFeed({ filter, showAll = false, activities }) {
                 onClick={() => setSelectedItem(null)}
                 style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.2rem', cursor: 'pointer' }}
               >
-                ✕
+                <X size={18} />
               </button>
             </div>
 

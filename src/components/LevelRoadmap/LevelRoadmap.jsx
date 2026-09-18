@@ -1,94 +1,110 @@
-import { useState } from 'react'
-import { MapPin, Check, Lock, ChevronRight, X, Sparkles, Award } from 'lucide-react'
+import React, { useState } from 'react'
+import { Check, Lock, Sparkles, X, Award } from 'lucide-react'
 import styles from './LevelRoadmap.module.css'
 
-export default function LevelRoadmap({ roadmap = [], currentLevel = 4 }) {
+export default function LevelRoadmap({ roadmap = [], currentLevel = 11 }) {
   const [selectedNode, setSelectedNode] = useState(null)
 
-  const completedCount = roadmap.filter((r) => r.status === 'Completed').length
-  const trackPercentage = Math.round((completedCount / (roadmap.length - 1)) * 100)
-
   return (
-    <section className={styles.roadmapSection} aria-label="Progression Roadmap">
+    <section className={styles.roadmapSection} aria-label="Level Progression Roadmap">
       <div className={styles.roadmapHeader}>
-        <div className={styles.headerTitleGroup}>
-          <MapPin size={22} color="var(--accent-gold)" />
-          <h2 className={styles.roadmapTitle}>Level Progression Roadmap</h2>
+        <div className={styles.titleGroup}>
+          <div className={styles.iconTag}>
+            <Sparkles size={16} className={styles.sparkleIcon} aria-hidden="true" />
+          </div>
+          <div>
+            <h2 className={styles.roadmapTitle}>Level Roadmap</h2>
+            <p className={styles.roadmapSubtitle}>Complete &amp; Unlock Rewards</p>
+          </div>
         </div>
 
-        <div className={styles.legendList}>
-          <div className={styles.legendItem}>
-            <span className={styles.legendDotCompleted} />
-            <span>Completed</span>
-          </div>
-          <div className={styles.legendItem}>
-            <span className={styles.legendDotCurrent} />
-            <span>Current</span>
-          </div>
-          <div className={styles.legendItem}>
-            <span className={styles.legendDotNext} />
-            <span>Next</span>
-          </div>
-          <div className={styles.legendItem}>
-            <span className={styles.legendDotLocked} />
-            <span>Locked</span>
-          </div>
+        <div className={styles.progressCounterBadge}>
+          <span className={styles.counterLabel}>Your Progress</span>
+          <strong className={styles.counterValue}>Level {currentLevel} / 20</strong>
         </div>
       </div>
 
-      <div className={styles.scrollContainer}>
-        <div className={styles.trackLine}>
-          <div
-            className={styles.trackProgress}
-            style={{ width: `${Math.min(100, Math.max(0, trackPercentage))}%` }}
-          />
-        </div>
+      <div className={styles.roadmapTrackContainer}>
+        {/* Continuous Neon Connection Line */}
+        <div className={styles.connectorLineBg} />
+        <div
+          className={styles.connectorLineActive}
+          style={{
+            width: `${Math.min(100, Math.max(10, ((roadmap.findIndex(r => r.level === currentLevel) + 0.5) / roadmap.length) * 100))}%`
+          }}
+        />
 
-        <div className={styles.nodesGrid}>
+        {/* Milestone Badges Grid */}
+        <div className={styles.nodesContainer}>
           {roadmap.map((item) => {
             const isCompleted = item.status === 'Completed'
             const isCurrent = item.status === 'Current'
-            const isNext = item.status === 'Next'
             const isLocked = item.status === 'Locked'
 
-            let nodeStatusClass = styles.nodeLocked
-            if (isCompleted) nodeStatusClass = styles.nodeCompleted
-            if (isCurrent) nodeStatusClass = styles.nodeCurrent
-            if (isNext) nodeStatusClass = styles.nodeNext
-
             return (
-              <button
+              <div
                 key={item.level}
-                type="button"
-                className={`${styles.nodeCard} ${nodeStatusClass}`}
+                className={`${styles.milestoneItem} ${
+                  isCurrent ? styles.itemCurrent : isCompleted ? styles.itemCompleted : styles.itemLocked
+                }`}
                 onClick={() => setSelectedNode(item)}
-                title={`Level ${item.level}: ${item.name} (${item.status}) - Click for details`}
+                role="button"
+                tabIndex={0}
+                title={`Level ${item.level}: ${item.name} (${item.status})`}
               >
-                <div className={styles.nodeCircle}>
-                  {isCurrent && <span className={styles.currentBeacon}>YOU ARE HERE</span>}
-                  {isCompleted && <Check size={20} />}
-                  {isCurrent && <span>L{item.level}</span>}
-                  {isNext && <span>L{item.level}</span>}
-                  {isLocked && <Lock size={18} />}
+                {/* Milestone Node Badge */}
+                <div className={styles.nodeEmblem}>
+                  {isCurrent && <div className={styles.currentPulseRing} />}
+
+                  <div className={styles.hexBadge}>
+                    <svg viewBox="0 0 64 64" className={styles.hexSvg}>
+                      <defs>
+                        <linearGradient id={`hexGrad-${item.level}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop
+                            offset="0%"
+                            stopColor={isCurrent ? '#f472b6' : isCompleted ? '#c084fc' : '#334155'}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor={isCurrent ? '#9333ea' : isCompleted ? '#6b21a8' : '#0f172a'}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <polygon
+                        points="32,4 58,18 58,46 32,60 6,46 6,18"
+                        fill={`url(#hexGrad-${item.level})`}
+                        stroke={isCurrent ? '#fef08a' : isCompleted ? '#a855f7' : 'rgba(255,255,255,0.1)'}
+                        strokeWidth={isCurrent ? 2.5 : 1.5}
+                      />
+                    </svg>
+
+                    <div className={styles.badgeContent}>
+                      {isCompleted && <Check size={16} className={styles.checkIcon} aria-hidden="true" />}
+                      {isCurrent && <span className={styles.currentLvlNum}>L{item.level}</span>}
+                      {isLocked && <Lock size={14} className={styles.lockIcon} aria-hidden="true" />}
+                    </div>
+                  </div>
                 </div>
 
-                <div className={styles.nodeInfo}>
-                  <span className={styles.nodeLevel}>{item.title}</span>
-                  <span className={styles.nodeName}>{item.name}</span>
-                  <span className={styles.nodeRewardPill}>{item.reward}</span>
+                {/* Milestone Labels */}
+                <div className={styles.milestoneText}>
+                  <span className={styles.milestoneLevel}>Level {String(item.level).padStart(2, '0')}</span>
+                  <span className={styles.milestoneName}>{item.name}</span>
                 </div>
-              </button>
+              </div>
             )
           })}
         </div>
       </div>
+
+      {/* Milestone Details Modal */}
       {selectedNode && (
-        <div className={styles.detailBackdrop} onClick={() => setSelectedNode(null)}>
-          <div className={styles.detailCard} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.detailHeader}>
-              <div className={styles.detailTitleGroup}>
-                <Award size={24} color="var(--accent-gold)" />
-                <h3 className={styles.roadmapTitle}>
+        <div className={styles.modalOverlay} onClick={() => setSelectedNode(null)} role="dialog" aria-modal="true">
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <div className={styles.modalTitleRow}>
+                <Award size={20} className={styles.awardIcon} aria-hidden="true" />
+                <h3 className={styles.modalTitle}>
                   {selectedNode.title} — {selectedNode.name}
                 </h3>
               </div>
@@ -96,35 +112,39 @@ export default function LevelRoadmap({ roadmap = [], currentLevel = 4 }) {
                 type="button"
                 className={styles.closeBtn}
                 onClick={() => setSelectedNode(null)}
-                aria-label="Close details"
+                aria-label="Close"
               >
-                <X size={20} />
+                <X size={18} aria-hidden="true" />
               </button>
             </div>
 
-            <div>
-              <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Status:</span>
-                <span className={styles.detailValue}>{selectedNode.status}</span>
-              </div>
-              <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Threshold Required:</span>
-                <span className={styles.detailValue}>
-                  {selectedNode.xpThreshold.toLocaleString()} XP
+            <div className={styles.modalBody}>
+              <div className={styles.modalRow}>
+                <span className={styles.modalLabel}>Tier Status:</span>
+                <span className={`${styles.statusPill} ${styles[`status_${selectedNode.status.toLowerCase()}`]}`}>
+                  {selectedNode.status}
                 </span>
               </div>
-              <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Milestone Reward:</span>
-                <span className={styles.detailValue} style={{ color: 'var(--accent-gold-light)' }}>
-                  {selectedNode.reward}
+              <div className={styles.modalRow}>
+                <span className={styles.modalLabel}>Threshold Required:</span>
+                <span className={styles.modalValue}>{selectedNode.xpThreshold.toLocaleString()} XP</span>
+              </div>
+              <div className={styles.modalRow}>
+                <span className={styles.modalLabel}>Milestone Reward:</span>
+                <span className={styles.modalRewardValue}>
+                  {typeof selectedNode.reward === 'object' ? selectedNode.reward.label : selectedNode.reward}
                 </span>
               </div>
-              <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Access Level:</span>
-                <span className={styles.detailValue}>
-                  {selectedNode.isUnlocked ? 'Unlocked / Achieved' : 'Locked for Future Tiers'}
-                </span>
-              </div>
+              {selectedNode.benefits && selectedNode.benefits.length > 0 && (
+                <div className={styles.benefitsSection}>
+                  <span className={styles.benefitsHeading}>Tier Perks:</span>
+                  <ul className={styles.perksList}>
+                    {selectedNode.benefits.map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>

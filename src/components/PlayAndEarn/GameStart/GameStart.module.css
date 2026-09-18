@@ -1,261 +1,568 @@
-.container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: clamp(16px, 4vh, 30px);
-  padding: 16px 20px 18px;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 25%, rgba(168, 85, 247, 0.08) 0%, transparent 70%),
-    radial-gradient(ellipse 70% 40% at 50% 80%, rgba(245, 186, 49, 0.06) 0%, transparent 60%),
-    #08080c;
-  box-sizing: border-box;
-  min-height: 100%;
-}
+/* ============================================================
+   XP CATCHER GAME START / LOBBY ARENA
+   ============================================================ */
 
-.heroCenter {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-  margin-top: 10px;
-}
-
-.basketPreview {
+.lobbyContainer {
   position: relative;
-  width: 140px;
-  height: 76px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.previewBasketSvg {
   width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 0 16px rgba(245, 186, 49, 0.5));
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.2rem 1.5rem 2rem 1.5rem;
+  box-sizing: border-box;
+  animation: fadeIn 0.3s ease-out;
 }
 
-.previewGlow {
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Ambient Radial Glows in Background */
+.ambientGlowTop {
   position: absolute;
-  bottom: -4px;
-  width: 100px;
-  height: 16px;
-  background: rgba(245, 186, 49, 0.3);
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 240px;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(168, 85, 247, 0.14), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambientGlowBottom {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 420px;
+  height: 180px;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(245, 184, 46, 0.08), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ────────────────────────────────────────────────────────────
+   1. HEADER SECTION
+   ──────────────────────────────────────────────────────────── */
+.headerSection {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.45rem;
+}
+
+.modeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.32rem 0.95rem;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #c084fc;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.2);
+}
+
+.badgeIcon {
+  color: #c084fc;
+}
+
+.livePulseDot {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  filter: blur(10px);
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+  animation: liveBlink 1.4s infinite ease-in-out;
 }
 
-.missionText {
-  font-size: 13px;
-  color: #94a3b8;
-  max-width: 290px;
-  line-height: 1.5;
+@keyframes liveBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.3; transform: scale(0.75); }
+}
+
+.heroTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #ffffff 0%, #ffd45a 40%, #f5b82e 70%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(245, 184, 46, 0.3));
+  margin: 0;
+}
+
+.heroSubtitle {
+  font-size: clamp(0.82rem, 1.8vw, 0.95rem);
+  color: var(--text-secondary);
   font-weight: 500;
+  max-width: 580px;
+  line-height: 1.5;
+  margin: 0;
 }
 
-.objectsGrid {
+/* ────────────────────────────────────────────────────────────
+   2. MAIN ARENA PREVIEW CARD
+   ──────────────────────────────────────────────────────────── */
+.arenaPreviewCard {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(14, 16, 32, 0.85) 0%, rgba(8, 10, 22, 0.95) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.32);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), inset 0 0 32px rgba(109, 40, 217, 0.12);
+  padding: 1.6rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  backdrop-filter: blur(16px);
+}
+
+/* 2A. Collectibles Grid */
+.collectiblesGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 14px 0;
+  gap: 1rem;
 }
 
-.objectCard {
+.collectibleCard {
+  background: rgba(18, 20, 38, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 12px 6px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 14px;
+  gap: 0.9rem;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.svgHolder {
+.collectibleCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05), transparent 70%);
+  pointer-events: none;
+}
+
+.collectibleCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(168, 85, 247, 0.2);
+}
+
+.collectibleIconHolder {
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 38px;
-}
-
-.objName {
-  font-family: var(--font-heading);
-  font-size: 11px;
-  font-weight: 700;
-  color: #cbd5e1;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.objReward {
-  font-family: var(--font-heading);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.bonusBadge {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  background: rgba(249, 115, 22, 0.08);
-  border: 1px solid rgba(249, 115, 22, 0.22);
-  border-radius: 12px;
-}
-
-.bonusRocket {
-  font-size: 20px;
   flex-shrink: 0;
+  transition: transform 0.25s ease;
 }
 
-.bonusText {
-  font-size: 12px;
-  color: #cbd5e1;
-  line-height: 1.4;
+.collectibleCard:hover .collectibleIconHolder {
+  transform: scale(1.1) rotate(4deg);
 }
 
-.bonusText strong {
-  color: #fb923c;
+.collectibleInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
-.footerActions {
+.collectibleName {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.collectibleReward {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.collectibleDesc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 2B. Holographic Center Catcher Stage */
+.catcherStage {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  padding: 1.4rem 0 0.8rem 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 60%, rgba(109, 40, 217, 0.18), transparent 75%);
+  border-radius: var(--radius-md);
+  border: 1px dashed rgba(168, 85, 247, 0.2);
+}
+
+.catcherPlatformBeam {
+  position: absolute;
+  bottom: 30px;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(192, 132, 252, 0.6) 50%, transparent);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+}
+
+.basketContainer {
+  position: relative;
+  width: 170px;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: basketFloat 3.2s ease-in-out infinite;
+}
+
+@keyframes basketFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
+
+.basketSvg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 18px rgba(168, 85, 247, 0.55));
+}
+
+.basketEnergyHalo {
+  position: absolute;
+  bottom: -6px;
+  width: 130px;
+  height: 14px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(245, 184, 46, 0.45), transparent 70%);
+  border-radius: 50%;
+  filter: blur(8px);
+}
+
+.basketLabel {
+  margin-top: 0.6rem;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* 2C. Multiplier & Combo Progression Track */
+.multiplierBanner {
+  background: rgba(10, 12, 26, 0.85);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.multHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.flameIcon {
+  color: #fb923c;
+  filter: drop-shadow(0 0 6px rgba(251, 146, 60, 0.5));
+}
+
+.multBannerTitle {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #ffd45a;
+  letter-spacing: 0.06em;
+}
+
+.multBannerDesc {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.multiplierSteps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.multStep {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transition: all 0.2s ease;
+}
+
+.multStepActive {
+  background: rgba(168, 85, 247, 0.14);
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.25);
+}
+
+.multStepMax {
+  background: rgba(245, 184, 46, 0.08);
+  border-color: rgba(245, 184, 46, 0.35);
+}
+
+.multStepVal {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.multStepActive .multStepVal {
+  color: #ffd45a;
+  text-shadow: 0 0 10px rgba(245, 184, 46, 0.5);
+}
+
+.multStepTag {
+  font-family: var(--font-heading);
+  font-size: 0.64rem;
+  font-weight: 800;
+  color: #c084fc;
+  letter-spacing: 0.06em;
+}
+
+.multStepSub {
+  font-size: 0.66rem;
+  color: var(--text-dim);
+}
+
+.multStepConnector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(168, 85, 247, 0.4);
+}
+
+.connectorIcon {
+  color: rgba(168, 85, 247, 0.5);
+}
+
+/* 2D. Quick Rule Chips */
+.rulesChipsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ruleChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.chipIconGold   { color: #ffd45a; }
+.chipIconPurple { color: #c084fc; }
+.chipIconBlue   { color: #60a5fa; }
+.chipIconGreen  { color: #4ade80; }
+
+/* ────────────────────────────────────────────────────────────
+   3. BOTTOM ACTION AREA (START CTA & CONTROLS)
+   ──────────────────────────────────────────────────────────── */
+.ctaFooter {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
 }
 
 .startBtn {
   position: relative;
+  width: 100%;
+  max-width: 620px;
+  padding: 1.1rem 2.4rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #ffd45a 0%, #f5b82e 50%, #d97706 100%);
+  color: #0b0b14;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 14px 20px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #f5ba31 0%, #fecf57 50%, #f5ba31 100%);
-  color: #0b0b12;
-  font-family: var(--font-heading);
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: 0.06em;
+  gap: 12px;
   border: none;
   cursor: pointer;
+  box-shadow: 0 6px 28px rgba(245, 184, 46, 0.45), 0 0 16px rgba(245, 184, 46, 0.3);
+  transition: all 0.2s cubic-bezier(0.1, 0.8, 0.2, 1);
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(245, 186, 49, 0.4);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .startBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 26px rgba(245, 186, 49, 0.55);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 10px 36px rgba(245, 184, 46, 0.6), 0 0 24px rgba(245, 184, 46, 0.4);
 }
 
 .startBtn:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.99);
 }
 
-.startShimmer {
+.startBtnShimmer {
   position: absolute;
-  top: 0;
+  top: -50%;
   left: -60%;
   width: 40%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transform: skewX(-20deg);
-  animation: startShimmerAnim 2.6s ease infinite;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: rotate(25deg);
+  animation: startShimmer 3s infinite ease-in-out;
+  pointer-events: none;
 }
 
-@keyframes startShimmerAnim {
-  0% { left: -60%; }
-  100% { left: 130%; }
+@keyframes startShimmer {
+  0%   { left: -60%; }
+  60%  { left: 140%; }
+  100% { left: 140%; }
 }
 
-.controlsHint {
-  font-size: 11px;
-  color: #64748b;
-  font-weight: 500;
-  text-align: center;
+.startBtnText {
+  letter-spacing: 0.08em;
 }
 
-@media (max-width: 360px) {
-  .container {
-    gap: 8px;
-    padding: 10px 12px 12px;
+/* Controls Bar */
+.controlsBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.controlsInstruction {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.controlPills {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.controlPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  padding: 0.22rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.controlSeparator {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ────────────────────────────────────────────────────────────
+   RESPONSIVE DESIGN
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .collectiblesGrid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
   }
 
-  .heroCenter {
-    gap: 6px;
-    margin-top: 0;
+  .multiplierSteps {
+    gap: 0.5rem;
   }
 
-  .basketPreview {
-    width: 112px;
-    height: 60px;
+  .multBannerDesc {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .lobbyContainer {
+    padding: 0.8rem 1rem 1.4rem 1rem;
+    gap: 1rem;
   }
 
-  .missionText {
-    max-width: 270px;
-    font-size: 12px;
-    line-height: 1.35;
-  }
-
-  .objectsGrid {
-    gap: 6px;
-    margin: 4px 0;
-  }
-
-  .objectCard {
-    gap: 3px;
-    padding: 7px 3px;
-  }
-
-  .svgHolder {
-    height: 30px;
-  }
-
-  .svgHolder svg {
-    width: 30px;
-    height: 30px;
-  }
-
-  .objName {
-    font-size: 9px;
-  }
-
-  .objReward {
-    font-size: 10px;
-  }
-
-  .bonusBadge {
-    gap: 6px;
-    padding: 7px 9px;
-  }
-
-  .bonusRocket {
-    font-size: 16px;
-  }
-
-  .bonusText {
-    font-size: 10px;
-  }
-
-  .footerActions {
-    gap: 5px;
-    margin-top: 2px;
+  .arenaPreviewCard {
+    padding: 1.1rem 1rem;
+    gap: 1.1rem;
   }
 
   .startBtn {
-    padding: 11px 14px;
-    font-size: 13px;
+    padding: 0.95rem 1.6rem;
+    font-size: 1.02rem;
   }
 
-  .controlsHint {
-    font-size: 9px;
+  .rulesChipsRow {
+    justify-content: center;
+  }
+
+  .controlsBar {
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: center;
   }
 }

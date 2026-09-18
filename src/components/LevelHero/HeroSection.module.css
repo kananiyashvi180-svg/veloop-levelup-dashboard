@@ -1,507 +1,286 @@
-.heroCard {
-  background: linear-gradient(135deg, #1b1e33 0%, #17192b 100%);
-  border: 1px solid rgba(245, 186, 49, 0.2);
-  border-radius: 20px;
-  padding: 24px 28px;
+.heroSection {
   position: relative;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
-.ambientGlow {
+.ambientTopGlow {
   position: absolute;
   top: -60px;
-  right: -60px;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(245, 186, 49, 0.12) 0%, transparent 70%);
+  right: 10%;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.28) 0%, rgba(236, 72, 153, 0.12) 50%, transparent 70%);
+  filter: blur(50px);
   pointer-events: none;
+  z-index: 0;
 }
 
-.cardHeader {
+.heroCard {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, rgba(16, 12, 42, 0.85) 0%, rgba(10, 8, 28, 0.92) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.32);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65), 0 0 32px rgba(124, 58, 237, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-xl);
+  padding: 1.8rem 2.2rem;
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+}
+
+.eyebrowRow {
   display: flex;
   align-items: center;
-  gap: 22px;
-  margin-bottom: 24px;
+  margin-bottom: 0.8rem;
 }
 
-.badgeWrapper {
-  flex-shrink: 0;
-}
-
-.hexOuter {
-  width: 76px;
-  height: 76px;
-  background: linear-gradient(145deg, #fed268, #f5ba31, #d98205);
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  display: flex;
+.backLevelBtn {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 25px rgba(245, 186, 49, 0.4);
+  gap: 7px;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent-purple-bright);
+  transition: color var(--transition-fast), transform var(--transition-fast);
 }
 
-.hexInner {
-  width: 62px;
-  height: 62px;
-  background: linear-gradient(145deg, #1f2237, #131524);
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+.backLevelBtn:hover {
+  color: #ffffff;
+  transform: translateX(-2px);
+}
+
+.crownIcon {
+  color: var(--accent-gold);
+  filter: drop-shadow(0 0 6px rgba(245, 186, 49, 0.6));
+}
+
+.showcaseGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.heroCopyColumn {
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+.rankTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  background: linear-gradient(135deg, #ffffff 30%, #e879f9 70%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(192, 132, 252, 0.35));
+  margin-bottom: 0.35rem;
+}
+
+.rankSubtitle {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.25rem;
+}
+
+.stylishDivider {
+  width: 140px;
+  height: 2px;
+  background: linear-gradient(90deg, #a855f7 0%, rgba(236, 72, 153, 0.6) 70%, transparent 100%);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
+  margin-bottom: 1.25rem;
+}
+
+.cheeringMessage {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cheerLine1 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.cheerLine2 {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #a855f7;
+}
+
+.heroPodiumColumn {
+  display: flex;
   justify-content: center;
 }
 
-.levelTag {
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  color: var(--accent-gold);
-  line-height: 1;
-  margin-bottom: 1px;
+/* Wide Glass XP Progress Panel */
+.xpStatusPanel {
+  background: rgba(10, 8, 28, 0.7);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  border-radius: var(--radius-lg);
+  padding: 1.3rem 1.6rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.levelNum {
-  font-family: var(--font-heading);
-  font-size: 22px;
-  font-weight: 900;
-  color: #ffffff;
-  line-height: 1;
-}
-
-.levelMeta {
-  flex: 1;
-  min-width: 0;
-}
-
-.tierRow {
+.xpPanelTopRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.tierBadge {
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  padding: 2px 8px;
-  border-radius: 99px;
-  background: rgba(245, 186, 49, 0.15);
-  color: var(--accent-gold);
-  border: 1px solid rgba(245, 186, 49, 0.3);
-}
-
-.rankName {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-}
-
-.xpRow {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.1rem;
   flex-wrap: wrap;
 }
 
-.xpValue {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.xpBig {
-  font-family: var(--font-heading);
-  font-size: 32px;
-  font-weight: 900;
-  color: #ffffff;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.xpUnit {
-  font-family: var(--font-heading);
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--accent-gold);
-}
-
-.xpSeparator {
-  color: var(--text-dim);
-  font-size: 14px;
-}
-
-.xpTarget {
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.statusPill {
+.levelIdentityGroup {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  border-radius: 99px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  flex-shrink: 0;
-}
-
-.statusDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent-gold);
-  box-shadow: 0 0 8px var(--accent-gold);
-}
-
-.statusText {
-  font-family: var(--font-heading);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-secondary);
-}
-
-.progressContainer {
-  display: flex;
-  flex-direction: column;
   gap: 12px;
 }
 
+.miniBadgeWrap {
+  width: 44px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.levelLabelGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.levelHeading {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.levelSublabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.xpMetricsGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.xpAmountRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.xpBigValue {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.percentPill {
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.25);
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  color: #f3e8ff;
+}
+
+.xpRemainingNote {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.viewLevelsBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.55rem 1.1rem;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+  transition: all var(--transition-fast);
+}
+
+.viewLevelsBtn:hover {
+  background: rgba(168, 85, 247, 0.3);
+  border-color: rgba(168, 85, 247, 0.7);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Glowing Multi-Stop Progress Bar */
 .progressTrack {
-  height: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 99px;
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 999px;
   overflow: hidden;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .progressFill {
   height: 100%;
-  background: linear-gradient(90deg, #d98205 0%, #f5ba31 50%, #fed268 100%);
-  border-radius: 99px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3b82f6 0%, #a855f7 50%, #ec4899 85%, #f5ba31 100%);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.7), 0 0 8px rgba(245, 186, 49, 0.5);
   position: relative;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 12px rgba(245, 186, 49, 0.5);
 }
 
-.progressShimmer {
+.progressSparkleTip {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.4) 50%,
-    transparent 100%
-  );
-  animation: shimmer 2.4s infinite;
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(300%); }
-}
-
-.milestoneRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.milestoneItem {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.milestoneCircle {
-  width: 24px;
-  height: 24px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: #ffffff;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  font-family: var(--font-heading);
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  filter: blur(1px);
+  box-shadow: 0 0 8px #ffffff, 0 0 14px #f5ba31;
 }
 
-.milestoneCircleActive {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(245, 186, 49, 0.2);
-  border: 1px solid var(--accent-gold);
-  font-family: var(--font-heading);
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--accent-gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 10px rgba(245, 186, 49, 0.3);
-}
-
-.milestoneLabel {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.progressStats {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.progressStatCurrent {
-  color: #ffffff;
-  font-weight: 700;
-}
-
-.progressStatSlash {
-  color: var(--text-dim);
-}
-
-.progressStatTotal {
-  color: var(--text-muted);
-}
-
-.headerRightArea {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-}
-
-.heroActionBtns {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.roadmapBtn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: #f1f5f9;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  padding: 5px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.roadmapBtn:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(245, 186, 49, 0.5);
-  transform: translateY(-1px);
-}
-
-.levelUpDemoBtn {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.2));
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  color: #fbbf24;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  padding: 5px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
-  transition: all 0.2s ease;
-}
-
-.levelUpDemoBtn:hover {
-  background: linear-gradient(135deg, #f59e0b, #ec4899);
-  color: #0f172a;
-  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-  transform: translateY(-1px);
-}
-
-@media (max-width: 768px) {
-  .heroCard {
-    padding: 18px 16px;
-    border-radius: 16px;
+@media (max-width: 900px) {
+  .showcaseGrid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1.5rem;
   }
-
-  .cardHeader {
-    display: grid;
-    grid-template-columns: 78px minmax(0, 1fr);
-    align-items: start;
-    column-gap: 14px;
-    row-gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .badgeWrapper {
-    grid-row: 1;
-    grid-column: 1;
-  }
-
-  .levelMeta {
-    grid-row: 1;
-    grid-column: 2;
-    padding-top: 2px;
-  }
-
-  .headerRightArea {
-    grid-row: 2;
-    grid-column: 2;
-    align-items: flex-start;
-    gap: 0;
-  }
-
-  .heroActionBtns {
-    width: 100%;
-    gap: 8px;
-  }
-
-  .roadmapBtn,
-  .levelUpDemoBtn {
-    min-height: 34px;
-    padding: 7px 10px;
-    white-space: nowrap;
-  }
-
-  .statusPill {
-    display: none;
-  }
-
-  .xpBig {
-    font-size: 24px;
-  }
-
-  .xpValue {
-    gap: 6px;
-  }
-
-  .xpRow {
-    align-items: baseline;
-    gap: 5px 8px;
-  }
-
-  .xpTarget {
-    font-size: 11px;
-  }
-
-  .milestoneLabel {
-    font-size: 10px;
-    line-height: 1.15;
-  }
-
-  .milestoneRow {
-    display: grid;
-    grid-template-columns: minmax(74px, 1fr) auto minmax(74px, 1fr);
+  .heroCopyColumn {
     align-items: center;
-    gap: 6px;
   }
-
-  .milestoneItem {
-    gap: 5px;
-    min-width: 0;
-  }
-
-  .milestoneItem:last-child {
-    justify-content: flex-end;
-    text-align: right;
-  }
-
-  .progressStats {
-    white-space: nowrap;
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 390px) {
-  .heroCard {
-    padding: 14px 12px;
-  }
-
-  .cardHeader {
-    grid-template-columns: 68px minmax(0, 1fr);
-    column-gap: 10px;
-  }
-
-  .hexOuter {
-    width: 68px;
-    height: 68px;
-  }
-
-  .hexInner {
-    width: 55px;
-    height: 55px;
-  }
-
-  .levelNum {
-    font-size: 20px;
-  }
-
-  .tierRow {
-    align-items: flex-start;
+  .xpPanelTopRow {
     flex-direction: column;
-    gap: 4px;
-    margin-bottom: 7px;
+    text-align: center;
+    gap: 1rem;
   }
-
-  .rankName {
-    font-size: 12px;
-    line-height: 1.2;
-  }
-
-  .xpBig {
-    font-size: 23px;
-  }
-
-  .xpTarget {
-    display: block;
-    width: 100%;
-    font-size: 11px;
-    line-height: 1.25;
-  }
-
-  .xpSeparator {
-    display: none;
-  }
-
-  .heroActionBtns {
-    flex-wrap: nowrap;
-  }
-
-  .roadmapBtn,
-  .levelUpDemoBtn {
-    flex: 1;
-    min-width: 0;
-    padding-left: 6px;
-    padding-right: 6px;
-    font-size: 10px;
-  }
-
-  .milestoneRow {
-    grid-template-columns: 38px minmax(0, 1fr) 38px;
-  }
-
-  .milestoneItem {
-    justify-content: center;
-  }
-
-  .milestoneLabel {
-    display: none;
-  }
-
-  .progressStats {
-    justify-content: center;
-    font-size: 11px;
+  .heroCard {
+    padding: 1.4rem 1.2rem;
   }
 }

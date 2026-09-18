@@ -1,3 +1,4 @@
+import { Sparkle } from 'lucide-react'
 import styles from './RewardsHero.module.css'
 
 const floatingCoins = [
@@ -95,9 +96,9 @@ export default function RewardsHero({ nextLevel = 5 }) {
       <div className={styles.heroContent}>
         <div className={styles.topLabel}>
           <span className={styles.levelUpBadge}>
-            <span className={styles.levelUpStar}>✦</span>
+            <Sparkle size={12} className={styles.levelUpStar} />
             MILESTONE
-            <span className={styles.levelUpStar}>✦</span>
+            <Sparkle size={12} className={styles.levelUpStar} />
           </span>
         </div>
 

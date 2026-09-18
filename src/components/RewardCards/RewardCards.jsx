@@ -1,175 +1,238 @@
-import { useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
+import { Coins, Lock, Check, Sparkles, Zap, Package, Gem, Shield, Crown } from 'lucide-react'
 import { useUserState } from '../../context/UserStateContext'
 import styles from './RewardCards.module.css'
 
-const baseRewards = [
+// 6 Exact Rewards matching Panel 3 of the reference image
+const VAULT_REWARDS = [
   {
-    id: 've-pack',
-    type: 'gold',
-    badge: 'VE COINS',
-    title: '500 VE Coins Pack',
-    amount: '+500',
-    unit: 'VEs',
-    cost: 0,
-    requiredLevel: 1,
-    note: 'Starter Milestone Reward',
-    icon: '🪙',
+    id: 'prem-pack',
+    title: 'Premium Pack',
+    levelReq: 11,
+    levelLabel: 'Level 11+',
+    cost: 2000,
+    category: 'premium',
+    rewardAmount: '+500 VEs & 25 Gems',
+    desc: 'High tier booster bundle with instant milestone bonuses.',
+    iconType: 'pack'
+  },
+  {
+    id: 'mystery-box',
+    title: 'Mystery Box',
+    levelReq: 15,
+    levelLabel: 'Level 15+',
+    cost: 3500,
+    category: 'premium',
+    rewardAmount: 'Rare Drop Box',
+    desc: 'Contains guaranteed rare multiplier gems and secret items.',
+    iconType: 'box'
+  },
+  {
+    id: 'exclusive-skin',
+    title: 'Exclusive Skin',
+    levelReq: 20,
+    levelLabel: 'Level 20+',
+    cost: 5000,
+    category: 'exclusive',
+    rewardAmount: 'Master Aura',
+    desc: 'Prestige holographic skin for your player profile.',
+    iconType: 'skin'
+  },
+  {
+    id: 'xp-boost',
+    title: 'XP Boost (1h)',
+    levelReq: 5,
+    levelLabel: 'Level 5+',
+    cost: 1000,
+    category: 'all',
+    rewardAmount: '2X XP for 1 hour',
+    desc: 'Doubles all XP earned in games and completed tasks.',
+    iconType: 'boost'
   },
   {
     id: 'gem-pack',
-    type: 'purple',
-    badge: 'GEMS',
-    title: '25 Rare Gems Cluster',
-    amount: '+25',
-    unit: 'Gems',
-    cost: 0,
-    requiredLevel: 2,
-    note: 'Premium Multiplier Currency',
-    icon: '💎',
+    title: 'Gem Pack',
+    levelReq: 10,
+    levelLabel: 'Level 10+',
+    cost: 1500,
+    category: 'premium',
+    rewardAmount: '+50 Rare Gems',
+    desc: 'Premium currency pack for unlocking multiplier perks.',
+    iconType: 'gem'
   },
   {
-    id: 'discord-badge',
-    type: 'cyan',
-    badge: 'COMMUNITY',
-    title: 'Master Discord & Profile Role',
-    amount: 'VIP',
-    unit: 'Role',
-    cost: 150,
-    costCurrency: 'VEs',
-    requiredLevel: 3,
-    note: 'Exclusive colored name & lounge access',
-    icon: '🛡️',
-  },
-  {
-    id: 'store-discount',
-    type: 'emerald',
-    badge: 'VOUCHER',
-    title: '20% Partner Store Discount',
-    amount: '20%',
-    unit: 'Off',
-    cost: 350,
-    costCurrency: 'VEs',
-    requiredLevel: 4,
-    note: 'Applicable on gaming gears & merch',
-    icon: '🎟️',
-  },
-  {
-    id: 'mystery-crate',
-    type: 'magenta',
-    badge: 'MYSTERY',
-    title: 'Cyber Mystery Drop Crate',
-    amount: 'Loot',
-    unit: 'Box',
-    cost: 500,
-    costCurrency: 'VEs',
-    requiredLevel: 4,
-    note: 'Guaranteed 250+ XP and rare collectibles',
-    icon: '📦',
-  },
-  {
-    id: 'vip-pass',
-    type: 'locked',
-    badge: 'LEVEL 05',
-    title: 'VIP Tournament & Lounge Pass',
-    amount: 'PASS',
-    unit: 'Lvl 5',
-    cost: 0,
-    requiredLevel: 5,
-    note: 'Unlocks upon reaching Level 05',
-    icon: '👑',
-  },
+    id: 'special-badge',
+    title: 'Special Badge',
+    levelReq: 15,
+    levelLabel: 'Level 15+',
+    cost: 2500,
+    category: 'exclusive',
+    rewardAmount: 'VIP Hex Crest',
+    desc: 'Honorable collector badge displayed on public leaderboards.',
+    iconType: 'badge'
+  }
 ]
 
-export default function RewardCards({ userBalance = 1850, onClaimReward }) {
+export default function RewardCards({ activeCategory = 'all', onClaimReward }) {
   const userState = useUserState()
-  const currentLevel = userState?.activeProgression?.currentLevel ?? 4
+  const currentLevel = userState?.activeProgression?.currentLevel ?? 11
+  const userBalance = userState?.activeProgression?.userSummary?.totalEarnedVEs ?? 2450
   const claimedRewards = userState?.claimedRewards || []
-  const [redeemedToast, setRedeemedToast] = useState(null)
 
-  const catalog = useMemo(() => {
-    return baseRewards.map((r) => {
-      const isLocked = currentLevel < r.requiredLevel
-      const isClaimed = claimedRewards.includes(r.id)
-      return {
-        ...r,
-        isLocked,
-        claimed: isClaimed,
-        type: isLocked ? 'locked' : r.type
-      }
-    })
-  }, [currentLevel, claimedRewards])
+  const filteredRewards = useMemo(() => {
+    if (activeCategory === 'all') return VAULT_REWARDS
+    return VAULT_REWARDS.filter((r) => r.category === activeCategory || (activeCategory === 'premium' && r.category === 'all'))
+  }, [activeCategory])
 
-  const handleClaim = (reward) => {
-    if (reward.claimed || reward.isLocked) return
-
-    if (reward.cost > 0 && userBalance < reward.cost) {
-      alert(`Insufficient VEs! You need ${reward.cost} VEs to redeem this reward.`)
+  const handleClaim = (item) => {
+    if (currentLevel < item.levelReq) {
+      alert(`Level ${item.levelReq} required to unlock ${item.title}!`)
+      return
+    }
+    if (claimedRewards.includes(item.id)) return
+    if (userBalance < item.cost) {
+      alert(`Insufficient VEs! You need ${item.cost.toLocaleString()} VEs to claim this reward.`)
       return
     }
 
     if (userState?.claimReward) {
-      userState.claimReward(reward)
+      userState.claimReward({
+        id: item.id,
+        title: item.title,
+        cost: item.cost,
+        amount: item.rewardAmount,
+        note: item.desc
+      })
     } else if (onClaimReward) {
-      onClaimReward(reward)
+      onClaimReward(item)
     }
-
-    setRedeemedToast(reward.title)
-    setTimeout(() => setRedeemedToast(null), 3000)
   }
 
   return (
-    <div className={styles.container}>
-      {redeemedToast && (
-        <div className={styles.toast}>
-          <span>🎉 Successfully Claimed: <strong>{redeemedToast}</strong>!</span>
-        </div>
-      )}
+    <div className={styles.gridContainer}>
+      <div className={styles.cardsGrid}>
+        {filteredRewards.map((item) => {
+          const isLocked = currentLevel < item.levelReq
+          const isClaimed = claimedRewards.includes(item.id)
 
-      <div className={styles.grid}>
-        {catalog.map((item) => (
-          <div
-            key={item.id}
-            className={`${styles.card} ${styles[`card_${item.type}`]} ${
-              item.claimed ? styles.cardClaimed : ''
-            } ${item.isLocked ? styles.cardLocked : ''}`}
-          >
-            <div className={styles.cardHeader}>
-              <span className={styles.cardBadge}>{item.badge}</span>
-              <span className={styles.cardIcon}>{item.icon}</span>
-            </div>
+          return (
+            <div
+              key={item.id}
+              className={`${styles.rewardCard} ${isLocked ? styles.cardLocked : styles.cardUnlocked} ${
+                isClaimed ? styles.cardClaimed : ''
+              }`}
+            >
+              {/* 3D Crystal / Vault Emblem Graphic */}
+              <div className={styles.emblemContainer}>
+                <div className={styles.emblemAura} />
+                <div className={styles.emblemGraphic}>
+                  {renderRewardIcon(item.iconType, isLocked)}
+                </div>
+              </div>
 
-            <div className={styles.cardAmount}>
-              <span className={styles.amountText}>{item.amount}</span>
-              <span className={styles.unitText}>{item.unit}</span>
-            </div>
+              {/* Title & Level Requirement */}
+              <div className={styles.cardHeader}>
+                <h3 className={styles.cardTitle}>{item.title}</h3>
+                <span className={styles.levelReqBadge}>{item.levelLabel}</span>
+              </div>
 
-            <div className={styles.cardBody}>
-              <h4 className={styles.itemTitle}>{item.title}</h4>
-              <p className={styles.cardNote}>{item.note}</p>
-            </div>
+              {/* Cost in VEs with Gold Coin Icon */}
+              <div className={styles.costRow}>
+                <Coins size={17} className={styles.coinIcon} aria-hidden="true" />
+                <span className={styles.costAmount}>{item.cost.toLocaleString()} VEs</span>
+              </div>
 
-            <div className={styles.cardFooter}>
-              {item.isLocked ? (
-                <button type="button" className={styles.lockedBtn} disabled>
-                  🔒 Unlocks at Level {String(item.requiredLevel).padStart(2, '0')}
-                </button>
-              ) : item.claimed ? (
-                <button type="button" className={styles.claimedBtn} disabled>
-                  ✓ Claimed
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className={styles.redeemBtn}
-                  onClick={() => handleClaim(item)}
-                >
-                  {item.cost > 0 ? `Redeem (${item.cost} ${item.costCurrency})` : 'Claim Reward'}
-                </button>
-              )}
+              {/* Action Button: Claim or Locked */}
+              <div className={styles.btnRow}>
+                {isClaimed ? (
+                  <button type="button" className={styles.claimedBtn} disabled>
+                    <Check size={15} aria-hidden="true" />
+                    <span>Claimed</span>
+                  </button>
+                ) : isLocked ? (
+                  <button type="button" className={styles.lockedBtn} disabled>
+                    <Lock size={14} aria-hidden="true" />
+                    <span>Locked</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className={styles.claimBtn}
+                    onClick={() => handleClaim(item)}
+                    id={`claim-reward-${item.id}-btn`}
+                  >
+                    <span>Claim</span>
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
+}
+
+function renderRewardIcon(type, isLocked) {
+  const opacity = isLocked ? 0.6 : 1
+  switch (type) {
+    case 'pack':
+      return (
+        <svg viewBox="0 0 100 100" className={styles.svgIcon} style={{ opacity }}>
+          <defs>
+            <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#c084fc" />
+              <stop offset="50%" stopColor="#9333ea" />
+              <stop offset="100%" stopColor="#3b0764" />
+            </linearGradient>
+          </defs>
+          <polygon points="50,12 85,32 50,52 15,32" fill="#d8b4fe" stroke="#e879f9" strokeWidth="2" />
+          <polygon points="15,32 50,52 50,90 15,70" fill="url(#boxGrad)" stroke="#a855f7" strokeWidth="2" />
+          <polygon points="85,32 50,52 50,90 85,70" fill="#581c87" stroke="#a855f7" strokeWidth="2" />
+          <line x1="50" y1="12" x2="50" y2="52" stroke="#ffffff" strokeWidth="2" opacity="0.6" />
+        </svg>
+      )
+    case 'box':
+      return (
+        <svg viewBox="0 0 100 100" className={styles.svgIcon} style={{ opacity }}>
+          <polygon points="50,12 88,32 50,52 12,32" fill="#fed7aa" stroke="#f59e0b" strokeWidth="2" />
+          <polygon points="12,32 50,52 50,88 12,68" fill="#b45309" stroke="#d97706" strokeWidth="2" />
+          <polygon points="88,32 50,52 50,88 88,68" fill="#78350f" stroke="#d97706" strokeWidth="2" />
+          <circle cx="50" cy="52" r="8" fill="#fef08a" />
+        </svg>
+      )
+    case 'skin':
+      return (
+        <svg viewBox="0 0 100 100" className={styles.svgIcon} style={{ opacity }}>
+          <polygon points="50,10 90,32 90,72 50,92 10,72 10,32" fill="#0f172a" stroke="#38bdf8" strokeWidth="2.5" />
+          <polygon points="50,22 78,38 78,64 50,80 22,64 22,38" fill="#0284c7" opacity="0.6" />
+          <circle cx="50" cy="51" r="14" fill="#e0f2fe" opacity="0.85" />
+        </svg>
+      )
+    case 'boost':
+      return (
+        <svg viewBox="0 0 100 100" className={styles.svgIcon} style={{ opacity }}>
+          <polygon points="50,8 75,38 58,38 72,92 28,52 44,52" fill="#ec4899" stroke="#f472b6" strokeWidth="2" />
+        </svg>
+      )
+    case 'gem':
+      return (
+        <svg viewBox="0 0 100 100" className={styles.svgIcon} style={{ opacity }}>
+          <polygon points="50,8 88,32 50,94 12,32" fill="#10b981" stroke="#34d399" strokeWidth="2" />
+          <polygon points="50,8 88,32 50,42 12,32" fill="#6ee7b7" opacity="0.75" />
+          <polygon points="12,32 50,42 50,94" fill="#047857" />
+          <polygon points="88,32 50,42 50,94" fill="#065f46" />
+        </svg>
+      )
+    case 'badge':
+      return (
+        <svg viewBox="0 0 100 100" className={styles.svgIcon} style={{ opacity }}>
+          <circle cx="50" cy="50" r="42" fill="#1e1b4b" stroke="#a855f7" strokeWidth="3" />
+          <circle cx="50" cy="50" r="34" fill="#4338ca" stroke="#fef08a" strokeWidth="2" />
+          <polygon points="50,24 57,38 72,40 61,51 64,66 50,58 36,66 39,51 28,40 43,38" fill="#f5ba31" />
+        </svg>
+      )
+    default:
+      return <Package size={48} className={styles.fallbackIcon} />
+  }
 }

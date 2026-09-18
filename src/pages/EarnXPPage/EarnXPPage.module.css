@@ -54,14 +54,14 @@
 .title {
   font-size: 1.8rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
   letter-spacing: -0.01em;
 }
 
 .subtitle {
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   margin: 0.2rem 0 0 0;
 }
 
@@ -79,14 +79,14 @@
 .statsPillLabel {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #94a3b8;
+  color: var(--text-muted);
   text-transform: uppercase;
 }
 
 .statsPillVal {
   font-size: 1.15rem;
   font-weight: 900;
-  color: #10b981;
+  color: var(--accent-green);
 }
 
 .progressionBanner {
@@ -104,23 +104,23 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
 .bannerLabel {
   font-weight: 700;
-  color: #cbd5e1;
+  color: var(--text-secondary);
 }
 
 .bannerXp strong {
-  color: #fbbf24;
+  color: var(--accent-gold);
 }
 
 .bannerRemaining {
   margin-left: 0.4rem;
-  color: #64748b;
+  color: var(--text-dim);
   font-size: 0.8rem;
 }
 
@@ -133,7 +133,7 @@
 
 .bannerBar {
   height: 100%;
-  background: linear-gradient(90deg, #f59e0b, #ec4899);
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-magenta));
   border-radius: 9999px;
   transition: width 0.5s ease;
 }
@@ -201,7 +201,7 @@
 .xpRewardBadge {
   font-size: 0.78rem;
   font-weight: 800;
-  color: #fbbf24;
+  color: var(--accent-gold);
   background: rgba(245, 158, 11, 0.15);
   border: 1px solid rgba(245, 158, 11, 0.3);
   padding: 0.2rem 0.55rem;
@@ -217,13 +217,13 @@
 .taskTitle {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #f1f5f9;
+  color: var(--text-secondary);
   margin: 0;
 }
 
 .taskDesc {
   font-size: 0.84rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   margin: 0;
   line-height: 1.4;
 }
@@ -236,8 +236,8 @@
   font-weight: 800;
   cursor: pointer;
   border: none;
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: #0f172a;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold));
+  color: var(--bg-surface);
   box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
   transition: all 0.2s ease;
 }
@@ -249,14 +249,14 @@
 
 .actionBtnDone {
   background: rgba(16, 185, 129, 0.15) !important;
-  color: #10b981 !important;
+  color: var(--accent-green) !important;
   border: 1px solid rgba(16, 185, 129, 0.3) !important;
   box-shadow: none !important;
   cursor: default !important;
 }
 
 .loadingSpinner {
-  color: #cbd5e1;
+  color: var(--text-secondary);
   font-style: italic;
 }
 

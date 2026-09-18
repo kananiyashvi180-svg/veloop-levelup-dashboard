@@ -1,13 +1,14 @@
 import { useEffect, useRef } from 'react'
+import { Bell, Gift, Gamepad2, Rocket, Sparkles, Zap } from 'lucide-react'
 import { useNotifications } from '../../context/NotificationContext'
 import styles from './NotificationPanel.module.css'
 
 const typeIcons = {
-  xp: '⚡',
-  level: '🚀',
-  reward: '🎁',
-  game: '🎮',
-  daily: '🌟'
+  xp: Zap,
+  level: Rocket,
+  reward: Gift,
+  game: Gamepad2,
+  daily: Sparkles
 }
 
 export default function NotificationPanel({ isOpen, onClose }) {
@@ -61,7 +62,7 @@ export default function NotificationPanel({ isOpen, onClose }) {
       <div className={styles.list}>
         {notifications.length === 0 && (
           <div className={styles.emptyState}>
-            <span className={styles.emptyIcon}>🔔</span>
+            <Bell className={styles.emptyIcon} size={22} aria-hidden="true" />
             <span className={styles.emptyText}>All caught up!</span>
           </div>
         )}
@@ -75,7 +76,10 @@ export default function NotificationPanel({ isOpen, onClose }) {
             onKeyDown={(e) => e.key === 'Enter' && markRead(n.id)}
           >
             <div className={`${styles.iconWrap} ${styles[`type_${n.type}`]}`}>
-              <span className={styles.notifIcon}>{n.icon || typeIcons[n.type] || '🔔'}</span>
+              {(() => {
+                const Icon = typeIcons[n.type] || Bell
+                return <Icon className={styles.notifIcon} size={17} aria-hidden="true" />
+              })()}
             </div>
             <div className={styles.itemContent}>
               <div className={styles.itemTop}>

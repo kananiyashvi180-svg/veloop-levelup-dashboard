@@ -1,66 +1,188 @@
-import { useState } from 'react'
-import ActivitySummary from '../../components/ActivitySummary/ActivitySummary'
-import ActivityFeed from '../../components/ActivityFeed/ActivityFeed'
-import ActivityFilters from '../../components/ActivityFilters/ActivityFilters'
+import React, { useState, useMemo } from 'react'
+import {
+  Activity,
+  Zap,
+  Coins,
+  Gem,
+  Gift,
+  Crown,
+  Gamepad2,
+  Calendar,
+  CheckCircle2,
+  Award
+} from 'lucide-react'
 import styles from './ActivityPage.module.css'
 
-export default function ActivityPage({ progression, activities }) {
+export default function ActivityPage({ progression, activities = [] }) {
   const [activeFilter, setActiveFilter] = useState('all')
-  const [showAll, setShowAll] = useState(false)
+  const [timeframe, setTimeframe] = useState('7d')
+
+  // Filter activities dynamically based on active filter
+  const filteredActivities = useMemo(() => {
+    if (!activities || activities.length === 0) return []
+    if (activeFilter === 'all') return activities
+
+    return activities.filter((act) => {
+      const type = (act.type || '').toLowerCase()
+      const title = (act.title || '').toLowerCase()
+
+      if (activeFilter === 'xp') {
+        return type.includes('xp') || type.includes('task') || act.xpAmount > 0
+      }
+      if (activeFilter === 'ves') {
+        return type.includes('ve') || title.includes('ve') || act.vesAmount > 0
+      }
+      if (activeFilter === 'gems') {
+        return type.includes('gem') || title.includes('gem') || act.gemsAmount > 0
+      }
+      if (activeFilter === 'rewards') {
+        return type.includes('reward') || title.includes('claim') || type.includes('milestone')
+      }
+      return true
+    })
+  }, [activities, activeFilter])
 
   return (
-    <div className={styles.page}>
-      <div className={styles.pageInner}>
-
-        <header className={styles.pageHeader}>
-          <div className={styles.titleBlock}>
-            <div className={styles.titleRow}>
-              <span className={styles.titleIcon}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                </svg>
-              </span>
-              <h1 className={styles.title}>Activity</h1>
-            </div>
-            <p className={styles.subtitle}>Track your XP, rewards and recent progress.</p>
+    <div className={styles.pageContainer}>
+      {/* Activity Page Header */}
+      <header className={styles.header}>
+        <div className={styles.headerLeft}>
+          <div className={styles.titleRow}>
+            <Activity size={22} className={styles.headerIcon} aria-hidden="true" />
+            <h1 className={styles.title}>Activity</h1>
           </div>
-
-          <div className={styles.periodPill}>
-            <span className={styles.periodDot} />
-            <span className={styles.periodLabel}>Last 30 days</span>
-          </div>
-        </header>
-
-        <ActivitySummary progression={progression} />
-
-        <section className={styles.feedSection}>
-          <div className={styles.feedHeader}>
-            <div className={styles.feedTitleGroup}>
-              <h2 className={styles.feedTitle}>Recent Activity</h2>
-              <span className={styles.feedCount}>{activities ? `${showAll ? activities.length : Math.min(6, activities.length)} events` : showAll ? '12 events' : '6 recent'}</span>
-            </div>
-            <ActivityFilters active={activeFilter} onChange={setActiveFilter} />
-          </div>
-
-          <ActivityFeed filter={activeFilter} showAll={showAll} activities={activities} />
-        </section>
-
-        <div className={styles.viewAllRow}>
-          <button
-            className={styles.viewAllBtn}
-            type="button"
-            onClick={() => setShowAll(!showAll)}
-            id="activity-view-all-btn"
-          >
-            <span>{showAll ? 'Show Fewer Events' : 'View Full History (12 Events)'}</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
-          </button>
+          <p className={styles.subtitle}>All your recent actions and rewards</p>
         </div>
 
+        {/* Timeframe Dropdown */}
+        <div className={styles.timeframePill}>
+          <Calendar size={14} className={styles.calIcon} aria-hidden="true" />
+          <select
+            className={styles.timeframeSelect}
+            value={timeframe}
+            onChange={(e) => setTimeframe(e.target.value)}
+          >
+            <option value="7d">Last 7 days</option>
+            <option value="14d">Last 14 days</option>
+            <option value="30d">Last 30 days</option>
+          </select>
+        </div>
+      </header>
+
+      {/* Filter Tabs: All, XP, VEs, Gems, Rewards */}
+      <div className={styles.filtersBar}>
+        <button
+          type="button"
+          className={`${styles.filterBtn} ${activeFilter === 'all' ? styles.filterActive : ''}`}
+          onClick={() => setActiveFilter('all')}
+        >
+          All
+        </button>
+        <button
+          type="button"
+          className={`${styles.filterBtn} ${activeFilter === 'xp' ? styles.filterActive : ''}`}
+          onClick={() => setActiveFilter('xp')}
+        >
+          XP
+        </button>
+        <button
+          type="button"
+          className={`${styles.filterBtn} ${activeFilter === 'ves' ? styles.filterActive : ''}`}
+          onClick={() => setActiveFilter('ves')}
+        >
+          VEs
+        </button>
+        <button
+          type="button"
+          className={`${styles.filterBtn} ${activeFilter === 'gems' ? styles.filterActive : ''}`}
+          onClick={() => setActiveFilter('gems')}
+        >
+          Gems
+        </button>
+        <button
+          type="button"
+          className={`${styles.filterBtn} ${activeFilter === 'rewards' ? styles.filterActive : ''}`}
+          onClick={() => setActiveFilter('rewards')}
+        >
+          Rewards
+        </button>
+      </div>
+
+      {/* Timeline Cards List */}
+      <div className={styles.timelineList}>
+        {filteredActivities.length > 0 ? (
+          filteredActivities.map((item) => (
+            <div key={item.id} className={styles.timelineCard}>
+              {/* Activity Category Icon */}
+              <div className={`${styles.iconContainer} ${getCategoryStyle(item)}`}>
+                {renderActivityIcon(item)}
+              </div>
+
+              {/* Title & Subtitle */}
+              <div className={styles.cardContent}>
+                <h3 className={styles.itemTitle}>{item.title}</h3>
+                <p className={styles.itemSubtitle}>{item.subtitle || item.description}</p>
+              </div>
+
+              {/* Timestamp & Delta Badges */}
+              <div className={styles.cardMeta}>
+                <span className={styles.itemTime}>{item.timestamp || item.time || 'Just now'}</span>
+                {item.xpAmount > 0 && (
+                  <span className={styles.xpDelta}>+{item.xpAmount} XP</span>
+                )}
+                {item.vesAmount > 0 && (
+                  <span className={styles.vesDelta}>+{item.vesAmount} VEs</span>
+                )}
+                {item.gemsAmount > 0 && (
+                  <span className={styles.gemsDelta}>+{item.gemsAmount} Gems</span>
+                )}
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className={styles.emptyCard}>
+            <p>No activity found for this category.</p>
+          </div>
+        )}
       </div>
     </div>
   )
+}
+
+function renderActivityIcon(item) {
+  const type = (item.type || '').toLowerCase()
+  const title = (item.title || '').toLowerCase()
+
+  if (type.includes('level') || title.includes('level')) {
+    return <Crown size={18} aria-hidden="true" />
+  }
+  if (type.includes('task') || type.includes('xp') || title.includes('xp')) {
+    return <Zap size={18} aria-hidden="true" />
+  }
+  if (type.includes('reward') || title.includes('reward')) {
+    return <Gift size={18} aria-hidden="true" />
+  }
+  if (type.includes('game') || title.includes('game')) {
+    return <Gamepad2 size={18} aria-hidden="true" />
+  }
+  if (type.includes('ve') || title.includes('ve')) {
+    return <Coins size={18} aria-hidden="true" />
+  }
+  if (type.includes('gem') || title.includes('gem')) {
+    return <Gem size={18} aria-hidden="true" />
+  }
+  return <Award size={18} aria-hidden="true" />
+}
+
+function getCategoryStyle(item) {
+  const type = (item.type || '').toLowerCase()
+  const title = (item.title || '').toLowerCase()
+
+  if (type.includes('level') || title.includes('level')) return styles.iconLevel
+  if (type.includes('task') || type.includes('xp') || title.includes('xp')) return styles.iconXp
+  if (type.includes('reward') || title.includes('reward')) return styles.iconReward
+  if (type.includes('game') || title.includes('game')) return styles.iconGame
+  if (type.includes('ve') || title.includes('ve')) return styles.iconVe
+  if (type.includes('gem') || title.includes('gem')) return styles.iconGem
+  return styles.iconDefault
 }

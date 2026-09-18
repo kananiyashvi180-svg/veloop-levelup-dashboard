@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { NotificationProvider } from './context/NotificationContext'
 import { UserStateProvider } from './context/UserStateContext'
+import EnergyBackground from './components/Background/EnergyBackground'
 import LevelDashboard from './pages/LevelDashboard/LevelDashboard'
 import LoginPage from './pages/LoginPage/LoginPage'
 import RegisterPage from './pages/RegisterPage/RegisterPage'
@@ -37,6 +38,7 @@ export default function App() {
       <AuthProvider>
         <UserStateProvider>
           <NotificationProvider>
+            <EnergyBackground />
             <AppRoutes />
           </NotificationProvider>
         </UserStateProvider>
@@ -44,3 +46,4 @@ export default function App() {
     </BrowserRouter>
   )
 }
+

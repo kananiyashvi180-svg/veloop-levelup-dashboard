@@ -1,0 +1,171 @@
+.pageContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeIn 0.32s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Stat cards grid below the hero */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.statCard {
+  background: rgba(8, 10, 20, 0.88);
+  border: 1px solid rgba(109, 40, 217, 0.18);
+  border-radius: var(--radius-lg);
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.40);
+  backdrop-filter: blur(12px);
+}
+
+.statCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+}
+
+.statIconWrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cardVEs   .statIconWrap { background: rgba(245, 184, 46, 0.12);  border: 1px solid rgba(245, 184, 46, 0.28); }
+.cardGems  .statIconWrap { background: rgba(16, 185, 129, 0.12);  border: 1px solid rgba(16, 185, 129, 0.28); }
+.cardStreak .statIconWrap { background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.28); }
+.cardReward .statIconWrap { background: rgba(236, 72, 153, 0.12); border: 1px solid rgba(236, 72, 153, 0.28); }
+
+.veIcon      { color: var(--accent-gold); }
+.gemIcon     { color: var(--accent-green-bright); }
+.streakIcon  { color: var(--accent-purple-bright); }
+.rewardIcon  { color: var(--accent-magenta-bright); }
+
+.statContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.statLabel {
+  font-size: 0.70rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.statValue {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statSub {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+}
+
+.statArrow { color: var(--text-dim); flex-shrink: 0; }
+
+/* Action cards row */
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.actionCard {
+  background: rgba(8, 10, 20, 0.88);
+  border: 1px solid rgba(109, 40, 217, 0.18);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  text-align: left;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.40);
+  backdrop-filter: blur(12px);
+}
+
+.actionCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(192, 132, 252, 0.38);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 14px rgba(109, 40, 217, 0.14);
+}
+
+.actionIconWrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: rgba(109, 40, 217, 0.14);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.actionZap   { color: var(--accent-purple-bright); }
+.actionGift  { color: var(--accent-gold); }
+.actionGame  { color: var(--accent-blue-soft); }
+.actionCrown { color: var(--accent-gold); }
+
+.actionTitle {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.actionDesc {
+  font-size: 0.74rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.actionLink {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--accent-purple-bright);
+  margin-top: 4px;
+}
+
+@media (max-width: 1024px) {
+  .statsGrid  { grid-template-columns: repeat(2, 1fr); }
+  .actionGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .statsGrid  { grid-template-columns: 1fr; }
+  .actionGrid { grid-template-columns: 1fr; }
+}

@@ -1,3 +1,4 @@
+import { X, Check } from 'lucide-react'
 import { gamerAvatars } from '../../data/levelData'
 import GamerAvatar from './GamerAvatar'
 import styles from './AvatarVault.module.css'
@@ -20,7 +21,7 @@ export default function AvatarVault({ isOpen, onClose, currentAvatarId, onSelect
             type="button"
             aria-label="Close avatar vault"
           >
-            ✕
+            <X size={16} />
           </button>
         </div>
 
@@ -37,7 +38,7 @@ export default function AvatarVault({ isOpen, onClose, currentAvatarId, onSelect
                   <GamerAvatar avatarId={av.id} size={72} showGlow={isSelected} />
                   {isSelected && (
                     <div className={styles.selectedBadge}>
-                      ✓ ACTIVE
+                      <Check size={12} /> ACTIVE
                     </div>
                   )}
                 </div>

@@ -1,4 +1,5 @@
 import styles from './LevelRewards.module.css'
+import { Award, Coins, Check, ArrowRight } from 'lucide-react'
 
 export default function LevelRewards({ progression, onNavigate }) {
   const { nextLevel, nextLevelReward, requiredXp, nextLevelConfig } = progression
@@ -26,11 +27,11 @@ export default function LevelRewards({ progression, onNavigate }) {
 
         <div className={styles.cardContent}>
           <div className={styles.chestArea}>
-            <div className={styles.chestIcon}>🏆</div>
+            <div className={styles.chestIcon}><Award size={34} aria-hidden="true" /></div>
             <div className={styles.coinsRow}>
-              <span className={styles.coinIcon}>🪙</span>
-              <span className={styles.coinIcon}>🪙</span>
-              <span className={styles.coinIcon}>🪙</span>
+              <Coins className={styles.coinIcon} size={14} aria-hidden="true" />
+              <Coins className={styles.coinIcon} size={14} aria-hidden="true" />
+              <Coins className={styles.coinIcon} size={14} aria-hidden="true" />
             </div>
           </div>
 
@@ -44,7 +45,7 @@ export default function LevelRewards({ progression, onNavigate }) {
         <div className={styles.perksList}>
           {perks.map((perk, i) => (
             <div className={styles.perkItem} key={i}>
-              <span className={styles.perkIcon}>✓</span>
+              <span className={styles.perkIcon}><Check size={11} aria-hidden="true" /></span>
               <span className={styles.perkText}>{perk}</span>
             </div>
           ))}
@@ -56,7 +57,7 @@ export default function LevelRewards({ progression, onNavigate }) {
           onClick={() => onNavigate && onNavigate('rewards')}
           id="level-rewards-view-all-btn"
         >
-          View All Rewards →
+          View All Rewards <ArrowRight size={14} aria-hidden="true" />
         </button>
       </div>
     </section>

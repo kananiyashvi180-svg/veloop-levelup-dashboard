@@ -1,50 +1,109 @@
 :root {
-  --bg-primary: #161827;
-  --bg-secondary: #121421;
-  --bg-card: #1c1f33;
-  --bg-card-subtle: rgba(255, 255, 255, 0.03);
-  --bg-surface: #22263d;
-  --bg-overlay: rgba(10, 11, 18, 0.85);
+  /* ─────────────────────────────────────────────────────
+     BACKGROUND PALETTE — Near-Black / Midnight Navy
+     Purple MUST NOT appear as a background surface.
+     Use only as glow, border, accent, or lighting.
+  ───────────────────────────────────────────────────── */
+  --bg-primary:            #06070F;
+  --bg-secondary:          #080A14;
+  --bg-card:               rgba(10, 11, 22, 0.80);
+  --bg-card-subtle:        rgba(168, 85, 247, 0.05);
+  --bg-card-hover:         rgba(14, 16, 28, 0.92);
+  --bg-surface:            #0B0D1A;
+  --bg-surface-elevated:   #0E1020;
+  --bg-overlay:            rgba(6, 7, 15, 0.92);
 
-  --accent-gold: #f5ba31;
-  --accent-gold-light: #fed268;
-  --accent-gold-glow: rgba(245, 186, 49, 0.25);
+  /* ─────────────────────────────────────────────────────
+     GOLD — Rewards, VEs, Achievements, Key CTAs
+  ───────────────────────────────────────────────────── */
+  --accent-gold:            #F5B82E;
+  --accent-gold-light:      #FFD45A;
+  --accent-gold-muted:      #C9952A;
+  --accent-gold-glow:       rgba(245, 184, 46, 0.35);
+  --accent-gold-gradient:   linear-gradient(135deg, #FFD45A 0%, #F5B82E 55%, #C9952A 100%);
 
-  --accent-blue: #3b82f6;
-  --accent-blue-soft: #60a5fa;
-  --accent-blue-glow: rgba(59, 130, 246, 0.25);
+  /* ─────────────────────────────────────────────────────
+     BLUE — XP, Electric energy
+  ───────────────────────────────────────────────────── */
+  --accent-blue:            #3B82F6;
+  --accent-blue-soft:       #60A5FA;
+  --accent-blue-glow:       rgba(59, 130, 246, 0.3);
 
-  --accent-purple: #8b5cf6;
-  --accent-purple-glow: rgba(139, 92, 246, 0.25);
+  /* ─────────────────────────────────────────────────────
+     PURPLE & VIOLET — Primary Accent / Glow / Borders
+     Used ONLY as: borders, glows, highlights, icons,
+     active states, buttons, decorative lighting.
+     NEVER as background surfaces.
+  ───────────────────────────────────────────────────── */
+  --accent-purple:          #A855F7;
+  --accent-purple-bright:   #C084FC;
+  --accent-purple-deep:     #7C3AED;
+  --accent-purple-royal:    #6D28D9;
+  --accent-purple-electric: #D946EF;
+  --accent-purple-glow:     rgba(168, 85, 247, 0.35);
+  --accent-purple-glow-heavy: 0 0 30px rgba(168, 85, 247, 0.35);
+  --accent-violet:          #8B5CF6;
 
-  --accent-green: #10b981;
-  --accent-green-glow: rgba(16, 185, 129, 0.25);
+  /* ─────────────────────────────────────────────────────
+     MAGENTA — Controlled accent highlights
+  ───────────────────────────────────────────────────── */
+  --accent-magenta:         #EC4899;
+  --accent-magenta-bright:  #F472B6;
+  --accent-magenta-glow:    rgba(236, 72, 153, 0.28);
 
-  --accent-silver: #a3abb8;
+  /* ─────────────────────────────────────────────────────
+     GREEN / CYAN — Gems
+  ───────────────────────────────────────────────────── */
+  --accent-green:           #10B981;
+  --accent-green-bright:    #34D399;
+  --accent-green-glow:      rgba(16, 185, 129, 0.30);
+  --accent-cyan:            #06B6D4;
 
-  --text-primary: #ffffff;
-  --text-secondary: #cbd5e1;
-  --text-muted: #8492a6;
-  --text-dim: #5c667a;
+  /* ─────────────────────────────────────────────────────
+     TEXT
+  ───────────────────────────────────────────────────── */
+  --text-primary:           #F0F2FF;
+  --text-secondary:         #CBD5E1;
+  --text-muted:             #8892A4;
+  --text-dim:               #55607A;
+  --text-lavender:          #B4BCDF;
 
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-color-subtle: rgba(255, 255, 255, 0.05);
-  --border-color-active: rgba(245, 186, 49, 0.4);
+  /* ─────────────────────────────────────────────────────
+     BORDERS & GLASSMORPHISM
+  ───────────────────────────────────────────────────── */
+  --border-color:           rgba(168, 85, 247, 0.18);
+  --border-color-subtle:    rgba(255, 255, 255, 0.06);
+  --border-color-active:    rgba(192, 132, 252, 0.50);
+  --border-color-gold:      rgba(245, 184, 46, 0.40);
+  --border-glow-purple:     0 0 14px rgba(168, 85, 247, 0.28);
+  --border-glow-gold:       0 0 14px rgba(245, 184, 46, 0.28);
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.35);
-  --shadow-glow-gold: 0 0 25px rgba(245, 186, 49, 0.2);
-  --shadow-glow-blue: 0 0 25px rgba(59, 130, 246, 0.2);
+  /* ─────────────────────────────────────────────────────
+     SHADOWS
+  ───────────────────────────────────────────────────── */
+  --shadow-sm:   0 4px 14px rgba(0, 0, 0, 0.35);
+  --shadow-md:   0 12px 34px rgba(0, 0, 0, 0.60);
+  --shadow-lg:   0 20px 52px rgba(0, 0, 0, 0.72);
+  --shadow-card: 0 8px 28px rgba(0, 0, 0, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  /* ─────────────────────────────────────────────────────
+     RADII
+  ───────────────────────────────────────────────────── */
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
   --radius-full: 9999px;
 
-  --font-heading: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* ─────────────────────────────────────────────────────
+     TYPOGRAPHY
+  ───────────────────────────────────────────────────── */
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body:    'Plus Jakarta Sans', sans-serif;
 
-  --transition-fast: 0.2s ease;
-  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* ─────────────────────────────────────────────────────
+     TRANSITIONS
+  ───────────────────────────────────────────────────── */
+  --transition-fast:   0.18s ease;
+  --transition-normal: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }

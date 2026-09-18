@@ -1,203 +1,296 @@
-.container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 14px 20px 18px;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 20%, rgba(245, 186, 49, 0.08) 0%, transparent 70%),
-    #08080c;
+/* ============================================================
+   XP CATCHER GAME RESULT / SESSION COMPLETE
+   ============================================================ */
+
+.resultContainer {
+  position: relative;
+  background: linear-gradient(180deg, rgba(14, 16, 32, 0.94) 0%, rgba(8, 10, 22, 0.98) 100%);
+  border: 1.5px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 32px rgba(109, 40, 217, 0.18);
+  border-radius: var(--radius-xl);
+  padding: 2.2rem 2.6rem;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  backdrop-filter: blur(20px);
   box-sizing: border-box;
+  animation: resultReveal 0.35s cubic-bezier(0.1, 0.8, 0.2, 1);
 }
 
-.topSection {
+@keyframes resultReveal {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.ambientTopGlow {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 380px;
+  height: 160px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(245, 184, 46, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+/* ────────────────────────────────────────────────────────────
+   1. HEADER SECTION
+   ──────────────────────────────────────────────────────────── */
+.header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  text-align: center;
+  margin-bottom: 1.4rem;
 }
 
-.trophyIcon {
-  font-size: 38px;
-  line-height: 1;
-  filter: drop-shadow(0 0 14px rgba(245, 186, 49, 0.5));
+.awardCircle {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(245, 184, 46, 0.12);
+  border: 1.5px solid rgba(245, 184, 46, 0.5);
+  box-shadow: 0 0 26px rgba(245, 184, 46, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+  animation: awardPulse 2.8s ease-in-out infinite;
 }
 
-.completeTitle {
+@keyframes awardPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(245, 184, 46, 0.25); transform: scale(1); }
+  50%       { box-shadow: 0 0 34px rgba(245, 184, 46, 0.5); transform: scale(1.05); }
+}
+
+.awardIcon {
+  color: #ffd45a;
+}
+
+.title {
   font-family: var(--font-heading);
-  font-size: 18px;
+  font-size: 1.65rem;
   font-weight: 900;
-  letter-spacing: 0.08em;
-  color: #f8fafc;
+  color: #ffffff;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, #ffffff 0%, #ffd45a 50%, #f5b82e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.perfBadge {
+.subtitle {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+/* Level Up Banner */
+.levelUpBanner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245, 184, 46, 0.12);
+  border: 1px solid rgba(245, 184, 46, 0.45);
+  border-radius: var(--radius-full);
+  padding: 0.45rem 1.25rem;
+  margin-bottom: 1.2rem;
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 0.82rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
-  padding: 3px 12px;
-  border-radius: 999px;
-  border: 1px solid;
+  color: #ffd45a;
+  box-shadow: 0 0 18px rgba(245, 184, 46, 0.25);
 }
 
-.perfDesc {
-  font-size: 12px;
-  color: #94a3b8;
-  max-width: 280px;
-  line-height: 1.4;
+.crownIcon {
+  color: #ffd45a;
 }
 
-.scoreBox {
+.sparkleIcon {
+  color: #ffd45a;
+}
+
+/* ────────────────────────────────────────────────────────────
+   2. SCORE HERO
+   ──────────────────────────────────────────────────────────── */
+.scoreHero {
+  background: rgba(8, 10, 22, 0.9);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 1.4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 16px;
 }
 
 .scoreLabel {
-  font-family: var(--font-heading);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-dim);
   text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-.scoreValue {
+.scoreNumber {
   font-family: var(--font-heading);
-  font-size: 42px;
+  font-size: 2.6rem;
   font-weight: 900;
-  line-height: 1;
-  color: #f5ba31;
-  text-shadow: 0 0 20px rgba(245, 186, 49, 0.5);
+  color: #ffffff;
+  line-height: 1.1;
+  text-shadow: 0 0 28px rgba(168, 85, 247, 0.45), 0 0 14px rgba(245, 184, 46, 0.35);
 }
 
-.multiplierPeak {
+.scoreSub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ────────────────────────────────────────────────────────────
+   3. STATS GRID
+   ──────────────────────────────────────────────────────────── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 1.6rem;
+}
+
+.statCard {
+  background: rgba(18, 20, 36, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 0.8rem;
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-family: var(--font-heading);
-  font-size: 11px;
-  font-weight: 700;
-  color: #fb923c;
-  margin-top: 4px;
+  gap: 10px;
+  text-align: left;
+  transition: all 0.2s ease;
 }
 
-.rewardsColumn {
+.statCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.iconBox {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statXp     .iconBox { background: rgba(168, 85, 247, 0.16); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.35); }
+.statVes    .iconBox { background: rgba(245, 184, 46, 0.16);  color: #ffd45a; border: 1px solid rgba(245, 184, 46, 0.35); }
+.statGems   .iconBox { background: rgba(74, 222, 128, 0.16);  color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.35); }
+.statMult   .iconBox { background: rgba(236, 72, 153, 0.16);  color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.35); }
+.statCaught .iconBox { background: rgba(59, 130, 246, 0.16);  color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }
+.statStreak .iconBox { background: rgba(249, 115, 22, 0.16);  color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.35); }
+
+.statMeta {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 6px 0;
+  min-width: 0;
 }
 
-.rewardRow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
+.statLabel {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  white-space: nowrap;
 }
 
-.rewardIconPurple {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #7c3aed;
-  border: 1.5px solid #c084fc;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
-}
-
-.rewardIconGold {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #d97706;
-  border: 1.5px solid #fde047;
-  color: #713f12;
-  font-size: 14px;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 10px rgba(245, 186, 49, 0.4);
-}
-
-.rewardIconGreen {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #16a34a;
-  border: 1.5px solid #4ade80;
-  color: #fff;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
-}
-
-.rewardMeta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex: 1;
-}
-
-.rewardLabel {
-  font-size: 12px;
-  font-weight: 600;
-  color: #cbd5e1;
-}
-
-.rewardAmount {
+.statVal {
   font-family: var(--font-heading);
-  font-size: 13px;
+  font-size: 0.96rem;
   font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
 }
 
-.footerActions {
-  margin-top: 6px;
+/* ────────────────────────────────────────────────────────────
+   4. ACTIONS ROW
+   ──────────────────────────────────────────────────────────── */
+.actionsRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .playAgainBtn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  width: 100%;
-  padding: 14px 20px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #f5ba31 0%, #fecf57 50%, #f5ba31 100%);
-  color: #0b0b12;
+  padding: 0.85rem 2.2rem;
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  border: 1px solid rgba(192, 132, 252, 0.5);
+  border-radius: var(--radius-md);
+  color: #ffffff;
   font-family: var(--font-heading);
-  font-size: 15px;
+  font-size: 0.95rem;
   font-weight: 900;
-  letter-spacing: 0.06em;
-  border: none;
+  letter-spacing: 0.04em;
+  box-shadow: 0 6px 24px rgba(109, 40, 217, 0.5);
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(245, 186, 49, 0.4);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .playAgainBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 26px rgba(245, 186, 49, 0.55);
+  box-shadow: 0 8px 30px rgba(168, 85, 247, 0.7);
 }
 
-.playAgainBtn:active {
-  transform: translateY(0);
+.exitBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.85rem 1.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  color: #cbd5e1;
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exitBtn:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ────────────────────────────────────────────────────────────
+   RESPONSIVE DESIGN
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 620px) {
+  .resultContainer {
+    padding: 1.6rem 1.2rem;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+
+  .actionsRow {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .playAgainBtn,
+  .exitBtn {
+    width: 100%;
+    justify-content: center;
+  }
 }

@@ -1,145 +1,151 @@
+import React from 'react'
+import {
+  Award,
+  Zap,
+  Coins,
+  Gem,
+  Flame,
+  Target,
+  RotateCcw,
+  Sparkles,
+  ArrowLeft,
+  Crown
+} from 'lucide-react'
 import styles from './GameResult.module.css'
 
-function getPerformanceMessage(score) {
-  if (score >= 200) return { label: 'LEGENDARY', msg: 'Sensational reflexes! You conquered the arena!', color: '#f5ba31' }
-  if (score >= 140) return { label: 'ELITE', msg: 'Outstanding performance! Top-tier catching!', color: '#a78bfa' }
-  if (score >= 90) return { label: 'GREAT', msg: 'Solid reflexes! You timed every drop nicely.', color: '#10b981' }
-  if (score >= 50) return { label: 'GOOD', msg: 'Good job! Keep building up that multiplier!', color: '#60a5fa' }
-  return { label: 'KEEP GOING', msg: 'Every round sharpens your reflexes. Go again!', color: '#94a3b8' }
-}
-
-export default function GameResult({ finalRewards, onPlayAgain }) {
+export default function GameResult({ finalRewards, onPlayAgain, onExit }) {
   const score = finalRewards?.score ?? 0
   const xp = finalRewards?.xp ?? 0
   const ves = finalRewards?.ves ?? 0
   const gems = finalRewards?.gems ?? 0
-  const maxMultiplier = finalRewards?.maxMultiplier ?? 1
+  const maxMultiplier = finalRewards?.maxMultiplier ?? 2
   const itemsCaught = finalRewards?.itemsCaught ?? 0
-  const bestStreak = finalRewards?.bestStreak ?? maxMultiplier
+  const bestStreak = finalRewards?.bestStreak ?? 0
   const didLevelUp = finalRewards?.didLevelUp
   const newLevel = finalRewards?.newLevel
-  const previousLevel = finalRewards?.previousLevel
-  const rewardUnlocked = finalRewards?.rewardUnlocked
-
-  const perf = getPerformanceMessage(score)
 
   return (
-    <div className={styles.container}>
-      <div className={styles.topSection}>
-        <div className={styles.trophyIcon}>🏆</div>
-        <h2 className={styles.completeTitle}>GAME COMPLETE</h2>
-        <div
-          className={styles.perfBadge}
-          style={{
-            borderColor: `${perf.color}55`,
-            color: perf.color,
-            background: `${perf.color}18`,
-          }}
-        >
-          {perf.label}
+    <div className={styles.resultContainer}>
+      {/* Background Ambient Glows */}
+      <div className={styles.ambientTopGlow} />
+
+      {/* 1. Victory Header */}
+      <div className={styles.header}>
+        <div className={styles.awardCircle}>
+          <Award size={36} className={styles.awardIcon} aria-hidden="true" />
         </div>
-        <p className={styles.perfDesc}>{perf.msg}</p>
+        <h2 className={styles.title}>GAME COMPLETE</h2>
+        <p className={styles.subtitle}>XP Catcher session complete — Great reflex performance!</p>
       </div>
 
-      <div className={styles.scoreBox}>
-        <span className={styles.scoreLabel}>YOUR SCORE</span>
-        <span className={styles.scoreValue}>{score}</span>
-        {maxMultiplier > 1 && (
-          <div className={styles.multiplierPeak}>
-            <span>🚀</span>
-            <span>Peak {maxMultiplier}X Multiplier (Best Streak: {bestStreak})</span>
-          </div>
-        )}
-      </div>
-
+      {/* Level-Up Celebration Banner (if applicable) */}
       {didLevelUp && (
-        <div
-          style={{
-            background: 'linear-gradient(135deg, rgba(245, 186, 49, 0.15), rgba(168, 85, 247, 0.15))',
-            border: '1px solid rgba(245, 186, 49, 0.4)',
-            borderRadius: '12px',
-            padding: '10px 14px',
-            textAlign: 'center',
-            margin: '4px 0'
-          }}
-        >
-          <div style={{ color: '#f5ba31', fontWeight: '900', fontSize: '13px', letterSpacing: '0.08em' }}>
-            🎉 LEVEL UP!
-          </div>
-          <div style={{ color: '#ffffff', fontSize: '12px', marginTop: '2px', fontWeight: '700' }}>
-            Level {previousLevel} → Level {newLevel}
-          </div>
-          {rewardUnlocked && (
-            <div style={{ color: '#a78bfa', fontSize: '11px', marginTop: '3px' }}>
-              Reward Unlocked: {rewardUnlocked.label || rewardUnlocked}
-            </div>
-          )}
+        <div className={styles.levelUpBanner}>
+          <Crown size={16} className={styles.crownIcon} aria-hidden="true" />
+          <span>LEVEL UP ACHIEVED! You reached Level {newLevel}!</span>
+          <Sparkles size={16} className={styles.sparkleIcon} aria-hidden="true" />
         </div>
       )}
 
-      <div className={styles.rewardsColumn}>
-        <div className={styles.rewardRow}>
-          <div className={styles.rewardIconPurple}>XP</div>
-          <div className={styles.rewardMeta}>
-            <span className={styles.rewardLabel}>XP Earned</span>
-            <span className={styles.rewardAmount} style={{ color: '#c084fc' }}>+{xp} XP</span>
+      {/* 2. Final Score Showcase */}
+      <div className={styles.scoreHero}>
+        <span className={styles.scoreLabel}>TOTAL SESSION SCORE</span>
+        <strong className={styles.scoreNumber}>{score.toLocaleString()}</strong>
+        <span className={styles.scoreSub}>Multiplier streak boosts applied</span>
+      </div>
+
+      {/* 3. 6-Card Progression & Loot Grid with Staggered Entrance */}
+      <div className={styles.statsGrid}>
+        {/* XP Earned */}
+        <div className={`${styles.statCard} ${styles.statXp}`}>
+          <div className={styles.iconBox}>
+            <Zap size={18} aria-hidden="true" />
+          </div>
+          <div className={styles.statMeta}>
+            <span className={styles.statLabel}>XP Earned</span>
+            <strong className={styles.statVal}>+{xp.toLocaleString()} XP</strong>
           </div>
         </div>
 
-        <div className={styles.rewardRow}>
-          <div className={styles.rewardIconGold}>V</div>
-          <div className={styles.rewardMeta}>
-            <span className={styles.rewardLabel}>VEs Earned</span>
-            <span className={styles.rewardAmount} style={{ color: '#fcd34d' }}>+{ves} VEs</span>
+        {/* VEs Earned */}
+        <div className={`${styles.statCard} ${styles.statVes}`}>
+          <div className={styles.iconBox}>
+            <Coins size={18} aria-hidden="true" />
+          </div>
+          <div className={styles.statMeta}>
+            <span className={styles.statLabel}>VEs Earned</span>
+            <strong className={styles.statVal}>+{ves.toLocaleString()} VEs</strong>
           </div>
         </div>
 
-        <div className={styles.rewardRow}>
-          <div className={styles.rewardIconGreen}>◆</div>
-          <div className={styles.rewardMeta}>
-            <span className={styles.rewardLabel}>Gems Earned</span>
-            <span className={styles.rewardAmount} style={{ color: '#4ade80' }}>+{gems} Gems</span>
+        {/* Gems Earned */}
+        <div className={`${styles.statCard} ${styles.statGems}`}>
+          <div className={styles.iconBox}>
+            <Gem size={18} aria-hidden="true" />
+          </div>
+          <div className={styles.statMeta}>
+            <span className={styles.statLabel}>Gems Earned</span>
+            <strong className={styles.statVal}>+{gems} Gems</strong>
           </div>
         </div>
 
-        <div className={styles.rewardRow}>
-          <div
-            style={{
-              width: '28px',
-              height: '28px',
-              borderRadius: '50%',
-              background: 'rgba(59, 130, 246, 0.3)',
-              border: '1.5px solid #60a5fa',
-              color: '#60a5fa',
-              fontSize: '11px',
-              fontWeight: '900',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            🎯
+        {/* Peak Multiplier */}
+        <div className={`${styles.statCard} ${styles.statMult}`}>
+          <div className={styles.iconBox}>
+            <Flame size={18} aria-hidden="true" />
           </div>
-          <div className={styles.rewardMeta}>
-            <span className={styles.rewardLabel}>Items Caught</span>
-            <span className={styles.rewardAmount} style={{ color: '#60a5fa' }}>{itemsCaught} Items</span>
+          <div className={styles.statMeta}>
+            <span className={styles.statLabel}>Peak Multiplier</span>
+            <strong className={styles.statVal}>{maxMultiplier}X</strong>
+          </div>
+        </div>
+
+        {/* Items Caught */}
+        <div className={`${styles.statCard} ${styles.statCaught}`}>
+          <div className={styles.iconBox}>
+            <Target size={18} aria-hidden="true" />
+          </div>
+          <div className={styles.statMeta}>
+            <span className={styles.statLabel}>Items Caught</span>
+            <strong className={styles.statVal}>{itemsCaught}</strong>
+          </div>
+        </div>
+
+        {/* Best Streak */}
+        <div className={`${styles.statCard} ${styles.statStreak}`}>
+          <div className={styles.iconBox}>
+            <Award size={18} aria-hidden="true" />
+          </div>
+          <div className={styles.statMeta}>
+            <span className={styles.statLabel}>Best Streak</span>
+            <strong className={styles.statVal}>{bestStreak} Combo</strong>
           </div>
         </div>
       </div>
 
-      <div className={styles.footerActions}>
+      {/* 4. Action Buttons */}
+      <div className={styles.actionsRow}>
         <button
-          className={styles.playAgainBtn}
           type="button"
+          className={styles.playAgainBtn}
           onClick={onPlayAgain}
-          id="xp-catcher-play-again"
+          id="game-play-again-btn"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="1 4 1 10 7 10" />
-            <path d="M3.51 15a9 9 0 1 0 .49-3.95" />
-          </svg>
-          PLAY AGAIN
+          <RotateCcw size={18} aria-hidden="true" />
+          <span>PLAY AGAIN</span>
         </button>
+
+        {onExit && (
+          <button
+            type="button"
+            className={styles.exitBtn}
+            onClick={onExit}
+            id="game-exit-btn"
+          >
+            <ArrowLeft size={17} aria-hidden="true" />
+            <span>Back to Dashboard</span>
+          </button>
+        )}
       </div>
     </div>
   )

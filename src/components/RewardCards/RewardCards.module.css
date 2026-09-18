@@ -1,205 +1,183 @@
-.container {
+.gridContainer {
   width: 100%;
-  position: relative;
 }
 
-.toast {
-  position: fixed;
-  top: 24px;
-  right: 24px;
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: #ffffff;
-  padding: 0.85rem 1.4rem;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
-  font-size: 0.92rem;
-  font-weight: 700;
-  z-index: 9999;
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from { transform: translateX(50px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-.grid {
+.cardsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.4rem;
 }
 
-.card {
-  background: linear-gradient(135deg, rgba(26, 31, 56, 0.6), rgba(15, 18, 34, 0.7));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 1.4rem;
+.rewardCard {
+  background: linear-gradient(135deg, rgba(16, 12, 42, 0.75) 0%, rgba(9, 7, 26, 0.9) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem 1.4rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 1rem;
+  align-items: center;
+  text-align: center;
   position: relative;
-  overflow: hidden;
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  transition: all var(--transition-normal);
+  backdrop-filter: blur(16px);
 }
 
-.card:hover {
-  transform: translateY(-3px);
+.cardUnlocked:hover {
+  transform: translateY(-4px);
+  border-color: rgba(168, 85, 247, 0.55);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 24px rgba(168, 85, 247, 0.25);
 }
 
-.card_gold {
-  border-color: rgba(245, 158, 11, 0.25);
-}
-.card_gold:hover {
-  border-color: rgba(245, 158, 11, 0.5);
+.cardLocked {
+  opacity: 0.7;
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
-.card_purple {
-  border-color: rgba(139, 92, 246, 0.25);
-}
-.card_purple:hover {
-  border-color: rgba(139, 92, 246, 0.5);
-}
-
-.card_cyan {
-  border-color: rgba(6, 182, 212, 0.25);
-}
-.card_cyan:hover {
-  border-color: rgba(6, 182, 212, 0.5);
+.emblemContainer {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
-.card_emerald {
-  border-color: rgba(16, 185, 129, 0.25);
-}
-.card_emerald:hover {
-  border-color: rgba(16, 185, 129, 0.5);
-}
-
-.card_magenta {
-  border-color: rgba(236, 72, 153, 0.25);
-}
-.card_magenta:hover {
-  border-color: rgba(236, 72, 153, 0.5);
+.emblemAura {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
+  filter: blur(12px);
+  pointer-events: none;
 }
 
-.card_locked {
-  opacity: 0.65;
-  border-style: dashed;
+.emblemGraphic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.cardClaimed {
-  border-color: rgba(16, 185, 129, 0.4);
-  background: rgba(16, 185, 129, 0.04);
+.svgIcon {
+  width: 76px;
+  height: 76px;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.6));
 }
 
 .cardHeader {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.cardBadge {
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #fbbf24;
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-}
-
-.cardIcon {
-  font-size: 1.4rem;
-}
-
-.cardAmount {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-}
-
-.amountText {
-  font-size: 2.1rem;
-  font-weight: 900;
-  color: #ffffff;
-  letter-spacing: -0.02em;
-}
-
-.unitText {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #94a3b8;
-}
-
-.cardBody {
-  display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 0.8rem;
 }
 
-.itemTitle {
+.cardTitle {
+  font-family: var(--font-heading);
   font-size: 1.05rem;
   font-weight: 800;
-  color: #f1f5f9;
-  margin: 0;
+  color: #ffffff;
 }
 
-.cardNote {
-  font-size: 0.82rem;
-  color: #94a3b8;
-  margin: 0;
+.levelReqBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-purple-bright);
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
 }
 
-.cardFooter {
-  margin-top: 0.5rem;
+.costRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 1.25rem;
 }
 
-.redeemBtn {
+.coinIcon {
+  color: var(--accent-gold);
+}
+
+.costAmount {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fef08a;
+}
+
+.btnRow {
   width: 100%;
-  padding: 0.7rem;
-  border-radius: 12px;
+  margin-top: auto;
+}
+
+.claimBtn {
+  width: 100%;
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  font-family: var(--font-heading);
   font-size: 0.85rem;
   font-weight: 800;
-  color: #0f172a;
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.4);
+  transition: all var(--transition-fast);
 }
 
-.redeemBtn:hover {
+.claimBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-}
-
-.claimedBtn {
-  width: 100%;
-  padding: 0.7rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  cursor: default;
+  box-shadow: 0 6px 22px rgba(168, 85, 247, 0.6), 0 0 16px rgba(236, 72, 153, 0.5);
+  background: linear-gradient(135deg, #c084fc 0%, #f472b6 100%);
 }
 
 .lockedBtn {
   width: 100%;
-  padding: 0.7rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #64748b;
+  padding: 0.6rem 1.2rem;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  color: #64748b;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   cursor: not-allowed;
 }
 
-@media (max-width: 640px) {
-  .grid {
+.claimedBtn {
+  width: 100%;
+  padding: 0.6rem 1.2rem;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: var(--radius-md);
+  color: #34d399;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: default;
+}
+
+@media (max-width: 960px) {
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .cardsGrid {
     grid-template-columns: 1fr;
   }
 }

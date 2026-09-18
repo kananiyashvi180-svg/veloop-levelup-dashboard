@@ -1,91 +1,108 @@
-import { useState } from 'react'
-import { useAuth } from '../../context/AuthContext'
+import React, { useState } from 'react'
+import { Bell, ChevronDown, Flame, Menu } from 'lucide-react'
 import { useNotifications } from '../../context/NotificationContext'
-import GamerAvatar from '../Profile/GamerAvatar'
 import NotificationPanel from '../Notifications/NotificationPanel'
 import styles from './AppHeader.module.css'
 
-function getGreeting() {
-  const hour = new Date().getHours()
-  if (hour < 12) return 'Good Morning'
-  if (hour < 17) return 'Good Afternoon'
-  return 'Good Evening'
-}
-
-export default function AppHeader({ progression, onOpenMenu, onSelectSection }) {
-  const { user } = useAuth()
+export default function AppHeader({
+  progression,
+  onOpenMenu,
+  onSelectSection
+}) {
   const { unreadCount } = useNotifications()
   const [notifOpen, setNotifOpen] = useState(false)
 
-  const currentLevel = progression?.currentLevel ?? 4
   const userSummary = progression?.userSummary
-  const avatarId = userSummary?.avatarId || 'vanguard'
-  const username = user?.fullName || userSummary?.username || 'VeLooper'
-  const greeting = getGreeting()
-  const greetEmoji = greeting === 'Good Morning' ? '☀️' : greeting === 'Good Afternoon' ? '👋' : '🌙'
-  const totalEarnedVEs = userSummary?.totalEarnedVEs !== undefined ? userSummary.totalEarnedVEs : 1850
+  const username = userSummary?.username || 'Yashvi Kanani'
+
+  // Extract initials (e.g. YK)
+  const initials = username
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2) || 'YK'
 
   return (
     <header className={styles.header}>
-      <div className={styles.left}>
+      {/* Left Branding */}
+      <div className={styles.headerLeft}>
         <button
           className={styles.menuBtn}
           onClick={onOpenMenu}
-          aria-label="Open menu"
+          aria-label="Open mobile menu"
           type="button"
         >
-          <span />
-          <span />
-          <span />
+          <Menu size={22} aria-hidden="true" />
         </button>
 
-        <div className={styles.greetingBlock}>
-          <h1 className={styles.greeting}>{greeting}, {username}! {greetEmoji}</h1>
-          <p className={styles.subtitle}>Level up your journey and unlock epic rewards every day.</p>
+        <div
+          className={styles.brandGroup}
+          onClick={() => onSelectSection && onSelectSection('home')}
+          role="button"
+          tabIndex={0}
+        >
+          {/* Neon Crystal Polygon Logo */}
+          <svg width="34" height="34" viewBox="0 0 40 40" fill="none" className={styles.brandIcon}>
+            <polygon points="20,3 36,12 30,34 20,38 10,34 4,12" fill="#13082b" stroke="#c084fc" strokeWidth="2" />
+            <polygon points="20,6 31,14 20,23" fill="#f0abfc" opacity="0.9" />
+            <polygon points="20,6 9,14 20,23" fill="#c084fc" opacity="0.85" />
+            <polygon points="9,14 12,32 20,23" fill="#6b21a8" />
+            <polygon points="31,14 28,32 20,23" fill="#9333ea" />
+            <circle cx="20" cy="23" r="2.5" fill="#ffffff" filter="drop-shadow(0 0 5px #fff)" />
+          </svg>
+
+          <span className={styles.brandTitle}>VELOOP</span>
+        </div>
+
+        {/* Motto / Subtitle */}
+        <div className={styles.tagline}>
+          <span>REWARDS</span>
+          <span className={styles.dot}>•</span>
+          <span>LEVEL UP</span>
+          <span className={styles.dot}>•</span>
+          <span>EARN MORE</span>
         </div>
       </div>
 
-      <div className={styles.rightActions}>
-        <div className={styles.statPill}>
-          <span className={styles.statPillIcon}>⚡</span>
-          <span className={styles.statPillText}>Level {String(currentLevel).padStart(2, '0')}</span>
-        </div>
+      {/* Right Actions */}
+      <div className={styles.headerRight}>
+        {/* Top 5% VeLooper Pill */}
+        <button
+          type="button"
+          className={styles.rankPill}
+          onClick={() => onSelectSection && onSelectSection('level')}
+        >
+          <Flame size={14} className={styles.fireEmoji} aria-hidden="true" />
+          <span className={styles.rankLabel}>Top 5% VeLooper</span>
+          <span className={styles.rankArrow}>›</span>
+        </button>
 
-        <div className={styles.balancePill}>
-          <span className={styles.balanceIcon}>🪙</span>
-          <span className={styles.balanceAmount}>{totalEarnedVEs.toLocaleString()}</span>
-          <span className={styles.balanceUnit}>VEs</span>
-        </div>
-
+        {/* Notification Bell */}
         <div className={styles.bellWrap}>
           <button
-            className={`${styles.bellBtn} ${notifOpen ? styles.bellBtnActive : ''}`}
-            aria-label="Notifications"
             type="button"
-            id="header-notifications-btn"
-            onClick={() => setNotifOpen((v) => !v)}
+            className={`${styles.bellBtn} ${notifOpen ? styles.bellActive : ''}`}
+            onClick={() => setNotifOpen((prev) => !prev)}
+            aria-label="Notifications"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-            </svg>
-            {unreadCount > 0 ? (
-              <span className={styles.bellCount}>{unreadCount > 9 ? '9+' : unreadCount}</span>
-            ) : (
-              <span className={styles.bellDot} />
-            )}
+            <Bell size={18} aria-hidden="true" />
+            <span className={styles.bellRedDot} />
           </button>
           <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
         </div>
 
+        {/* User Initials Avatar with Dropdown */}
         <button
-          className={styles.profileBadge}
           type="button"
+          className={styles.userAvatarBtn}
           onClick={() => onSelectSection && onSelectSection('profile')}
-          aria-label="Open profile"
-          title="Open Profile"
+          title="Account Profile"
         >
-          <GamerAvatar avatarId={avatarId} size={38} />
+          <div className={styles.avatarCircle}>
+            <span>{initials}</span>
+          </div>
+          <ChevronDown size={14} className={styles.chevron} aria-hidden="true" />
         </button>
       </div>
     </header>

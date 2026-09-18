@@ -1,73 +1,62 @@
-import { useState } from 'react'
-import { useUserState } from '../../context/UserStateContext'
-import styles from './RewardsPage.module.css'
-import RewardsHero from '../../components/RewardsHero/RewardsHero'
+import React, { useState } from 'react'
+import { Coins, Sparkles, Gift } from 'lucide-react'
 import RewardCards from '../../components/RewardCards/RewardCards'
-import LevelBenefits from '../../components/LevelBenefits/LevelBenefits'
+import styles from './RewardsPage.module.css'
 
 export default function RewardsPage({ progression, onClaimReward }) {
-  const userState = useUserState()
-  const [claimedAll, setClaimedAll] = useState(false)
-  const [toastMsg, setToastMsg] = useState(null)
+  const [activeTab, setActiveTab] = useState('all')
 
-  const currentLevel = progression?.currentLevel ?? 4
-  const nextLevel = progression?.nextLevel ?? 5
-  const userBalance = progression?.userSummary?.totalEarnedVEs ?? 1850
-
-  const handleClaimAll = () => {
-    setClaimedAll(true)
-    if (userState?.claimReward) {
-      userState.claimReward({ id: 'bundle-tier', title: `Tier ${String(currentLevel).padStart(2, '0')} Bundle`, amount: '+500 VEs', note: 'All active milestone rewards' })
-    } else if (onClaimReward) {
-      onClaimReward({ title: `Tier ${String(currentLevel).padStart(2, '0')} Bundle`, amount: '+500 VEs' })
-    }
-    setToastMsg(`All available Tier ${String(currentLevel).padStart(2, '0')} perks & milestone bonuses have been credited!`)
-    setTimeout(() => setToastMsg(null), 4000)
-  }
+  const totalEarnedVEs = progression?.userSummary?.totalEarnedVEs ?? 2450
 
   return (
     <div className={styles.page}>
-      {toastMsg && (
-        <div style={{
-          position: 'fixed',
-          top: '24px',
-          right: '24px',
-          background: 'linear-gradient(135deg, #10b981, #059669)',
-          color: '#ffffff',
-          padding: '0.9rem 1.4rem',
-          borderRadius: '14px',
-          boxShadow: '0 10px 30px rgba(16, 185, 129, 0.4)',
-          fontWeight: '800',
-          zIndex: 9999,
-          maxWidth: '420px',
-        }}>
-          🎉 {toastMsg}
+      {/* Rewards Vault Top Header */}
+      <header className={styles.vaultHeader}>
+        <div className={styles.headerLeft}>
+          <div className={styles.titleRow}>
+            <Gift size={22} className={styles.headerGiftIcon} aria-hidden="true" />
+            <h1 className={styles.pageTitle}>Rewards</h1>
+          </div>
+          <p className={styles.pageSubtitle}>Redeem your earned rewards</p>
         </div>
-      )}
 
-      <div className={styles.pageInner}>
-        <RewardsHero nextLevel={nextLevel} />
-        <RewardCards
-          userBalance={userBalance}
-          onClaimReward={onClaimReward}
-        />
-        <LevelBenefits level={nextLevel} />
-
-        <div className={styles.ctaWrapper}>
-          <button
-            className={styles.claimBtn}
-            type="button"
-            onClick={handleClaimAll}
-            disabled={claimedAll}
-            id="rewards-claim-all-btn"
-          >
-            <span className={styles.claimBtnGlow} />
-            <span className={styles.claimBtnText}>
-              {claimedAll ? '✓ All Eligible Rewards Claimed' : 'Claim All Active Milestone Rewards'}
-            </span>
-          </button>
+        <div className={styles.balancePill}>
+          <Coins size={18} className={styles.balanceCoinIcon} aria-hidden="true" />
+          <span className={styles.balanceLabel}>Your VEs:</span>
+          <strong className={styles.balanceAmount}>{totalEarnedVEs.toLocaleString()}</strong>
         </div>
+      </header>
+
+      {/* Filter Tabs: All Rewards, Premium, Exclusive */}
+      <div className={styles.tabFiltersRow}>
+        <button
+          type="button"
+          className={`${styles.tabBtn} ${activeTab === 'all' ? styles.tabActive : ''}`}
+          onClick={() => setActiveTab('all')}
+        >
+          All Rewards
+        </button>
+        <button
+          type="button"
+          className={`${styles.tabBtn} ${activeTab === 'premium' ? styles.tabActive : ''}`}
+          onClick={() => setActiveTab('premium')}
+        >
+          Premium
+        </button>
+        <button
+          type="button"
+          className={`${styles.tabBtn} ${activeTab === 'exclusive' ? styles.tabActive : ''}`}
+          onClick={() => setActiveTab('exclusive')}
+        >
+          Exclusive
+        </button>
       </div>
+
+      {/* 6 High-Fidelity Vault Reward Cards */}
+      <RewardCards
+        activeCategory={activeTab}
+        onClaimReward={onClaimReward}
+      />
     </div>
   )
 }

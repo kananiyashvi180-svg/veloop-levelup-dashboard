@@ -15,16 +15,24 @@ function getStoredUsers() {
   }
 }
 
+const DEFAULT_DEMO_USER = {
+  userId: 'user_yashvi_kanani',
+  fullName: 'Yashvi Kanani',
+  email: 'yashvi@veloop.io',
+  remember: true,
+  loginAt: Date.now()
+}
+
 function getStoredSession() {
   try {
     const session = JSON.parse(localStorage.getItem(SESSION_KEY))
-    if (session?.userId === LEGACY_DEFAULT_USER_ID && session.email === 'alex@veloop.io') {
-      localStorage.removeItem(SESSION_KEY)
-      return null
+    if (session && session.fullName) {
+      return session
     }
-    return session || null
+    localStorage.setItem(SESSION_KEY, JSON.stringify(DEFAULT_DEMO_USER))
+    return DEFAULT_DEMO_USER
   } catch {
-    return null
+    return DEFAULT_DEMO_USER
   }
 }
 

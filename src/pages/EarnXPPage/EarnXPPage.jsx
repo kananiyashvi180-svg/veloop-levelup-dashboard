@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { Flame, Gamepad2, Eye, Users, Star, Zap } from 'lucide-react'
 import { useUserState } from '../../context/UserStateContext'
 import styles from './EarnXPPage.module.css'
 
@@ -8,7 +9,7 @@ const initialTasks = [
     title: 'Daily Check-In & Streak Boost',
     desc: 'Check in today to maintain your 7-day streak and active 2.5X multiplier.',
     xp: 100,
-    icon: '🔥',
+    icon: Flame,
     badge: 'Daily',
     color: '#f97316',
     actionText: 'Claim +100 XP',
@@ -18,7 +19,7 @@ const initialTasks = [
     title: 'Play XP Catcher Mini-Game',
     desc: 'Jump into the 20s arcade round and catch falling XP Orbs & VE coins.',
     xp: 75,
-    icon: '🎮',
+    icon: Gamepad2,
     badge: 'Arcade',
     color: '#3b82f6',
     actionText: 'Play Game Now',
@@ -29,7 +30,7 @@ const initialTasks = [
     title: 'Watch Partner Showcase',
     desc: 'Preview the 15-second teaser for upcoming VELOOP Season drops.',
     xp: 50,
-    icon: '👁️',
+    icon: Eye,
     badge: 'Quick',
     color: '#8b5cf6',
     actionText: 'Watch & Claim +50 XP',
@@ -39,7 +40,7 @@ const initialTasks = [
     title: 'Invite Teammates & Friends',
     desc: 'Share your exclusive link with friends. Both of you earn bonus XP when they join.',
     xp: 250,
-    icon: '🤝',
+    icon: Users,
     badge: 'High Yield',
     color: '#10b981',
     actionText: 'Copy Link & Claim +250 XP',
@@ -49,7 +50,7 @@ const initialTasks = [
     title: 'Quick Community Feedback',
     desc: 'Give a 1-tap rating on the new dashboard design to help us improve.',
     xp: 75,
-    icon: '⭐',
+    icon: Star,
     badge: 'Instant',
     color: '#f59e0b',
     actionText: 'Submit Rating & Claim +75 XP',
@@ -59,7 +60,7 @@ const initialTasks = [
     title: 'Daily Milestone Power-Up',
     desc: 'Complete 3 daily actions to trigger this extra XP bonus.',
     xp: 150,
-    icon: '⚡',
+    icon: Zap,
     badge: 'Bonus',
     color: '#ec4899',
     actionText: 'Claim +150 XP',
@@ -130,7 +131,7 @@ export default function EarnXPPage({ progression, onEarnXP, onNavigate }) {
       <header className={styles.header}>
         <div className={styles.headerTop}>
           <div className={styles.titleGroup}>
-            <span className={styles.headerIcon}>⚡</span>
+            <Zap className={styles.headerIcon} size={20} aria-hidden="true" />
             <div>
               <h1 className={styles.title}>Earn More XP</h1>
               <p className={styles.subtitle}>Complete quick activities to accelerate your level progression.</p>
@@ -170,7 +171,7 @@ export default function EarnXPPage({ progression, onEarnXP, onNavigate }) {
             >
               <div className={styles.cardHeader}>
                 <div className={styles.iconBox} style={{ background: `${task.color}22`, border: `1px solid ${task.color}44` }}>
-                  <span>{task.icon}</span>
+                  <task.icon size={20} aria-hidden="true" />
                 </div>
                 <div className={styles.badgeGroup}>
                   <span className={styles.categoryBadge} style={{ color: task.color, borderColor: `${task.color}55` }}>

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getLevelConfig } from '../../data/levelConfig'
+import { Gift, Coins, Gem, Zap, Star } from 'lucide-react'
+import LevelBadge from '../LevelBadge/LevelBadge'
 import styles from './LevelUpModal.module.css'
 
 export default function LevelUpModal({ isOpen, onClose, level = 5, onClaim }) {
@@ -48,17 +50,13 @@ export default function LevelUpModal({ isOpen, onClose, level = 5, onClaim }) {
         </div>
 
         <div className={styles.topBadge}>
-          <span className={styles.sparkle}>✦</span>
+          <Star size={13} className={styles.sparkleIcon} aria-hidden="true" />
           <span>LEVEL UP CELEBRATION</span>
-          <span className={styles.sparkle}>✦</span>
+          <Star size={13} className={styles.sparkleIcon} aria-hidden="true" />
         </div>
 
         <div className={styles.badgeArea}>
-          <div className={styles.outerAura} />
-          <div className={styles.hexShield}>
-            <span className={styles.shieldLvl}>LEVEL</span>
-            <span className={styles.shieldNum}>{String(level).padStart(2, '0')}</span>
-          </div>
+          <LevelBadge level={level} size="large" showGlow={true} />
         </div>
 
         <h2 className={styles.congratsTitle}>CONGRATULATIONS!</h2>
@@ -69,25 +67,32 @@ export default function LevelUpModal({ isOpen, onClose, level = 5, onClaim }) {
 
         <div className={styles.rewardBox}>
           <div className={styles.rewardHeader}>
-            <span>🎁 UNLOCKED MILESTONE REWARDS</span>
+            <Gift size={14} aria-hidden="true" />
+            <span>UNLOCKED MILESTONE REWARDS</span>
           </div>
           <div className={styles.rewardRow}>
             <div className={styles.rewardItem}>
-              <span className={styles.rewardIcon}>🪙</span>
+              <div className={styles.rewardIconWrap} style={{ background: 'rgba(245,186,49,0.15)', border: '1px solid rgba(245,186,49,0.35)' }}>
+                <Coins size={20} color="#f5ba31" aria-hidden="true" />
+              </div>
               <div>
                 <span className={styles.rewardVal}>+{vesAmount} VEs</span>
                 <span className={styles.rewardSub}>Added to Balance</span>
               </div>
             </div>
             <div className={styles.rewardItem}>
-              <span className={styles.rewardIcon}>💎</span>
+              <div className={styles.rewardIconWrap} style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.35)' }}>
+                <Gem size={20} color="#a78bfa" aria-hidden="true" />
+              </div>
               <div>
                 <span className={styles.rewardVal}>+{gemsAmount} Gems</span>
                 <span className={styles.rewardSub}>Rare Boosters</span>
               </div>
             </div>
             <div className={styles.rewardItem}>
-              <span className={styles.rewardIcon}>⚡</span>
+              <div className={styles.rewardIconWrap} style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.35)' }}>
+                <Zap size={20} color="#10b981" aria-hidden="true" />
+              </div>
               <div>
                 <span className={styles.rewardVal}>1.5X Multiplier</span>
                 <span className={styles.rewardSub}>48h Duration</span>

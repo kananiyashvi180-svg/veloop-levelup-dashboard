@@ -1,0 +1,81 @@
+.badgeWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: transform var(--transition-normal);
+}
+
+.ambientAura {
+  position: absolute;
+  inset: -15%;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(24px);
+  opacity: 0.85;
+  animation: pulseGlow 4s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+.crystalSvg {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.65));
+}
+
+/* Sizing Options */
+.mini {
+  width: 38px;
+  height: 42px;
+}
+.mini .crystalSvg {
+  width: 38px;
+  height: 42px;
+}
+
+.small {
+  width: 52px;
+  height: 58px;
+}
+.small .crystalSvg {
+  width: 52px;
+  height: 58px;
+}
+
+.default {
+  width: 78px;
+  height: 86px;
+}
+.default .crystalSvg {
+  width: 78px;
+  height: 86px;
+}
+
+.large {
+  width: 140px;
+  height: 154px;
+}
+.large .crystalSvg {
+  width: 140px;
+  height: 154px;
+}
+
+.podium {
+  width: 220px;
+  height: 240px;
+  animation: floatBadge 5s ease-in-out infinite;
+}
+.podium .crystalSvg {
+  width: 220px;
+  height: 240px;
+}
+
+.withGlow:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+
+.withGlow:hover .ambientAura {
+  opacity: 1;
+  filter: blur(30px);
+}

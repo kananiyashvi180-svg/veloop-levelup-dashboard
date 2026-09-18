@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import './variables.css';
 
 *, *::before, *::after {
@@ -12,20 +12,54 @@ html, body, #root {
   width: 100%;
 }
 
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BODY — Near-Black / Midnight Navy base
+   Purple only as SUBTLE radial lighting from edges.
+   Intensity is kept deliberately low so the dark surfaces dominate.
+═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   BODY & ROOT — Deep Space Midnight Navy Base
+   All structured flowing energy veins and crystal particles
+   are dynamically rendered via the dedicated EnergyBackground canvas.
+═══════════════════════════════════════════════════════════ */
 body {
   font-family: var(--font-body);
-  background: #161827;
+  background-color: #06070F;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
+#root {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   BASE ELEMENT RESETS
+═══════════════════════════════════════════════════════════ */
 button {
   cursor: pointer;
   border: none;
   background: none;
   font-family: inherit;
+  color: inherit;
+}
+
+button:focus-visible,
+[role='button']:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent-purple-bright);
+  outline-offset: 2px;
 }
 
 a {
@@ -33,7 +67,49 @@ a {
   color: inherit;
 }
 
-@keyframes xpPopRise {
-  0% { opacity: 1; transform: translateX(-50%) translateY(0px); }
-  100% { opacity: 0; transform: translateX(-50%) translateY(-48px); }
+/* ═══════════════════════════════════════════════════════════
+   CUSTOM SCROLLBARS
+═══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgba(6, 7, 15, 0.8); }
+::-webkit-scrollbar-thumb {
+  background: rgba(109, 40, 217, 0.35);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.55);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SHARED KEYFRAMES (used across components)
+═══════════════════════════════════════════════════════════ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50%       { opacity: 1;    transform: scale(1.04); }
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes lightSweep {
+  0%   { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(260%) rotate(25deg); }
+}
+
+@keyframes borderGlow {
+  0%, 100% { box-shadow: 0 0 12px rgba(168, 85, 247, 0.25); }
+  50%       { box-shadow: 0 0 22px rgba(192, 132, 252, 0.45); }
+}
+
+@keyframes crystalFloat {
+  0%   { transform: translateY(0)   rotate(0deg); }
+  50%  { transform: translateY(-8px) rotate(1.5deg); }
+  100% { transform: translateY(0)   rotate(0deg); }
 }

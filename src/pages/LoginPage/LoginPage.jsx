@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { AlertTriangle, CheckCircle2, Zap, Gift, TrendingUp, Eye, EyeOff } from 'lucide-react'
 import styles from './LoginPage.module.css'
 
 export default function LoginPage() {
@@ -8,10 +9,10 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('yashwi@example.com')
+  const [password, setPassword] = useState('password123')
   const [showPass, setShowPass] = useState(false)
-  const [remember, setRemember] = useState(false)
+  const [remember, setRemember] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [successMessage, setSuccessMessage] = useState(location.state?.message || '')
@@ -21,8 +22,10 @@ export default function LoginPage() {
   const [forgotSent, setForgotSent] = useState(false)
 
   useEffect(() => {
+    document.documentElement.dataset.page = 'login'
     if (user) navigate('/Lvl-Dashboard', { replace: true })
   }, [user, navigate])
+
 
   if (user) return null
 
@@ -59,38 +62,40 @@ export default function LoginPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.bgMesh} />
-      <div className={styles.bgOrb1} />
-      <div className={styles.bgOrb2} />
+      <div className={styles.ambientGlow} />
 
       <div className={styles.card}>
-        <div className={styles.brand}>
-          <div className={styles.brandIcon}>
-            <span className={styles.brandHex}>V</span>
-          </div>
-          <div className={styles.brandText}>
-            <span className={styles.brandName}>VELOOP<span className={styles.brandDot}>.</span></span>
-            <span className={styles.brandSub}>REWARDS</span>
-          </div>
+        {/* Crystal Shard Emblem Icon matching reference */}
+        <div className={styles.crystalEmblemWrap}>
+          <div className={styles.emblemHalo} />
+          <svg viewBox="0 0 60 60" className={styles.emblemSvg}>
+            <polygon points="30,4 52,18 44,52 30,58 16,52 8,18" fill="#130e33" stroke="#a855f7" strokeWidth="2" />
+            <polygon points="30,8 48,20 30,32" fill="#d8b4fe" opacity="0.8" />
+            <polygon points="30,8 12,20 30,32" fill="#a855f7" opacity="0.8" />
+            <polygon points="12,20 18,48 30,32" fill="#581c87" />
+            <polygon points="48,20 42,48 30,32" fill="#7c3aed" />
+            <polygon points="18,48 30,54 30,32" fill="#9333ea" />
+            <polygon points="42,48 30,54 30,32" fill="#c084fc" />
+          </svg>
         </div>
 
         {!forgotMode ? (
           <>
             <div className={styles.heading}>
               <h1 className={styles.title}>Welcome Back</h1>
-              <p className={styles.subtitle}>Sign in to continue your XP journey</p>
+              <p className={styles.subtitle}>Sign in to continue your journey</p>
             </div>
 
             {error && (
               <div className={styles.errorBanner}>
-                <span className={styles.errorIcon}>⚠</span>
+                <AlertTriangle size={15} aria-hidden="true" />
                 <span>{error}</span>
               </div>
             )}
 
             {successMessage && (
               <div className={styles.successBanner}>
-                <span>✓</span>
+                <CheckCircle2 size={15} aria-hidden="true" />
                 <span>{successMessage}</span>
               </div>
             )}
@@ -98,46 +103,27 @@ export default function LoginPage() {
             <form className={styles.form} onSubmit={handleLogin} noValidate>
               <div className={styles.fieldGroup}>
                 <label className={styles.label} htmlFor="login-email">Email Address</label>
-                <div className={`${styles.inputWrap} ${fieldErrors.email ? styles.inputError : ''}`}>
-                  <span className={styles.inputIcon}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                      <polyline points="22,6 12,13 2,6" />
-                    </svg>
-                  </span>
-                  <input
-                    id="login-email"
-                    type="email"
-                    className={styles.input}
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(e) => { setEmail(e.target.value); setFieldErrors((p) => ({ ...p, email: '' })) }}
-                    autoComplete="email"
-                    disabled={loading}
-                  />
-                </div>
+                <input
+                  id="login-email"
+                  type="email"
+                  className={`${styles.input} ${fieldErrors.email ? styles.inputError : ''}`}
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setFieldErrors((p) => ({ ...p, email: '' })) }}
+                  autoComplete="email"
+                  disabled={loading}
+                />
                 {fieldErrors.email && <span className={styles.fieldError}>{fieldErrors.email}</span>}
               </div>
 
               <div className={styles.fieldGroup}>
-                <div className={styles.labelRow}>
-                  <label className={styles.label} htmlFor="login-password">Password</label>
-                  <button type="button" className={styles.forgotLink} onClick={() => setForgotMode(true)}>
-                    Forgot password?
-                  </button>
-                </div>
-                <div className={`${styles.inputWrap} ${fieldErrors.password ? styles.inputError : ''}`}>
-                  <span className={styles.inputIcon}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                    </svg>
-                  </span>
+                <label className={styles.label} htmlFor="login-password">Password</label>
+                <div className={styles.passwordWrap}>
                   <input
                     id="login-password"
                     type={showPass ? 'text' : 'password'}
-                    className={styles.input}
-                    placeholder="Enter your password"
+                    className={`${styles.input} ${fieldErrors.password ? styles.inputError : ''}`}
+                    placeholder="Password"
                     value={password}
                     onChange={(e) => { setPassword(e.target.value); setFieldErrors((p) => ({ ...p, password: '' })) }}
                     autoComplete="current-password"
@@ -145,23 +131,11 @@ export default function LoginPage() {
                   />
                   <button
                     type="button"
-                    className={styles.showPassBtn}
+                    className={styles.eyeBtn}
                     onClick={() => setShowPass((v) => !v)}
                     aria-label={showPass ? 'Hide password' : 'Show password'}
-                    tabIndex={-1}
                   >
-                    {showPass ? (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-                        <line x1="1" y1="1" x2="23" y2="23" />
-                      </svg>
-                    ) : (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                        <circle cx="12" cy="12" r="3" />
-                      </svg>
-                    )}
+                    {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
                 {fieldErrors.password && <span className={styles.fieldError}>{fieldErrors.password}</span>}
@@ -172,13 +146,14 @@ export default function LoginPage() {
                   <input
                     id="login-remember"
                     type="checkbox"
-                    className={styles.checkbox}
                     checked={remember}
                     onChange={(e) => setRemember(e.target.checked)}
                   />
-                  <span className={styles.checkMark} />
-                  <span className={styles.checkText}>Remember me</span>
+                  <span>Remember me</span>
                 </label>
+                <button type="button" className={styles.forgotLink} onClick={() => setForgotMode(true)}>
+                  Forgot password?
+                </button>
               </div>
 
               <button
@@ -187,69 +162,76 @@ export default function LoginPage() {
                 className={styles.submitBtn}
                 disabled={loading}
               >
-                {loading ? (
-                  <span className={styles.spinner} />
-                ) : (
-                  <>
-                    <span>Sign In</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                  </>
-                )}
+                {loading ? 'Signing in...' : 'Sign In'}
+              </button>
+
+              <div className={styles.dividerRow}>
+                <span className={styles.dividerLine} />
+                <span className={styles.dividerText}>or</span>
+                <span className={styles.dividerLine} />
+              </div>
+
+              <button
+                type="button"
+                className={styles.createAccountBtn}
+                onClick={() => navigate('/register')}
+              >
+                Create new account
               </button>
             </form>
-
-            <p className={styles.switchText}>
-              Don't have an account?{' '}
-              <Link to="/register" className={styles.switchLink}>Create Account</Link>
-            </p>
           </>
         ) : (
           <>
             <div className={styles.heading}>
               <h1 className={styles.title}>Reset Password</h1>
-              <p className={styles.subtitle}>We'll send recovery instructions to your email</p>
+              <p className={styles.subtitle}>Enter your email address to receive reset link</p>
             </div>
 
             {forgotSent ? (
               <div className={styles.successBanner}>
-                <span>✅</span>
-                <span>If an account exists for <strong>{forgotEmail}</strong>, a recovery link has been sent. Check your inbox.</span>
+                <CheckCircle2 size={16} aria-hidden="true" />
+                <span>Password reset instructions have been sent to your email.</span>
               </div>
             ) : (
               <form className={styles.form} onSubmit={handleForgot} noValidate>
                 <div className={styles.fieldGroup}>
                   <label className={styles.label} htmlFor="forgot-email">Email Address</label>
-                  <div className={styles.inputWrap}>
-                    <span className={styles.inputIcon}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                        <polyline points="22,6 12,13 2,6" />
-                      </svg>
-                    </span>
-                    <input
-                      id="forgot-email"
-                      type="email"
-                      className={styles.input}
-                      placeholder="your@email.com"
-                      value={forgotEmail}
-                      onChange={(e) => setForgotEmail(e.target.value)}
-                    />
-                  </div>
+                  <input
+                    id="forgot-email"
+                    type="email"
+                    className={styles.input}
+                    placeholder="you@example.com"
+                    value={forgotEmail}
+                    onChange={(e) => setForgotEmail(e.target.value)}
+                  />
                 </div>
                 <button type="submit" className={styles.submitBtn}>
-                  <span>Send Recovery Link</span>
+                  Send Recovery Link
                 </button>
               </form>
             )}
 
             <button type="button" className={styles.backLink} onClick={() => { setForgotMode(false); setForgotSent(false) }}>
-              ← Back to Sign In
+              Back to Sign In
             </button>
           </>
         )}
+
+        {/* Feature Tags Highlight matching reference Panel 7 */}
+        <div className={styles.bottomFeaturesRow}>
+          <div className={styles.featureItem}>
+            <div className={styles.featIconBox}><Zap size={14} aria-hidden="true" /></div>
+            <span>Earn XP</span>
+          </div>
+          <div className={styles.featureItem}>
+            <div className={styles.featIconBox}><Gift size={14} aria-hidden="true" /></div>
+            <span>Unlock Rewards</span>
+          </div>
+          <div className={styles.featureItem}>
+            <div className={styles.featIconBox}><TrendingUp size={14} aria-hidden="true" /></div>
+            <span>Level Up</span>
+          </div>
+        </div>
       </div>
     </div>
   )

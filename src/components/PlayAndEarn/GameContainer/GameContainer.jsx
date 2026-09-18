@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { ArrowLeft, Info, Volume2, VolumeX, Timer, X, Zap } from 'lucide-react'
 import { useUserState } from '../../../context/UserStateContext'
 import GameStart from '../GameStart/GameStart'
 import GamePlay from '../GamePlay/GamePlay'
@@ -33,7 +34,7 @@ export default function GameContainer({ onBack, onGameComplete }) {
     setPhase('playing')
   }, [])
 
-  const handleCatch = useCallback((type, multiplier = 1) => {
+  const handleCatch = useCallback((type, multiplier = 2) => {
     setRewards((prev) => {
       if (type === 'xp-orb') {
         return {
@@ -73,23 +74,24 @@ export default function GameContainer({ onBack, onGameComplete }) {
   }, [onGameComplete])
 
   const handlePlayAgain = useCallback(() => {
+    setRewards(initialScore())
+    setTimeLeft(GAME_DURATION)
+    setFinalRewards(null)
     setPhase('idle')
   }, [])
 
   return (
     <div className={styles.gameContainer}>
-      <div className={styles.topNavRow}>
+      {/* 1. Top Section / Game Header */}
+      <header className={styles.topNavRow}>
         <button
           className={styles.backBtn}
           type="button"
-          aria-label="Back"
+          aria-label="Exit Game"
           onClick={onBack}
           id="xp-catcher-back-btn"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5" />
-            <path d="M12 19l-7-7 7-7" />
-          </svg>
+          <ArrowLeft size={18} aria-hidden="true" />
           <span className={styles.backText}>Exit Game</span>
         </button>
 
@@ -99,14 +101,11 @@ export default function GameContainer({ onBack, onGameComplete }) {
             <button
               type="button"
               className={styles.infoButton}
-              aria-label="Game info"
+              aria-label="Game instructions"
               onClick={() => setShowInfo((v) => !v)}
+              id="xp-catcher-info-btn"
             >
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="16" x2="12" y2="12" />
-                <line x1="12" y1="8" x2="12.01" y2="8" />
-              </svg>
+              <Info size={16} aria-hidden="true" />
             </button>
           </div>
           <p className={styles.subtitle}>Catch XP orbs &amp; coins — Score high for better rewards!</p>
@@ -118,50 +117,75 @@ export default function GameContainer({ onBack, onGameComplete }) {
             type="button"
             aria-label={isMuted ? 'Unmute sound' : 'Mute sound'}
             onClick={() => setIsMuted((m) => !m)}
+            id="xp-catcher-sound-btn"
           >
             {isMuted ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <line x1="23" y1="9" x2="17" y2="15" />
-                <line x1="17" y1="9" x2="23" y2="15" />
-              </svg>
+              <VolumeX size={17} aria-hidden="true" />
             ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 5" />
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
-              </svg>
+              <Volume2 size={17} aria-hidden="true" />
             )}
           </button>
 
-          <div className={`${styles.timerPill} ${timeLeft <= 5 && phase === 'playing' ? styles.timerUrgent : ''}`}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
+          <div
+            className={`${styles.timerPill} ${
+              timeLeft <= 5 && phase === 'playing' ? styles.timerUrgent : ''
+            }`}
+            title="Session Countdown"
+          >
+            <Timer size={15} aria-hidden="true" />
             <span className={styles.timerDigits}>{formatTime(timeLeft)}</span>
           </div>
         </div>
-      </div>
+      </header>
 
+      {/* 2. Info Modal / Game Rules Dialog */}
       {showInfo && (
         <div className={styles.infoModal} onClick={() => setShowInfo(false)}>
           <div className={styles.infoModalContent} onClick={(e) => e.stopPropagation()}>
             <div className={styles.infoModalHeader}>
-              <h3>How To Play XP Catcher</h3>
-              <button type="button" onClick={() => setShowInfo(false)}>✕</button>
+              <div className={styles.infoModalTitleWrap}>
+                <Zap size={18} color="#c084fc" aria-hidden="true" />
+                <h3>How To Play XP Catcher</h3>
+              </div>
+              <button
+                type="button"
+                className={styles.modalCloseBtn}
+                onClick={() => setShowInfo(false)}
+                aria-label="Close"
+              >
+                <X size={18} aria-hidden="true" />
+              </button>
             </div>
-            <p>Catch falling collectibles in your golden basket before the 20-second timer runs out!</p>
-            <ul>
-              <li><strong style={{ color: '#c084fc' }}>XP Orb:</strong> +10 XP multiplied by streak combo</li>
-              <li><strong style={{ color: '#fcd34d' }}>VE Coin:</strong> +15 Score &amp; +5 VEs</li>
-              <li><strong style={{ color: '#4ade80' }}>Gem:</strong> +20 Score &amp; +2 Gems</li>
-              <li><strong style={{ color: '#fb923c' }}>Combo Multiplier:</strong> Catch items without dropping to reach 2X, 3X, and 4X!</li>
+            <p className={styles.infoModalIntro}>
+              Control the glowing catcher platform at the bottom of the arena to gather falling collectibles before the 20-second timer runs out!
+            </p>
+            <ul className={styles.rulesList}>
+              <li>
+                <strong style={{ color: '#c084fc' }}>XP Orb:</strong> +10 XP base points, multiplied by active streak combo.
+              </li>
+              <li>
+                <strong style={{ color: '#fde047' }}>VE Coin:</strong> +15 Score &amp; +5 VEs reward currency.
+              </li>
+              <li>
+                <strong style={{ color: '#4ade80' }}>Rare Gem:</strong> +20 Score &amp; +2 Gems multiplier booster.
+              </li>
+              <li>
+                <strong style={{ color: '#fb923c' }}>Combo Multipliers:</strong> You start immediately at 2X Multiplier! Catch 5 items consecutively without dropping to boost to 3X, and 10 items to trigger 4X MAX!
+              </li>
             </ul>
+            <button
+              type="button"
+              className={styles.modalGotItBtn}
+              onClick={() => setShowInfo(false)}
+            >
+              Got It
+            </button>
           </div>
         </div>
       )}
 
-      <div className={styles.innerContent}>
+      {/* 3. Main Stage Content Area */}
+      <main className={styles.innerContent}>
         {phase === 'idle' && (
           <GameStart onStart={handleStart} />
         )}
@@ -180,9 +204,10 @@ export default function GameContainer({ onBack, onGameComplete }) {
           <GameResult
             finalRewards={finalRewards}
             onPlayAgain={handlePlayAgain}
+            onExit={onBack}
           />
         )}
-      </div>
+      </main>
     </div>
   )
 }

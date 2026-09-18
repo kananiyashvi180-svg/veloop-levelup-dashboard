@@ -1,4 +1,5 @@
 import { useUserState } from '../../context/UserStateContext'
+import { Award, ClipboardCheck, Flame, Zap, Check } from 'lucide-react'
 import styles from './TodaysBoost.module.css'
 
 export default function TodaysBoost({ progression, onClaimBoost }) {
@@ -12,21 +13,21 @@ export default function TodaysBoost({ progression, onClaimBoost }) {
 
   const items = [
     {
-      icon: '⭐',
+      icon: Award,
       label: 'XP Earned Today',
       value: `${xpEarnedToday.toLocaleString()} XP`,
       badge: `+${Math.max(12, Math.round(xpEarnedToday / 15))}%`,
       iconBg: '#f5ba31',
     },
     {
-      icon: '📋',
+      icon: ClipboardCheck,
       label: 'Tasks Completed',
       value: `${tasksCompleted} / 8`,
       badge: `${taskPercentage}%`,
       iconBg: '#3b82f6',
     },
     {
-      icon: '🔥',
+      icon: Flame,
       label: 'Current Streak',
       value: `${currentStreak} Days`,
       badge: 'Active 2.5X',
@@ -47,7 +48,7 @@ export default function TodaysBoost({ progression, onClaimBoost }) {
     <section className={styles.section}>
       <div className={styles.sectionHeader}>
         <div className={styles.titleGroup}>
-          <span className={styles.sectionIcon}>⚡</span>
+          <Zap className={styles.sectionIcon} size={17} aria-hidden="true" />
           <h2 className={styles.sectionTitle}>TODAY'S BOOST</h2>
         </div>
         <span className={styles.boostStatus}>Daily Reset in 4h 12m</span>
@@ -58,7 +59,7 @@ export default function TodaysBoost({ progression, onClaimBoost }) {
           <div className={styles.boostCard} key={item.label}>
             <div className={styles.cardTop}>
               <div className={styles.iconWrap} style={{ background: `${item.iconBg}22`, border: `1px solid ${item.iconBg}44` }}>
-                <span className={styles.icon}>{item.icon}</span>
+                <item.icon className={styles.icon} size={18} aria-hidden="true" />
               </div>
               <span className={styles.badge} style={{ color: item.iconBg, background: `${item.iconBg}18` }}>
                 {item.badge}
@@ -77,7 +78,7 @@ export default function TodaysBoost({ progression, onClaimBoost }) {
         disabled={claimed}
         id="claim-todays-boost-btn"
       >
-        {claimed ? '✓ Boost Active: +150 XP Claimed' : '⚡ Claim Today\'s 2.5X Boost (+150 XP)'}
+        {claimed ? <><Check size={14} aria-hidden="true" /> Boost Active: +150 XP Claimed</> : <><Zap size={14} aria-hidden="true" /> Claim Today\'s 2.5X Boost (+150 XP)</>}
       </button>
     </section>
   )

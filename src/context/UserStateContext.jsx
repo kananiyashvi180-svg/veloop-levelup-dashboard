@@ -4,36 +4,132 @@ import { useAuth } from './AuthContext'
 
 const UserStateContext = createContext(null)
 
-const INITIAL_ACTIVITIES = []
-const INITIAL_NOTIFICATIONS = []
-const INITIAL_UNLOCKED_REWARDS = []
+const INITIAL_ACTIVITIES = [
+  {
+    id: 'act-1',
+    type: 'Level Up',
+    title: 'Level Up',
+    subtitle: 'Reached Level 11 (Platinum II)',
+    xpAmount: 0,
+    timestamp: '2h ago',
+    status: 'completed'
+  },
+  {
+    id: 'act-2',
+    type: 'Tasks',
+    title: 'Earned XP',
+    subtitle: 'Completed daily task',
+    xpAmount: 500,
+    timestamp: '3h ago',
+    status: 'completed'
+  },
+  {
+    id: 'act-3',
+    type: 'Reward',
+    title: 'Claimed Reward',
+    subtitle: 'Premium Pack',
+    xpAmount: 0,
+    timestamp: '5h ago',
+    status: 'claimed'
+  },
+  {
+    id: 'act-4',
+    type: 'Game',
+    title: 'Played Game',
+    subtitle: 'XP Catcher',
+    xpAmount: 200,
+    timestamp: '6h ago',
+    status: 'completed'
+  },
+  {
+    id: 'act-5',
+    type: 'VEs',
+    title: 'Earned VEs',
+    subtitle: 'Game reward',
+    xpAmount: 0,
+    vesAmount: 50,
+    timestamp: '8h ago',
+    status: 'completed'
+  },
+  {
+    id: 'act-6',
+    type: 'Gems',
+    title: 'Earned Gems',
+    subtitle: 'Special bonus',
+    xpAmount: 0,
+    gemsAmount: 5,
+    timestamp: '10h ago',
+    status: 'completed'
+  },
+  {
+    id: 'act-7',
+    type: 'Milestone',
+    title: 'Level Milestone',
+    subtitle: 'Reached Level 10',
+    xpAmount: 0,
+    timestamp: '1d ago',
+    status: 'completed'
+  }
+]
+
+const INITIAL_NOTIFICATIONS = [
+  {
+    id: 'notif-1',
+    type: 'level',
+    icon: 'Crown',
+    title: 'Welcome to Level 11 Platinum II!',
+    body: 'Elite Miner status unlocked. Claim your Premium Pack bonus.',
+    timestamp: '2h ago',
+    read: false
+  },
+  {
+    id: 'notif-2',
+    type: 'xp',
+    icon: 'Zap',
+    title: '+500 XP Earned',
+    body: 'Daily quest milestone accomplished.',
+    timestamp: '3h ago',
+    read: false
+  },
+  {
+    id: 'notif-3',
+    type: 'game',
+    icon: 'Gamepad2',
+    title: '2X Boost Active',
+    body: 'Play XP Catcher now to earn up to 4X multiplier rewards.',
+    timestamp: '5h ago',
+    read: false
+  }
+]
+
+const INITIAL_UNLOCKED_REWARDS = ['premium-pack', 'xp-boost', 'mystery-crate']
 const INITIAL_CLAIMED_REWARDS = []
 
 function getStorageKey(userId) {
-  return `veloop_progression_state_${userId || 'default'}`
+  return `veloop_progression_state_v2_${userId || 'default'}`
 }
 
 function createDefaultState(userId, fullName, email) {
   return {
-    userName: fullName || 'AlexRider',
-    email: email || 'alex@veloop.io',
+    userName: fullName || 'Yashvi Kanani',
+    email: email || 'yashvi@example.com',
     avatarId: 'vanguard',
-    bio: '',
+    bio: 'Elite Miner • Pushing for Diamond Rank • XP Master',
     tag: '#VEL-7402',
-    rank: 'Gold Tier',
-    currentLevel: 1,
-    currentXp: 0,
-    totalXp: 0,
-    ves: 0,
-    gems: 0,
-    currentStreak: 0,
-    tasksCompleted: 0,
-    completedTaskIds: [],
-    xpEarnedToday: 0,
-    todaysBoostClaimed: false,
-    gamesPlayed: 0,
-    totalGameScore: 0,
-    miniGameHighScore: 0,
+    rank: 'Platinum II',
+    currentLevel: 11,
+    currentXp: 6420,
+    totalXp: 84200,
+    ves: 2450,
+    gems: 120,
+    currentStreak: 7,
+    tasksCompleted: 14,
+    completedTaskIds: ['task-1', 'task-2'],
+    xpEarnedToday: 1850,
+    todaysBoostClaimed: true,
+    gamesPlayed: 28,
+    totalGameScore: 18450,
+    miniGameHighScore: 1240,
     activities: INITIAL_ACTIVITIES,
     notifications: INITIAL_NOTIFICATIONS,
     unlockedRewards: INITIAL_UNLOCKED_REWARDS,
@@ -132,7 +228,7 @@ export function UserStateProvider({ children }) {
         extraNotifications.push({
           id: `notif-lvl-${Date.now()}-${levelsGained}`,
           type: 'level',
-          icon: '🚀',
+          icon: 'Launch',
           title: `You reached Level ${String(currentLevel).padStart(2, '0')}!`,
           body: `${reachedConfig.reward.label} reward unlocked. Claim your milestone bonus!`,
           timestamp: 'Just now',
@@ -193,7 +289,7 @@ export function UserStateProvider({ children }) {
       const newNotification = {
         id: `notif-${Date.now()}`,
         type: category === 'Game' ? 'game' : 'xp',
-        icon: category === 'Game' ? '🎮' : '⚡',
+        icon: category === 'Game' ? 'Game' : 'XP',
         title: `+${amount} XP Earned`,
         body: `${source} • ${category}`,
         timestamp: 'Just now',
@@ -228,7 +324,7 @@ export function UserStateProvider({ children }) {
       xp = 0,
       ves = 0,
       gems = 0,
-      maxMultiplier = 1,
+      maxMultiplier = 2,
       itemsCaught = 0,
       bestStreak = 0,
       duration = 20
@@ -274,7 +370,7 @@ export function UserStateProvider({ children }) {
       const gameNotification = {
         id: `notif-game-${Date.now()}`,
         type: 'game',
-        icon: '🎮',
+        icon: 'Game',
         title: 'XP Catcher Completed!',
         body: `You earned +${xp} XP, +${ves} VEs, +${gems} Gems (Score: ${score}).`,
         timestamp: 'Just now',
@@ -298,7 +394,7 @@ export function UserStateProvider({ children }) {
       }
     })
 
-    showToast(`🎮 Game Finished! +${xp} XP, +${ves} VEs, +${gems} Gems`, 'xp')
+    showToast(`Game Finished! +${xp} XP, +${ves} VEs, +${gems} Gems`, 'xp')
 
     if (celebrationLevel) {
       setTimeout(() => {
@@ -395,7 +491,7 @@ export function UserStateProvider({ children }) {
       const claimNotif = {
         id: `notif-reward-${Date.now()}`,
         type: 'reward',
-        icon: '🎁',
+        icon: 'Reward',
         title: 'Reward Unlocked & Claimed',
         body: `${reward.title} has been added to your inventory.`,
         timestamp: 'Just now',
@@ -426,7 +522,7 @@ export function UserStateProvider({ children }) {
       gems: prev.gems + gemsAwarded
     }))
 
-    showToast(`🎉 Level Up Bonus Claimed! (+${vesAwarded} VEs & +${gemsAwarded} Gems)`, 'milestone')
+    showToast(`Level Up Bonus Claimed! (+${vesAwarded} VEs & +${gemsAwarded} Gems)`, 'milestone')
     setShowLevelUpModal(false)
     setLevelUpData(null)
   }, [levelUpData, currentLevelConfig, showToast])
@@ -459,7 +555,7 @@ export function UserStateProvider({ children }) {
     const nextNotification = {
       id: notification.id || `notif-${Date.now()}`,
       type: notification.type || 'system',
-      icon: notification.icon || '🔔',
+      icon: notification.icon || 'Notice',
       title: notification.title || 'New update',
       body: notification.body || '',
       timestamp: notification.timestamp || 'Just now',

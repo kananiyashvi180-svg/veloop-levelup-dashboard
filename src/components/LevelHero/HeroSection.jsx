@@ -1,87 +1,112 @@
+import React from 'react'
+import { Crown, ChevronLeft, Map, Sparkles } from 'lucide-react'
+import PodiumBadge from './PodiumBadge'
+import LevelBadge from '../LevelBadge/LevelBadge'
 import styles from './HeroSection.module.css'
 
 export default function HeroSection({ progression, onOpenRoadmap }) {
-  const { currentLevel, currentXp, requiredXp, xpPercentage, nextLevel, xpRemaining, currentLevelConfig, userSummary } = progression
+  const {
+    currentLevel = 11,
+    currentXp = 6420,
+    requiredXp = 8000,
+    xpPercentage = 80,
+    nextLevel = 12,
+    xpRemaining = 1580,
+    currentLevelConfig,
+    userSummary
+  } = progression || {}
 
-  const tierLabel = currentLevelConfig ? `${currentLevelConfig.tier} ${currentLevelConfig.name}` : userSummary?.rank || 'Gold Tier'
+  const tierTitle = currentLevelConfig?.tier || 'PLATINUM II'
+  const rankSubtitle = currentLevelConfig?.name || userSummary?.rank || 'Elite Miner'
 
   return (
-    <section className={styles.heroCard}>
-      <div className={styles.ambientGlow} />
+    <section className={styles.heroSection} aria-label="Level Overview">
+      {/* Ambient background light orbs */}
+      <div className={styles.ambientTopGlow} />
 
-      <div className={styles.cardHeader}>
-        <div className={styles.badgeWrapper}>
-          <div className={styles.hexOuter}>
-            <div className={styles.hexInner}>
-              <span className={styles.levelTag}>LVL</span>
-              <span className={styles.levelNum}>{String(currentLevel).padStart(2, '0')}</span>
+      <div className={styles.heroCard}>
+        {/* Top Header Eyebrow */}
+        <div className={styles.eyebrowRow}>
+          <button
+            type="button"
+            className={styles.backLevelBtn}
+            onClick={onOpenRoadmap}
+            title="View Roadmap"
+          >
+            <ChevronLeft size={16} aria-hidden="true" />
+            <Crown size={15} className={styles.crownIcon} aria-hidden="true" />
+            <span>YOUR LEVEL</span>
+          </button>
+        </div>
+
+        {/* Hero Showcase Grid: Left Typography + Right Podium */}
+        <div className={styles.showcaseGrid}>
+          <div className={styles.heroCopyColumn}>
+            <h1 className={styles.rankTitle}>{tierTitle}</h1>
+            <h2 className={styles.rankSubtitle}>{rankSubtitle}</h2>
+
+            <div className={styles.stylishDivider} />
+
+            <div className={styles.cheeringMessage}>
+              <p className={styles.cheerLine1}>Keep earning, keep growing!</p>
+              <p className={styles.cheerLine2}>You're doing amazing!</p>
             </div>
           </div>
-        </div>
 
-        <div className={styles.levelMeta}>
-          <div className={styles.tierRow}>
-            <span className={styles.tierBadge}>ACTIVE TIER</span>
-            <span className={styles.rankName}>{tierLabel}</span>
-          </div>
-
-          <div className={styles.xpRow}>
-            <span className={styles.xpValue}>
-              <span className={styles.xpBig}>{currentXp.toLocaleString()}</span>
-              <span className={styles.xpUnit}>XP</span>
-            </span>
-            <span className={styles.xpSeparator}>•</span>
-            <span className={styles.xpTarget}>
-              {xpRemaining?.toLocaleString() || (requiredXp - currentXp).toLocaleString()} XP to Level {String(nextLevel).padStart(2, '0')}
-            </span>
+          <div className={styles.heroPodiumColumn}>
+            <PodiumBadge
+              level={currentLevel}
+              tierName={tierTitle}
+              subName={rankSubtitle}
+            />
           </div>
         </div>
 
-        <div className={styles.headerRightArea}>
-          <div className={styles.statusPill}>
-            <span className={styles.statusDot} />
-            <span className={styles.statusText}>{Math.round(xpPercentage)}% Completed</span>
-          </div>
+        {/* Wide Glass XP Progress Panel */}
+        <div className={styles.xpStatusPanel}>
+          <div className={styles.xpPanelTopRow}>
+            {/* Level Identification */}
+            <div className={styles.levelIdentityGroup}>
+              <div className={styles.miniBadgeWrap}>
+                <LevelBadge level={currentLevel} size="mini" showGlow={false} />
+              </div>
+              <div className={styles.levelLabelGroup}>
+                <span className={styles.levelHeading}>Level {String(currentLevel).padStart(2, '0')}</span>
+                <span className={styles.levelSublabel}>Current Level</span>
+              </div>
+            </div>
 
-          <div className={styles.heroActionBtns}>
+            {/* XP and Percentage */}
+            <div className={styles.xpMetricsGroup}>
+              <div className={styles.xpAmountRow}>
+                <span className={styles.xpBigValue}>{currentXp.toLocaleString()} XP</span>
+                <span className={styles.percentPill}>{Math.round(xpPercentage)}%</span>
+              </div>
+              <span className={styles.xpRemainingNote}>
+                {xpRemaining?.toLocaleString() || (requiredXp - currentXp).toLocaleString()} XP to reach Level {String(nextLevel).padStart(2, '0')}
+              </span>
+            </div>
+
+            {/* Action to view all levels */}
             <button
               type="button"
-              className={styles.roadmapBtn}
+              className={styles.viewLevelsBtn}
               onClick={onOpenRoadmap}
-              id="hero-open-roadmap-btn"
-              title="View Level Progression Roadmap"
+              id="hero-view-all-levels-btn"
             >
-              🗺️ Roadmap
+              <Map size={14} aria-hidden="true" />
+              <span>View All Levels</span>
             </button>
           </div>
-        </div>
-      </div>
 
-      <div className={styles.progressContainer}>
-        <div className={styles.progressTrack}>
-          <div
-            className={styles.progressFill}
-            style={{ width: `${Math.min(100, Math.max(0, xpPercentage))}%` }}
-          >
-            <div className={styles.progressShimmer} />
-          </div>
-        </div>
-
-        <div className={styles.milestoneRow}>
-          <div className={styles.milestoneItem}>
-            <span className={styles.milestoneCircle}>{String(currentLevel).padStart(2, '0')}</span>
-            <span className={styles.milestoneLabel}>Current Level</span>
-          </div>
-
-          <div className={styles.progressStats}>
-            <span className={styles.progressStatCurrent}>{currentXp.toLocaleString()} XP</span>
-            <span className={styles.progressStatSlash}>/</span>
-            <span className={styles.progressStatTotal}>{requiredXp.toLocaleString()} XP</span>
-          </div>
-
-          <div className={styles.milestoneItem}>
-            <span className={styles.milestoneCircleActive}>{String(nextLevel).padStart(2, '0')}</span>
-            <span className={styles.milestoneLabel}>Next Milestone</span>
+          {/* Glowing Multi-Stop Progress Bar */}
+          <div className={styles.progressTrack}>
+            <div
+              className={styles.progressFill}
+              style={{ width: `${Math.min(100, Math.max(0, xpPercentage))}%` }}
+            >
+              <span className={styles.progressSparkleTip} />
+            </div>
           </div>
         </div>
       </div>
