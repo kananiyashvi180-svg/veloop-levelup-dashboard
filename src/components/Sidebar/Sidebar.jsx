@@ -8,7 +8,7 @@ import {
   User,
   X
 } from 'lucide-react'
-import { CrystalCluster } from '../DashboardMockupAssets/DashboardVisuals'
+import DrawerCrystals from './DrawerCrystals'
 import styles from './Sidebar.module.css'
 
 const navItems = [
@@ -70,11 +70,12 @@ export default function Sidebar({
           })}
         </nav>
 
-        {/* Bottom Crystal Graphic & Motivation Text */}
+        {/* Lower Decorative Crystal Space & Motivation Badge */}
         <div className={styles.sidebarFooterGraphic}>
-          <div className={styles.crystalWrap}>
-            <CrystalCluster size={105} />
+          <div className={styles.drawerCrystalDecoration}>
+            <DrawerCrystals />
           </div>
+
           <div className={styles.footerTexts}>
             <span className={styles.textLine}>Higher Levels</span>
             <span className={styles.textLine}>Bigger Rewards</span>

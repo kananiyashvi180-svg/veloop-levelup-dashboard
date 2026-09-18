@@ -207,17 +207,19 @@ export default function HomeView({
 
             {/* 5 Milestone Badges Connected by Line */}
             <div className={styles.milestonesTrackContainer}>
-              {/* Connecting progress line */}
-              <div className={styles.milestoneLineTrack}>
-                <div className={styles.milestoneLineActive} style={{ width: '56%' }} />
-              </div>
+              <div className={styles.milestonesInnerTrack}>
+                {/* Connecting progress line */}
+                <div className={styles.milestoneLineTrack}>
+                  <div className={styles.milestoneLineActive} style={{ width: '56%' }} />
+                </div>
 
-              <div className={styles.milestonesList}>
-                <MilestoneBadge level="Lv 05" tier="Bronze" />
-                <MilestoneBadge level="Lv 10" tier="Silver" />
-                <MilestoneBadge level="Lv 11" tier="Platinum II" active />
-                <MilestoneBadge level="Lv 15" tier="Diamond" locked />
-                <MilestoneBadge level="Lv 20" tier="Master" locked />
+                <div className={styles.milestonesList}>
+                  <MilestoneBadge level="Lv 05" tier="Bronze" />
+                  <MilestoneBadge level="Lv 10" tier="Silver" />
+                  <MilestoneBadge level="Lv 11" tier="Platinum II" active />
+                  <MilestoneBadge level="Lv 15" tier="Diamond" locked />
+                  <MilestoneBadge level="Lv 20" tier="Master" locked />
+                </div>
               </div>
             </div>
           </div>
@@ -237,48 +239,56 @@ export default function HomeView({
             <div className={styles.statMetricCard}>
               <div className={styles.metricTopRow}>
                 <div className={`${styles.metricIconWrap} ${styles.metricIconPurple}`}>
-                  <Zap size={18} aria-hidden="true" />
+                  <Zap size={17} aria-hidden="true" />
                 </div>
+                <span className={styles.metricChangeBadge}>+12%</span>
               </div>
-              <span className={styles.metricLabel}>Total XP Earned</span>
-              <strong className={styles.metricValue}>{currentXp.toLocaleString()}</strong>
-              <span className={styles.metricChangeBadge}>+12% this week</span>
+              <div className={styles.metricContentWrap}>
+                <span className={styles.metricLabel}>Total XP Earned</span>
+                <strong className={styles.metricValue}>{currentXp.toLocaleString()}</strong>
+              </div>
             </div>
 
             {/* Card 2: Total VEs Earned */}
             <div className={styles.statMetricCard}>
               <div className={styles.metricTopRow}>
                 <div className={`${styles.metricIconWrap} ${styles.metricIconGold}`}>
-                  <Coins size={18} aria-hidden="true" />
+                  <Coins size={17} aria-hidden="true" />
                 </div>
+                <span className={styles.metricChangeBadge}>+8%</span>
               </div>
-              <span className={styles.metricLabel}>Total VEs Earned</span>
-              <strong className={styles.metricValue}>{totalEarnedVEs.toLocaleString()}</strong>
-              <span className={styles.metricChangeBadge}>+8% this week</span>
+              <div className={styles.metricContentWrap}>
+                <span className={styles.metricLabel}>Total VEs Earned</span>
+                <strong className={styles.metricValue}>{totalEarnedVEs.toLocaleString()}</strong>
+              </div>
             </div>
 
             {/* Card 3: Total Gems Earned */}
             <div className={styles.statMetricCard}>
               <div className={styles.metricTopRow}>
                 <div className={`${styles.metricIconWrap} ${styles.metricIconTeal}`}>
-                  <Gem size={18} aria-hidden="true" />
+                  <Gem size={17} aria-hidden="true" />
                 </div>
+                <span className={styles.metricChangeBadge}>+5%</span>
               </div>
-              <span className={styles.metricLabel}>Total Gems Earned</span>
-              <strong className={styles.metricValue}>{totalGems.toLocaleString()}</strong>
-              <span className={styles.metricChangeBadge}>+5% this week</span>
+              <div className={styles.metricContentWrap}>
+                <span className={styles.metricLabel}>Total Gems Earned</span>
+                <strong className={styles.metricValue}>{totalGems.toLocaleString()}</strong>
+              </div>
             </div>
 
             {/* Card 4: Games Played */}
             <div className={styles.statMetricCard}>
               <div className={styles.metricTopRow}>
                 <div className={`${styles.metricIconWrap} ${styles.metricIconBlue}`}>
-                  <Gamepad2 size={18} aria-hidden="true" />
+                  <Gamepad2 size={17} aria-hidden="true" />
                 </div>
+                <span className={styles.metricChangeBadge}>+3%</span>
               </div>
-              <span className={styles.metricLabel}>Games Played</span>
-              <strong className={styles.metricValue}>28</strong>
-              <span className={styles.metricChangeBadge}>+3% this week</span>
+              <div className={styles.metricContentWrap}>
+                <span className={styles.metricLabel}>Games Played</span>
+                <strong className={styles.metricValue}>28</strong>
+              </div>
             </div>
           </div>
         </section>

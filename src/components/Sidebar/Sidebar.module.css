@@ -88,42 +88,43 @@
 .sidebarFooterGraphic {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 0 0.4rem;
-  margin-top: 2rem;
+  align-items: center;
+  text-align: center;
+  padding: 0 0.2rem;
+  margin-top: auto;
+  padding-top: 1.2rem;
   user-select: none;
+  width: 100%;
 }
 
-.crystalWrap {
-  margin-bottom: 0.75rem;
-  animation: crystalFloat 5s ease-in-out infinite;
-}
-
-@keyframes crystalFloat {
-  0%   { transform: translateY(0) rotate(0deg); }
-  50%  { transform: translateY(-5px) rotate(1deg); }
-  100% { transform: translateY(0) rotate(0deg); }
+.drawerCrystalDecoration {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
 }
 
 .footerTexts {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2px;
 }
 
 .textLine {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: var(--text-dim);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
 .textLineBright {
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 800;
   color: var(--accent-purple-bright);
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 10px rgba(192, 132, 252, 0.45);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(192, 132, 252, 0.55);
 }
 
 /* Mobile responsive drawer */
@@ -138,10 +139,16 @@
     position: fixed;
     top: 0; left: 0; bottom: 0;
     z-index: 1000;
-    width: 240px;
+    width: min(270px, 82vw);
+    max-width: 320px;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1.2rem 0.85rem 1.4rem 0.85rem;
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.85);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 12px 0 45px rgba(0, 0, 0, 0.90), 0 0 30px rgba(109, 40, 217, 0.15);
   }
   .sidebarOpen  { transform: translateX(0); }
   .mobileCloseBar { display: flex; }
@@ -150,8 +157,8 @@
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.80);
-    backdrop-filter: blur(4px);
+    background: radial-gradient(circle at 25% 50%, rgba(109, 40, 217, 0.16) 0%, transparent 65%), rgba(4, 5, 14, 0.88);
+    backdrop-filter: blur(8px);
     z-index: 999;
     opacity: 0;
     pointer-events: none;
