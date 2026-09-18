@@ -158,9 +158,9 @@
 
 
 .xpToNextText {
-  font-size: 0.72rem;
+  font-size: 0.73rem;
   font-weight: 600;
-  color: var(--text-dim);
+  color: #b0b8c8;
 }
 
 /* 3 Quick Stat Badges */
@@ -229,9 +229,9 @@
 }
 
 .pillLabel {
-  font-size: 0.68rem;
+  font-size: 0.70rem;
   font-weight: 600;
-  color: var(--text-dim);
+  color: #b0b8c8;
 }
 
 /* Center Hero Column */
@@ -278,7 +278,7 @@
 .nextRewardTag {
   font-size: 0.70rem;
   font-weight: 700;
-  color: var(--text-dim);
+  color: #cbd5e1;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -384,8 +384,8 @@
 }
 
 .cardHeaderSub {
-  font-size: 0.72rem;
-  color: var(--text-dim);
+  font-size: 0.74rem;
+  color: #b0b8c8;
   margin: 2px 0 0 0;
 }
 
@@ -590,9 +590,9 @@
 .metricIconBlue   { background: rgba(59, 130, 246, 0.14); border: 1px solid rgba(59, 130, 246, 0.30); color: var(--accent-blue-soft); }
 
 .metricLabel {
-  font-size: 0.72rem;
+  font-size: 0.73rem;
   font-weight: 600;
-  color: var(--text-dim);
+  color: #b0b8c8;
 }
 
 .metricValue {
@@ -646,8 +646,8 @@
 .promoArrow { color: var(--accent-purple-bright); }
 
 .promoSubtitle {
-  font-size: 0.74rem;
-  color: var(--text-muted);
+  font-size: 0.76rem;
+  color: #cbd5e1;
   margin: 0;
 }
 
@@ -757,8 +757,8 @@
 }
 
 .boostDesc {
-  font-size: 0.72rem;
-  color: var(--text-dim);
+  font-size: 0.74rem;
+  color: #b0b8c8;
   margin: 0;
   line-height: 1.35;
 }
@@ -776,11 +776,11 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 600;
-  color: var(--text-dim);
+  color: #cbd5e1;
   background: rgba(6, 7, 15, 0.80);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-full);
   padding: 4px 10px;
 }
@@ -833,8 +833,8 @@
 }
 
 .earnMoreDesc {
-  font-size: 0.72rem;
-  color: var(--text-muted);
+  font-size: 0.74rem;
+  color: #b0b8c8;
   margin: 0;
   line-height: 1.35;
 }
@@ -961,8 +961,8 @@
 }
 
 .actGains {
-  font-size: 0.66rem;
-  color: var(--text-dim);
+  font-size: 0.68rem;
+  color: #b0b8c8;
 }
 
 .gainXp  { color: var(--accent-purple-bright); font-weight: 700; }
@@ -970,13 +970,13 @@
 .gainGem { color: var(--accent-green-bright);  font-weight: 700; }
 
 .actSubtle {
-  font-size: 0.66rem;
-  color: var(--text-dim);
+  font-size: 0.70rem;
+  color: #b0b8c8;
 }
 
 .actTime {
-  font-size: 0.68rem;
-  color: var(--text-dim);
+  font-size: 0.70rem;
+  color: #b0b8c8;
   white-space: nowrap;
 }
 
@@ -993,6 +993,7 @@
     flex-direction: column;
     gap: 1.15rem;
     width: 100%;
+    box-sizing: border-box;
   }
 
   /* Flatten layout on tablet/mobile so sections stack in the requested natural order */
@@ -1006,7 +1007,8 @@
   .heroCard {
     order: 1;
     width: 100%;
-    grid-template-columns: 1fr auto;
+    box-sizing: border-box;
+    grid-template-columns: 1fr;
   }
   .heroRightCol {
     grid-column: 1 / -1;
@@ -1016,36 +1018,43 @@
   .yourStatsSection {
     order: 2;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .playEarnCard {
     order: 3;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .roadmapCard {
     order: 4;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .earnMoreCard {
     order: 5;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .boostCard {
     order: 6;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .activityCard {
     order: 7;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .promoBanner {
     order: 8;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .statsFourGrid {
@@ -1167,9 +1176,9 @@
   }
 
   .metricLabel {
-    font-size: 0.67rem;
+    font-size: 0.68rem;
     line-height: 1.2;
-    color: var(--text-dim);
+    color: #b0b8c8;
   }
 
   .metricValue {

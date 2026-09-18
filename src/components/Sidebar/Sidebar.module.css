@@ -127,14 +127,14 @@
   text-shadow: 0 0 12px rgba(192, 132, 252, 0.55);
 }
 
-/* Mobile responsive drawer */
+/* ============================================================ */
+/* Mobile / Tablet responsive drawer (≤ 1024px)                 */
+/* Sidebar becomes a fixed off-canvas drawer so it does NOT     */
+/* take any inline horizontal space on tablets or phones.       */
+/* ============================================================ */
 .backdrop { display: none; }
 
 @media (max-width: 1024px) {
-  .sidebar { width: 178px; }
-}
-
-@media (max-width: 768px) {
   .sidebar {
     position: fixed;
     top: 0; left: 0; bottom: 0;

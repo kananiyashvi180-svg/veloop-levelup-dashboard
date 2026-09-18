@@ -150,7 +150,9 @@
 
 @media (max-width: 1024px) {
   .contentArea {
-    padding: 1.2rem 1.2rem calc(5.5rem + env(safe-area-inset-bottom, 0px));
+    padding: 1.2rem 1.2rem calc(5.5rem + env(safe-area-inset-bottom, 0px)) 1.2rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 

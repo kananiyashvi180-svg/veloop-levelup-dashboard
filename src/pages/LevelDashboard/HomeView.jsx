@@ -46,6 +46,14 @@ export default function HomeView({
     progression?.nextLevelReward?.title ||
     'Premium Pack'
 
+  const getGreeting = () => {
+    const hour = new Date().getHours()
+    if (hour >= 5 && hour < 12) return 'Good Morning,'
+    if (hour >= 12 && hour < 17) return 'Good Afternoon,'
+    if (hour >= 17 && hour < 21) return 'Good Evening,'
+    return 'Good Night,'
+  }
+
   return (
     <div className={styles.homeLayout}>
       {/* ============================================================ */}
@@ -60,7 +68,7 @@ export default function HomeView({
           {/* Left Column: Greeting, XP, Quick Stats */}
           <div className={styles.heroLeftCol}>
             <div className={styles.greetingBlock}>
-              <span className={styles.greetingSub}>Good Morning,</span>
+              <span className={styles.greetingSub}>{getGreeting()}</span>
               <h1 className={styles.greetingName}>{username}</h1>
               <p className={styles.greetingMotto}>Keep pushing, you're doing great!</p>
             </div>
