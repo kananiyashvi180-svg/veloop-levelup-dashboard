@@ -12,7 +12,7 @@ const navItems = [
 
 export default function BottomNav({ activeSection = 'home', onSelectSection }) {
   return (
-    <nav className={styles.nav} aria-label="Mobile navigation">
+    <nav className={styles.nav} aria-label="Mobile navigation" data-cursor-ignore="true">
       {navItems.map((item) => {
         const isActive =
           activeSection === item.id ||

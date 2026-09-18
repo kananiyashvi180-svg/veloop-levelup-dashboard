@@ -2,7 +2,6 @@
    VELOOP PREMIUM CURSOR — VeloopCursor.module.css
    ============================================================ */
 
-/* ── Outer wrapper: positioned by JS transform ── */
 .cursorWrap {
   position: fixed;
   top: 0;
@@ -13,6 +12,17 @@
   opacity: 0;
   transition: opacity 0.4s ease;
 }
+
+/* ── Hide completely on touch devices, mobile viewports (<= 1024px), or hover:none ── */
+@media (max-width: 1024px), (pointer: coarse), (hover: none), (any-pointer: coarse) {
+  .cursorWrap {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
 
 /* ── Ambient glow ── */
 .glow {

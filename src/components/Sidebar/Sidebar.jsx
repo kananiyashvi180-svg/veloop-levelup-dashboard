@@ -32,9 +32,13 @@ export default function Sidebar({
       <div
         className={`${styles.backdrop} ${isOpen ? styles.backdropOpen : ''}`}
         onClick={onClose}
+        data-cursor-ignore="true"
       />
 
-      <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
+      <aside
+        className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}
+        data-cursor-ignore="true"
+      >
         {/* Mobile close button */}
         <div className={styles.mobileCloseBar}>
           <button

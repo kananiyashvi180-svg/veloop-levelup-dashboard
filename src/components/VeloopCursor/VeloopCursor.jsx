@@ -26,15 +26,32 @@ const MAX_HOVER_H = 120
 /* Lerp speed: 0 = never reaches target, 1 = instant */
 const LERP_SPEED = 0.14
 
+/* Device / environment check: mobile screen, coarse pointer, or hover:none */
+const isTouchOrMobile = () => {
+  if (typeof window === 'undefined') return true
+  return (
+    window.innerWidth <= 1024 ||
+    window.matchMedia('(pointer: coarse)').matches ||
+    window.matchMedia('(hover: none)').matches ||
+    window.matchMedia('(any-pointer: coarse)').matches
+  )
+}
+
+/* Check if element or any ancestor is tagged to ignore custom cursor */
+const shouldIgnore = (el) => {
+  if (!el || !(el instanceof Element)) return false
+  return !!el.closest(
+    '[data-cursor-ignore], aside, [role="dialog"], [aria-label="Mobile navigation"], nav[data-cursor-ignore]'
+  )
+}
+
 export default function VeloopCursor() {
   const wrapRef  = useRef(null) // outermost fixed wrapper — translated to cursor pos
   const innerRef = useRef(null) // sized box — transitions width/height
   const dotRef   = useRef(null) // center dot — stable
 
   useEffect(() => {
-    /* ── Bail early on coarse-pointer (touch-only) devices ── */
-    const isCoarse = window.matchMedia('(pointer: coarse)').matches
-    const reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const wrap  = wrapRef.current
     const inner = innerRef.current
@@ -53,16 +70,58 @@ export default function VeloopCursor() {
       rafId: null,
     }
 
-    /* ─────────────────── Helper: hide native cursor ─────────────────── */
+    const resetHover = () => {
+      if (s.hovering) {
+        s.hovering = false
+        s.hoverEl  = null
+        inner.style.width        = ''
+        inner.style.height       = ''
+        inner.style.borderRadius = ''
+        inner.classList.remove(styles.hoverMode)
+        inner.classList.remove(styles.hoverGold)
+      }
+    }
+
+    /* ─────────────────── Helper: hide native cursor only on desktop ─────────────────── */
     const styleTag = document.createElement('style')
     styleTag.id = 'veloop-cursor-hide'
-    styleTag.textContent = !isCoarse
-      ? `*, *::before, *::after { cursor: none !important; }`
-      : ''
+    styleTag.textContent = `
+      @media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+        *, *::before, *::after {
+          cursor: none !important;
+        }
+        [data-cursor-ignore],
+        [data-cursor-ignore] *,
+        aside,
+        aside * {
+          cursor: auto !important;
+        }
+        [data-cursor-ignore] button,
+        [data-cursor-ignore] a,
+        aside button,
+        aside a {
+          cursor: pointer !important;
+        }
+      }
+      @media (max-width: 1024px), (pointer: coarse), (hover: none) {
+        *, *::before, *::after {
+          cursor: auto !important;
+        }
+        button, a, input, select, textarea, [role="button"] {
+          cursor: pointer !important;
+        }
+      }
+    `
     document.head.appendChild(styleTag)
 
     /* ─────────────────── RAF animation loop ─────────────────── */
     const tick = () => {
+      if (isTouchOrMobile()) {
+        wrap.style.opacity = '0'
+        s.rafId = requestAnimationFrame(tick)
+        return
+      }
+
       /* If hovering, continuously refresh position from the live bounding rect */
       if (s.hovering && s.hoverEl) {
         try {
@@ -84,7 +143,17 @@ export default function VeloopCursor() {
 
     /* ─────────────────── Pointer-move ─────────────────── */
     const onMove = (e) => {
-      if (e.pointerType === 'touch') return
+      if (e.pointerType === 'touch' || e.pointerType === 'pen') return
+      if (isTouchOrMobile()) {
+        wrap.style.opacity = '0'
+        return
+      }
+
+      if (shouldIgnore(e.target)) {
+        resetHover()
+        wrap.style.opacity = '0'
+        return
+      }
 
       s.targetX = e.clientX
       s.targetY = e.clientY
@@ -93,23 +162,30 @@ export default function VeloopCursor() {
         s.visible = true
         s.curX = e.clientX
         s.curY = e.clientY
-        wrap.style.opacity = '1'
       }
+      wrap.style.opacity = '1'
     }
 
     /* ─────────────────── Pointer-over (hover start) ─────────────────── */
     const onOver = (e) => {
-      if (e.pointerType === 'touch') return
+      if (e.pointerType === 'touch' || e.pointerType === 'pen') return
+      if (isTouchOrMobile()) return
+
+      if (shouldIgnore(e.target)) {
+        resetHover()
+        wrap.style.opacity = '0'
+        return
+      }
 
       /* Skip the game arena — keep cursor responsive but don't frame the whole arena */
       const arena = document.getElementById('xp-catcher-arena')
       if (arena && arena.contains(e.target)) return
 
       const el = e.target.closest(INTERACTIVE_SEL)
-      if (!el) return
+      if (!el || shouldIgnore(el)) return
 
       const rect = el.getBoundingClientRect()
-      if (rect.width === 0) return
+      if (rect.width === 0 || rect.height === 0) return
 
       /* Clamp the frame to max dims */
       const PAD = 10
@@ -140,26 +216,21 @@ export default function VeloopCursor() {
 
     /* ─────────────────── Pointer-out (hover end) ─────────────────── */
     const onOut = (e) => {
-      if (e.pointerType === 'touch') return
+      if (e.pointerType === 'touch' || e.pointerType === 'pen') return
       if (e.relatedTarget && e.target.contains(e.relatedTarget)) return
       if (!s.hovering) return
 
       /* Only clear if leaving the actual hovered element */
       if (s.hoverEl && !s.hoverEl.contains(e.relatedTarget)) {
-        s.hovering = false
-        s.hoverEl  = null
-
-        inner.style.width        = ''
-        inner.style.height       = ''
-        inner.style.borderRadius = ''
-        inner.classList.remove(styles.hoverMode)
-        inner.classList.remove(styles.hoverGold)
+        resetHover()
       }
     }
 
     /* ─────────────────── Click pulse ─────────────────── */
     const onClick = (e) => {
-      if (e.pointerType === 'touch') return
+      if (e.pointerType === 'touch' || e.pointerType === 'pen') return
+      if (isTouchOrMobile() || shouldIgnore(e.target)) return
+
       inner.classList.add(styles.clicking)
       dot.classList.add(styles.dotClick)
       setTimeout(() => {
@@ -170,6 +241,8 @@ export default function VeloopCursor() {
 
     /* ─────────────────── Touch ripple (mobile) ─────────────────── */
     const onTouchStart = (e) => {
+      if (shouldIgnore(e.target)) return
+
       const t = e.changedTouches[0]
       const ripple = document.createElement('div')
       ripple.className = 'veloop-touch-ripple'
@@ -191,16 +264,22 @@ export default function VeloopCursor() {
       setTimeout(() => ripple.remove(), 700)
     }
 
-    /* ─────────────────── Mount ─────────────────── */
-    if (!isCoarse) {
-      document.addEventListener('pointermove', onMove, { passive: true })
-      document.addEventListener('pointerover', onOver, { passive: true })
-      document.addEventListener('pointerout',  onOut,  { passive: true })
-      document.addEventListener('pointerdown', onClick)
-      s.rafId = requestAnimationFrame(tick)
+    /* ─────────────────── Resize handler ─────────────────── */
+    const onResize = () => {
+      if (isTouchOrMobile()) {
+        resetHover()
+        wrap.style.opacity = '0'
+      }
     }
 
+    /* ─────────────────── Mount ─────────────────── */
+    document.addEventListener('pointermove', onMove, { passive: true })
+    document.addEventListener('pointerover', onOver, { passive: true })
+    document.addEventListener('pointerout',  onOut,  { passive: true })
+    document.addEventListener('pointerdown', onClick)
     document.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('resize', onResize, { passive: true })
+    s.rafId = requestAnimationFrame(tick)
 
     /* ─────────────────── Cleanup ─────────────────── */
     return () => {
@@ -210,6 +289,7 @@ export default function VeloopCursor() {
       document.removeEventListener('pointerout',  onOut)
       document.removeEventListener('pointerdown', onClick)
       document.removeEventListener('touchstart',  onTouchStart)
+      window.removeEventListener('resize', onResize)
       const tag = document.getElementById('veloop-cursor-hide')
       if (tag) tag.remove()
     }
