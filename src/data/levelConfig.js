@@ -14,7 +14,7 @@ export const LEVEL_CONFIG = [
     },
     badge: 'Novice Explorer',
     benefits: ['Daily XP Cap: 1,000 XP', 'Standard Drop Access', 'Starter Avatar Unlocked'],
-    gameDifficulty: { speedMin: 2.0, speedMax: 2.8, spawnInterval: 950 }
+    gameDifficulty: { speedMin: 3.2, speedMax: 4.2, spawnInterval: 850 }
   },
   {
     level: 2,
@@ -31,7 +31,7 @@ export const LEVEL_CONFIG = [
     },
     badge: 'Apprentice Seeker',
     benefits: ['Daily XP Cap: 1,500 XP', '1.1x Streak Multiplier', 'Community Chat Access'],
-    gameDifficulty: { speedMin: 2.2, speedMax: 3.0, spawnInterval: 900 }
+    gameDifficulty: { speedMin: 3.5, speedMax: 4.5, spawnInterval: 820 }
   },
   {
     level: 3,
@@ -48,7 +48,7 @@ export const LEVEL_CONFIG = [
     },
     badge: 'Rising Challenger',
     benefits: ['Daily XP Cap: 2,000 XP', 'Unlocked Weekend Missions', 'Rare Avatar Palette'],
-    gameDifficulty: { speedMin: 2.4, speedMax: 3.2, spawnInterval: 870 }
+    gameDifficulty: { speedMin: 3.8, speedMax: 4.8, spawnInterval: 790 }
   },
   {
     level: 4,
@@ -65,7 +65,7 @@ export const LEVEL_CONFIG = [
     },
     badge: 'Iron Pathfinder',
     benefits: ['Daily XP Cap: 2,500 XP', '1.2x Task Multiplier', 'Mystery Box Drop Chance'],
-    gameDifficulty: { speedMin: 2.6, speedMax: 3.4, spawnInterval: 840 }
+    gameDifficulty: { speedMin: 4.0, speedMax: 5.0, spawnInterval: 760 }
   },
   {
     level: 5,
@@ -82,7 +82,7 @@ export const LEVEL_CONFIG = [
     },
     badge: 'Bronze Elite',
     benefits: ['Exclusive Bronze Badge', '1.3x Multiplier Boost', 'VIP Store Access'],
-    gameDifficulty: { speedMin: 2.8, speedMax: 3.6, spawnInterval: 800 }
+    gameDifficulty: { speedMin: 4.2, speedMax: 5.2, spawnInterval: 730 }
   },
   {
     level: 6,
@@ -93,7 +93,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 950, currency: 'VEs', label: '950 VEs', description: 'Bronze II Bonus', gems: 40 },
     badge: 'Bronze Veteran',
     benefits: ['Daily XP Cap: 3,500 XP', 'Special Discord Role'],
-    gameDifficulty: { speedMin: 3.0, speedMax: 3.8, spawnInterval: 780 }
+    gameDifficulty: { speedMin: 4.4, speedMax: 5.5, spawnInterval: 710 }
   },
   {
     level: 7,
@@ -104,7 +104,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 1100, currency: 'VEs', label: '1,100 VEs', description: 'Bronze III Bonus', gems: 45 },
     badge: 'Bronze Specialist',
     benefits: ['Daily Drop Priority', 'Exclusive Avatar Aura'],
-    gameDifficulty: { speedMin: 3.1, speedMax: 3.9, spawnInterval: 760 }
+    gameDifficulty: { speedMin: 4.6, speedMax: 5.7, spawnInterval: 690 }
   },
   {
     level: 8,
@@ -115,7 +115,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 1250, currency: 'VEs', label: '1,250 VEs', description: 'Bronze IV Bonus', gems: 50 },
     badge: 'Bronze Master',
     benefits: ['1.4x Streak Multiplier', 'Bonus Weekly Quests'],
-    gameDifficulty: { speedMin: 3.2, speedMax: 4.0, spawnInterval: 740 }
+    gameDifficulty: { speedMin: 4.8, speedMax: 5.9, spawnInterval: 670 }
   },
   {
     level: 9,
@@ -126,7 +126,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 1400, currency: 'VEs', label: '1,400 VEs', description: 'Silver Gate Bonus', gems: 55 },
     badge: 'Silver Candidate',
     benefits: ['Pre-Silver Boost', 'Exclusive Frame'],
-    gameDifficulty: { speedMin: 3.3, speedMax: 4.1, spawnInterval: 720 }
+    gameDifficulty: { speedMin: 5.0, speedMax: 6.1, spawnInterval: 650 }
   },
   {
     level: 10,
@@ -143,7 +143,7 @@ export const LEVEL_CONFIG = [
     },
     badge: 'Silver Champion',
     benefits: ['Silver Emblem Unlocked', '1.5x Task Multiplier', 'Premium Crate Drop'],
-    gameDifficulty: { speedMin: 3.4, speedMax: 4.2, spawnInterval: 700 }
+    gameDifficulty: { speedMin: 5.2, speedMax: 6.4, spawnInterval: 630 }
   },
   {
     level: 11,
@@ -164,7 +164,7 @@ export const LEVEL_CONFIG = [
       '2.0x Streak Multiplier',
       'Instant Access to Premium Vault Drops'
     ],
-    gameDifficulty: { speedMin: 3.5, speedMax: 4.4, spawnInterval: 680 }
+    gameDifficulty: { speedMin: 5.4, speedMax: 6.6, spawnInterval: 610 }
   },
   {
     level: 12,
@@ -175,7 +175,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 2200, currency: 'VEs', label: '2,200 VEs', description: 'Platinum III Bonus', gems: 110 },
     badge: 'Platinum Vanguard',
     benefits: ['2.2x Game Multiplier Cap', 'VIP Lounge Access'],
-    gameDifficulty: { speedMin: 3.6, speedMax: 4.5, spawnInterval: 660 }
+    gameDifficulty: { speedMin: 5.5, speedMax: 6.8, spawnInterval: 590 }
   },
   {
     level: 13,
@@ -186,7 +186,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 2400, currency: 'VEs', label: '2,400 VEs', description: 'Platinum IV Bonus', gems: 120 },
     badge: 'Platinum Sentinel',
     benefits: ['Exclusive Platinum Skin', 'Unlimited Quests'],
-    gameDifficulty: { speedMin: 3.7, speedMax: 4.6, spawnInterval: 640 }
+    gameDifficulty: { speedMin: 5.6, speedMax: 7.0, spawnInterval: 570 }
   },
   {
     level: 14,
@@ -197,7 +197,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 2700, currency: 'VEs', label: '2,700 VEs', description: 'Diamond Gate Bonus', gems: 135 },
     badge: 'Diamond Candidate',
     benefits: ['Diamond Entry Trial', 'Double Gem Boosts'],
-    gameDifficulty: { speedMin: 3.8, speedMax: 4.7, spawnInterval: 620 }
+    gameDifficulty: { speedMin: 5.8, speedMax: 7.2, spawnInterval: 550 }
   },
   {
     level: 15,
@@ -214,7 +214,7 @@ export const LEVEL_CONFIG = [
     },
     badge: 'Diamond Sovereign',
     benefits: ['Diamond Crystal Emblem', '2.5x Multiplier for 72 Hours', 'VIP Tournament Pass'],
-    gameDifficulty: { speedMin: 3.9, speedMax: 4.9, spawnInterval: 600 }
+    gameDifficulty: { speedMin: 6.0, speedMax: 7.5, spawnInterval: 530 }
   },
   {
     level: 16,
@@ -225,7 +225,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 3800, currency: 'VEs', label: '3,800 VEs', description: 'Diamond II Bonus', gems: 200 },
     badge: 'Diamond Lord',
     benefits: ['Custom Golden Aura', 'Direct Admin Support'],
-    gameDifficulty: { speedMin: 4.0, speedMax: 5.0, spawnInterval: 580 }
+    gameDifficulty: { speedMin: 6.2, speedMax: 7.7, spawnInterval: 510 }
   },
   {
     level: 17,
@@ -236,7 +236,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 4200, currency: 'VEs', label: '4,200 VEs', description: 'Diamond III Bonus', gems: 220 },
     badge: 'Diamond Monarch',
     benefits: ['Triple Drop Rates', 'Founder Recognition'],
-    gameDifficulty: { speedMin: 4.1, speedMax: 5.1, spawnInterval: 560 }
+    gameDifficulty: { speedMin: 6.4, speedMax: 7.9, spawnInterval: 490 }
   },
   {
     level: 18,
@@ -247,7 +247,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 4600, currency: 'VEs', label: '4,600 VEs', description: 'Diamond IV Bonus', gems: 250 },
     badge: 'Diamond Apex',
     benefits: ['Master Key Pass', 'Exclusive Diamond NFT'],
-    gameDifficulty: { speedMin: 4.2, speedMax: 5.2, spawnInterval: 540 }
+    gameDifficulty: { speedMin: 6.6, speedMax: 8.1, spawnInterval: 470 }
   },
   {
     level: 19,
@@ -258,7 +258,7 @@ export const LEVEL_CONFIG = [
     reward: { amount: 5000, currency: 'VEs', label: '5,000 VEs', description: 'Master Gatekeeper Bonus', gems: 300 },
     badge: 'Ascendant Overlord',
     benefits: ['Pre-Master Crown', 'Global Leaderboard Highlight'],
-    gameDifficulty: { speedMin: 4.3, speedMax: 5.4, spawnInterval: 520 }
+    gameDifficulty: { speedMin: 6.8, speedMax: 8.4, spawnInterval: 450 }
   },
   {
     level: 20,
@@ -275,7 +275,7 @@ export const LEVEL_CONFIG = [
     },
     badge: 'Immortal Master',
     benefits: ['Eternal Master 3D Crest', 'Lifetime 3.0x Multiplier', 'Hall of Fame Inductee'],
-    gameDifficulty: { speedMin: 4.5, speedMax: 5.8, spawnInterval: 500 }
+    gameDifficulty: { speedMin: 7.0, speedMax: 8.8, spawnInterval: 430 }
   }
 ]
 
