@@ -309,3 +309,51 @@
   font-size: 0.73rem;
   color: #FCA5A5;
 }
+
+@media (max-width: 480px) {
+  .page {
+    padding: 1.25rem 0.75rem;
+  }
+  .card {
+    padding: 1.6rem 1.2rem;
+    border-radius: var(--radius-lg);
+  }
+  .title {
+    font-size: 1.28rem;
+  }
+  .crystalEmblemWrap {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 1rem;
+  }
+  .featureItem {
+    font-size: 0.66rem;
+  }
+  .featIconBox {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 360px) {
+  .page {
+    padding: 1rem 0.5rem;
+  }
+  .card {
+    padding: 1.3rem 0.85rem;
+  }
+  .title {
+    font-size: 1.15rem;
+  }
+  .input {
+    padding: 0.65rem 0.8rem;
+    font-size: 0.82rem;
+  }
+  .submitBtn {
+    padding: 0.68rem;
+    font-size: 0.86rem;
+  }
+  .featureItem {
+    font-size: 0.62rem;
+  }
+}

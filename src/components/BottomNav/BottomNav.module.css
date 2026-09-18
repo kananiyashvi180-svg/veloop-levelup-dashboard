@@ -4,7 +4,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 62px;
+  height: calc(58px + env(safe-area-inset-bottom, 0px));
   background: rgba(6, 7, 15, 0.96);
   border-top: 1px solid rgba(109, 40, 217, 0.22);
   box-shadow: 0 -6px 28px rgba(0, 0, 0, 0.70), 0 0 16px rgba(109, 40, 217, 0.10);
@@ -12,7 +12,7 @@
   z-index: 100;
   align-items: center;
   justify-content: space-around;
-  padding: 0 0.4rem;
+  padding: 0 0.25rem env(safe-area-inset-bottom, 0px) 0.25rem;
 }
 
 .navItem {
@@ -22,11 +22,12 @@
   justify-content: center;
   gap: 2px;
   color: var(--text-dim);
-  padding: 0.35rem 0.5rem;
+  padding: 0.25rem 0.15rem;
   border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
   flex: 1;
-  max-width: 70px;
+  min-width: 0;
+  max-width: 68px;
 }
 
 .navItem:hover {
@@ -41,9 +42,13 @@
 }
 
 .navLabel {
-  font-size: 0.66rem;
+  font-size: clamp(0.58rem, 2.3vw, 0.68rem);
   font-weight: 700;
   font-family: var(--font-heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 /* Active State */
@@ -64,7 +69,7 @@
 
 .activeGlowDot {
   position: absolute;
-  bottom: 4px;
+  bottom: calc(3px + env(safe-area-inset-bottom, 0px));
   width: 4px;
   height: 4px;
   border-radius: 50%;

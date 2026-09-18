@@ -216,5 +216,17 @@
   .statsGrid { gap: 0.45rem; }
   .statCard { padding: 0.7rem 0.6rem; }
   .statVal { font-size: 0.85rem; }
-  .awardCircle { width: 54px; height: 54px; }
+  .awardCircle { width: 52px; height: 52px; }
+}
+
+@media (max-width: 360px) {
+  .resultContainer { padding: 0.95rem 0.75rem; }
+  .statsGrid { grid-template-columns: 1fr; gap: 0.4rem; }
+  .statCard {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.55rem 0.8rem;
+  }
+  .statMeta { align-items: flex-end; }
+  .scoreNumber { font-size: 1.8rem; }
 }

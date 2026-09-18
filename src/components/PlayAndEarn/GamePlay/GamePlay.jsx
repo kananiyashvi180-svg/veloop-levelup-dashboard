@@ -201,11 +201,11 @@ export default function GamePlay({
     if (!arenaRef.current || !activeRef.current) return
     const arenaW = arenaRef.current.clientWidth
     const margin = OBJECT_SIZE + 8
-    const x = margin + Math.random() * (arenaW - margin * 2)
+    const x = margin + Math.random() * Math.max(10, arenaW - margin * 2)
     const timeElapsed = duration - timeLeftRef.current
-    const isLate = timeElapsed > 10
-    const speedMin = isLate ? difficulty.speedMin * 1.25 : difficulty.speedMin
-    const speedMax = isLate ? difficulty.speedMax * 1.25 : difficulty.speedMax
+    const isLate = timeElapsed > 8
+    const speedMin = isLate ? difficulty.speedMin * 1.35 : difficulty.speedMin * 1.15
+    const speedMax = isLate ? difficulty.speedMax * 1.35 : difficulty.speedMax * 1.15
     const speed = speedMin + Math.random() * (speedMax - speedMin)
     const def = pickRandom(OBJECT_TYPES)
 
@@ -221,9 +221,9 @@ export default function GamePlay({
 
   const startSpawner = useCallback(() => {
     const getInterval = () =>
-      duration - timeLeftRef.current > 10
-        ? difficulty.spawnInterval * 0.75
-        : difficulty.spawnInterval
+      duration - timeLeftRef.current > 8
+        ? difficulty.spawnInterval * 0.68
+        : difficulty.spawnInterval * 0.85
 
     const scheduleNext = () => {
       if (!activeRef.current) return
@@ -231,16 +231,16 @@ export default function GamePlay({
       spawnRef.current = setTimeout(scheduleNext, getInterval())
     }
 
-    spawnRef.current = setTimeout(scheduleNext, 200)
+    spawnRef.current = setTimeout(scheduleNext, 180)
   }, [duration, difficulty, spawnObject])
 
   const gameLoop = useCallback(() => {
     if (!activeRef.current || !arenaRef.current || !catcherRef.current) return
 
     if (keysPressedRef.current.ArrowLeft || keysPressedRef.current.a || keysPressedRef.current.A) {
-      keyVelocityRef.current = -7.5
+      keyVelocityRef.current = -9.5
     } else if (keysPressedRef.current.ArrowRight || keysPressedRef.current.d || keysPressedRef.current.D) {
-      keyVelocityRef.current = 7.5
+      keyVelocityRef.current = 9.5
     } else {
       keyVelocityRef.current *= 0.82
       if (Math.abs(keyVelocityRef.current) < 0.2) keyVelocityRef.current = 0
@@ -326,12 +326,23 @@ export default function GamePlay({
     syncCatcherPos()
   }, [syncCatcherPos])
 
+  const handleTouchStart = useCallback((e) => {
+    if (!arenaRef.current || !activeRef.current) return
+    const rect = arenaRef.current.getBoundingClientRect()
+    if (e.touches && e.touches[0]) {
+      catcherXRef.current = e.touches[0].clientX - rect.left
+      syncCatcherPos()
+    }
+  }, [syncCatcherPos])
+
   const handleTouchMove = useCallback((e) => {
     if (!arenaRef.current || !activeRef.current) return
     e.preventDefault()
     const rect = arenaRef.current.getBoundingClientRect()
-    catcherXRef.current = e.touches[0].clientX - rect.left
-    syncCatcherPos()
+    if (e.touches && e.touches[0]) {
+      catcherXRef.current = e.touches[0].clientX - rect.left
+      syncCatcherPos()
+    }
   }, [syncCatcherPos])
 
   const handleKeyDown = useCallback((e) => {
@@ -395,6 +406,7 @@ export default function GamePlay({
     const arena = arenaRef.current
     if (arena) {
       arena.addEventListener('mousemove', handleMouseMove)
+      arena.addEventListener('touchstart', handleTouchStart, { passive: false })
       arena.addEventListener('touchmove', handleTouchMove, { passive: false })
     }
     window.addEventListener('keydown', handleKeyDown)
@@ -411,6 +423,7 @@ export default function GamePlay({
       objectsRef.current = []
       if (arena) {
         arena.removeEventListener('mousemove', handleMouseMove)
+        arena.removeEventListener('touchstart', handleTouchStart)
         arena.removeEventListener('touchmove', handleTouchMove)
       }
       window.removeEventListener('keydown', handleKeyDown)
@@ -422,6 +435,7 @@ export default function GamePlay({
     handleKeyDown,
     handleKeyUp,
     handleMouseMove,
+    handleTouchStart,
     handleTouchMove,
     isMuted,
     onGameOver,

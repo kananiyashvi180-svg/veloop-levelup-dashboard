@@ -83,6 +83,8 @@
   padding: 1rem 0;
   overflow-x: auto;
   overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .connectorLineBg {

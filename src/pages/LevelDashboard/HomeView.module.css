@@ -449,18 +449,20 @@
 
 .milestonesTrackContainer {
   position: relative;
-  padding: 0.5rem 0.75rem 0 0.75rem;
+  padding: 0.5rem 0.75rem 0.4rem 0.75rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
-.milestoneLineTrack {
-  position: absolute;
-  top: 25px;
-  left: 20px;
-  right: 20px;
-  height: 2px;
-  background: rgba(109, 40, 217, 0.20);
-  border-radius: var(--radius-full);
-  z-index: 1;
+.milestonesList {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+  min-width: 320px;
 }
 
 .milestoneLineActive {
@@ -1011,15 +1013,32 @@
 @media (max-width: 768px) {
   .homeLayout { gap: 1rem; }
   .heroCard {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding: 1.2rem 1.1rem;
+    padding: 1.3rem 1.1rem;
+    gap: 1.25rem;
   }
-  .heroLeftCol { align-items: center; }
-  .heroCenterCol { display: none; }
-  .heroRightCol { grid-column: 1; }
-  .xpProgressBlock { max-width: 100%; }
-  .quickStatsRow { justify-content: center; }
+  .heroCenterCol {
+    display: flex;
+    order: 1;
+    margin: 0 auto;
+    transform: scale(0.85);
+    transform-origin: center;
+  }
+  .heroLeftCol {
+    order: 2;
+    align-items: center;
+    width: 100%;
+  }
+  .heroRightCol {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+  .xpProgressBlock { width: 100%; max-width: 100%; }
+  .quickStatsRow { justify-content: center; width: 100%; }
   .middleRow { grid-template-columns: 1fr; gap: 0.9rem; }
   .statsFourGrid { grid-template-columns: repeat(2, 1fr); }
   .rightStream { grid-template-columns: 1fr; }
@@ -1030,21 +1049,33 @@
 
 @media (max-width: 600px) {
   .greetingName { font-size: 1.45rem; }
-  .heroCard { padding: 1rem 0.9rem; gap: 0.8rem; }
+  .heroCard { padding: 1.1rem 0.9rem; gap: 1rem; }
+  .heroCenterCol { transform: scale(0.76); margin: -10px 0 -5px; }
   .statsFourGrid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
   .middleRow { grid-template-columns: 1fr; }
   .roadmapCard { padding: 1rem; }
-  .playEarnCard { flex-direction: column; }
+  .playEarnCard { flex-direction: column; text-align: center; }
+  .playEarnLeft { align-items: center; }
+  .sectionHeaderIcon { justify-content: center; }
   .playEarnArtWrap { display: none; }
 }
 
 @media (max-width: 480px) {
-  .heroCard { padding: 0.9rem 0.8rem; border-radius: var(--radius-md); }
+  .heroCard { padding: 0.95rem 0.8rem; border-radius: var(--radius-md); }
+  .heroCenterCol { transform: scale(0.68); margin: -20px 0 -15px; }
   .greetingName { font-size: 1.25rem; }
-  .statsFourGrid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .statsFourGrid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
   .quickStatsRow { gap: 0.4rem; }
   .statPill { padding: 6px 9px; }
-  .promoBanner { padding: 0.7rem 0.9rem; }
-  .yourStatsSection, .boostCard, .earnMoreCard, .activityCard { padding: 0.9rem 1rem; }
+  .promoBanner { padding: 0.75rem 0.85rem; }
+  .yourStatsSection, .boostCard, .earnMoreCard, .activityCard { padding: 0.9rem 0.95rem; }
   .nextRewardCard { padding: 0.85rem 0.9rem; }
+}
+
+@media (max-width: 360px) {
+  .heroCenterCol { transform: scale(0.58); margin: -30px 0 -25px; }
+  .statsFourGrid { grid-template-columns: 1fr; gap: 0.5rem; }
+  .quickStatsRow { flex-direction: column; width: 100%; }
+  .statPill { width: 100%; justify-content: flex-start; }
+  .pillValue { font-size: 0.88rem; }
 }

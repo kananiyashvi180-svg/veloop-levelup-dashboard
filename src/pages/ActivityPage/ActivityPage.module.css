@@ -208,15 +208,37 @@
   }
 }
 
-@media (max-width: 480px) {
-  .title { font-size: 1.1rem; }
-  .filterBtn { padding: 0.35rem 0.8rem; font-size: 0.74rem; }
+@media (max-width: 560px) {
   .timelineCard {
-    padding: 0.75rem 0.85rem;
+    flex-wrap: wrap;
+    padding: 0.8rem 0.9rem;
     gap: 10px;
   }
-  .iconContainer { width: 36px; height: 36px; border-radius: 9px; }
-  .itemTitle { font-size: 0.84rem; }
-  .cardMeta { gap: 8px; }
+  .cardContent {
+    min-width: 0;
+    flex: 1;
+  }
+  .cardMeta {
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+}
+
+@media (max-width: 480px) {
+  .title { font-size: 1.1rem; }
+  .filterBtn { padding: 0.35rem 0.75rem; font-size: 0.72rem; }
+  .timelineCard {
+    padding: 0.75rem 0.8rem;
+    gap: 8px;
+  }
+  .iconContainer { width: 34px; height: 34px; border-radius: 9px; }
+  .itemTitle { font-size: 0.82rem; }
   .xpDelta, .vesDelta, .gemsDelta { font-size: 0.76rem; }
+}
+
+@media (max-width: 360px) {
+  .title { font-size: 1rem; }
+  .filterBtn { padding: 0.3rem 0.6rem; font-size: 0.68rem; }
 }
