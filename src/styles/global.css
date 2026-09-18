@@ -117,3 +117,21 @@ a {
   50%  { transform: translateY(-8px) rotate(1.5deg); }
   100% { transform: translateY(0)   rotate(0deg); }
 }
+
+/* ============================================================
+   VELOOP CURSOR — global touch ripple (injected dynamically)
+   ============================================================ */
+@keyframes veloopTouchRipple {
+  0%   { transform: translate(-50%, -50%) scale(0);   opacity: 1; }
+  60%  { opacity: 0.6; }
+  100% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
+}
+
+/* Ensure dynamically-created touch ripple elements animate */
+.veloop-touch-ripple {
+  position: fixed !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+  z-index: 99998 !important;
+  animation: veloopTouchRipple 0.65s ease-out forwards !important;
+}

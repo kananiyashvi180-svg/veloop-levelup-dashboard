@@ -6,6 +6,7 @@ import EnergyBackground from './components/Background/EnergyBackground'
 import LevelDashboard from './pages/LevelDashboard/LevelDashboard'
 import LoginPage from './pages/LoginPage/LoginPage'
 import RegisterPage from './pages/RegisterPage/RegisterPage'
+import VeloopCursor from './components/VeloopCursor/VeloopCursor'
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth()
@@ -38,6 +39,8 @@ export default function App() {
       <AuthProvider>
         <UserStateProvider>
           <NotificationProvider>
+            {/* Premium VELOOP cursor — sits above all UI, pointer-events: none */}
+            <VeloopCursor />
             <EnergyBackground />
             <AppRoutes />
           </NotificationProvider>
