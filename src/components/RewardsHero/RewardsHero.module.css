@@ -260,3 +260,15 @@
     height: 40px;
   }
 }
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 28px 16px 34px;
+    min-height: 220px;
+    border-radius: 14px;
+  }
+  .floater { display: none; }
+  .levelNum { font-size: 28px; }
+  .hexOuter { width: 90px; height: 90px; }
+  .hexInner { width: 74px; height: 74px; }
+}

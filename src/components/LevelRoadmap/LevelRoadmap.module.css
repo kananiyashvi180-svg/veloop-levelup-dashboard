@@ -367,3 +367,22 @@
   flex-direction: column;
   gap: 3px;
 }
+
+@media (max-width: 768px) {
+  .roadmapSection {
+    padding: 1.2rem 1.1rem;
+    margin-bottom: 1.2rem;
+  }
+  .roadmapHeader { margin-bottom: 1.2rem; }
+  .roadmapTitle { font-size: 1.05rem; }
+}
+
+@media (max-width: 480px) {
+  .roadmapSection {
+    padding: 1rem 0.9rem;
+    border-radius: var(--radius-lg);
+  }
+  .roadmapTitle { font-size: 0.95rem; }
+  .iconTag { width: 32px; height: 32px; border-radius: 8px; }
+}
+

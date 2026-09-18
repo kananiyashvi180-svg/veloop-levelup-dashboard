@@ -166,6 +166,13 @@
 }
 
 @media (max-width: 600px) {
+  .statsGrid  { grid-template-columns: repeat(2, 1fr); }
+  .actionGrid { grid-template-columns: repeat(2, 1fr); }
+  .statCard { padding: 0.9rem 1rem; }
+  .actionCard { padding: 1rem; }
+}
+
+@media (max-width: 420px) {
   .statsGrid  { grid-template-columns: 1fr; }
   .actionGrid { grid-template-columns: 1fr; }
 }

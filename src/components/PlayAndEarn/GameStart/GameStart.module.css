@@ -1,5 +1,5 @@
 /* ============================================================
-   XP CATCHER GAME START / LOBBY ARENA
+   XP CATCHER — GAME START / LOBBY  (Premium Redesign)
    ============================================================ */
 
 .lobbyContainer {
@@ -10,559 +10,352 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
-  padding: 1.2rem 1.5rem 2rem 1.5rem;
+  gap: 1rem;
+  padding: 1.2rem 1.2rem 1.6rem;
   box-sizing: border-box;
   animation: fadeIn 0.3s ease-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Ambient Radial Glows in Background */
+/* ── Ambient glows ── */
 .ambientGlowTop {
   position: absolute;
-  top: -40px;
-  left: 50%;
+  top: -60px; left: 50%;
   transform: translateX(-50%);
-  width: 500px;
-  height: 240px;
-  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(168, 85, 247, 0.14), transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+  width: 520px; height: 260px;
+  background: radial-gradient(ellipse 55% 50% at 50% 50%, rgba(168,85,247,0.18), transparent 70%);
+  pointer-events: none; z-index: 0;
 }
-
 .ambientGlowBottom {
   position: absolute;
-  bottom: 0;
-  left: 50%;
+  bottom: 0; left: 50%;
   transform: translateX(-50%);
-  width: 420px;
-  height: 180px;
-  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(245, 184, 46, 0.08), transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+  width: 400px; height: 160px;
+  background: radial-gradient(ellipse 55% 50% at 50% 50%, rgba(245,184,46,0.1), transparent 70%);
+  pointer-events: none; z-index: 0;
 }
 
-/* ────────────────────────────────────────────────────────────
-   1. HEADER SECTION
-   ──────────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   1. HEADER
+   ══════════════════════════════════════════════ */
 .headerSection {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.45rem;
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  gap: 0.4rem;
 }
 
 .modeBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0.32rem 0.95rem;
-  background: rgba(168, 85, 247, 0.12);
-  border: 1px solid rgba(168, 85, 247, 0.35);
-  border-radius: var(--radius-full);
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 0.28rem 0.9rem;
+  background: rgba(168,85,247,0.12);
+  border: 1px solid rgba(168,85,247,0.38);
+  border-radius: 999px;
   font-family: var(--font-heading);
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: #c084fc;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  box-shadow: 0 0 16px rgba(168, 85, 247, 0.2);
+  font-size: 0.68rem; font-weight: 800;
+  color: #c084fc; letter-spacing: 0.08em; text-transform: uppercase;
+  box-shadow: 0 0 14px rgba(168,85,247,0.18);
 }
-
-.badgeIcon {
-  color: #c084fc;
-}
+.badgeIcon { color: #c084fc; }
 
 .livePulseDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #34d399;
-  box-shadow: 0 0 8px #34d399;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #34d399; box-shadow: 0 0 8px #34d399;
   animation: liveBlink 1.4s infinite ease-in-out;
 }
-
 @keyframes liveBlink {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.3; transform: scale(0.75); }
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.3; transform:scale(0.75); }
 }
 
 .heroTitle {
   font-family: var(--font-heading);
-  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  line-height: 1.1;
+  font-size: clamp(1.7rem, 4.5vw, 2.5rem);
+  font-weight: 900; letter-spacing: 0.08em; line-height: 1.05;
   background: linear-gradient(135deg, #ffffff 0%, #ffd45a 40%, #f5b82e 70%, #d97706 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 20px rgba(245, 184, 46, 0.3));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 0 18px rgba(245,184,46,0.28));
   margin: 0;
 }
 
 .heroSubtitle {
-  font-size: clamp(0.82rem, 1.8vw, 0.95rem);
-  color: var(--text-secondary);
-  font-weight: 500;
-  max-width: 580px;
-  line-height: 1.5;
-  margin: 0;
+  font-size: clamp(0.78rem, 1.8vw, 0.9rem);
+  color: var(--text-secondary); font-weight: 500;
+  max-width: 520px; line-height: 1.5; margin: 0;
 }
 
-/* ────────────────────────────────────────────────────────────
-   2. MAIN ARENA PREVIEW CARD
-   ──────────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   2. ARENA PREVIEW CARD
+   ══════════════════════════════════════════════ */
 .arenaPreviewCard {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  background: linear-gradient(180deg, rgba(14, 16, 32, 0.85) 0%, rgba(8, 10, 22, 0.95) 100%);
-  border: 1px solid rgba(168, 85, 247, 0.32);
+  position: relative; z-index: 1; width: 100%;
+  background: linear-gradient(175deg, rgba(14,16,34,0.9) 0%, rgba(8,10,22,0.96) 100%);
+  border: 1px solid rgba(168,85,247,0.3);
   border-radius: var(--radius-xl);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), inset 0 0 32px rgba(109, 40, 217, 0.12);
-  padding: 1.6rem 1.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  box-shadow: 0 14px 44px rgba(0,0,0,0.7), inset 0 0 28px rgba(109,40,217,0.1);
+  padding: 1.3rem 1.4rem;
+  display: flex; flex-direction: column; gap: 1.2rem;
   backdrop-filter: blur(16px);
-}
-
-/* 2A. Collectibles Grid */
-.collectiblesGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-.collectibleCard {
-  background: rgba(18, 20, 38, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-lg);
-  padding: 1.1rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  transition: all 0.25s ease;
-  position: relative;
   overflow: hidden;
 }
 
-.collectibleCard::before {
+/* inner shimmer line */
+.arenaPreviewCard::before {
   content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05), transparent 70%);
+  position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192,132,252,0.5) 50%, transparent);
+}
+
+/* ── Collectibles Grid ── */
+.collectiblesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.collectibleCard {
+  background: rgba(14,16,34,0.8);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-lg);
+  padding: 0.9rem 0.85rem;
+  display: flex; align-items: center; gap: 0.75rem;
+  transition: all 0.25s ease;
+  position: relative; overflow: hidden;
+  cursor: default;
+}
+.collectibleCard::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.04), transparent 65%);
   pointer-events: none;
 }
-
 .collectibleCard:hover {
-  transform: translateY(-3px);
-  border-color: rgba(168, 85, 247, 0.45);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(168, 85, 247, 0.2);
+  transform: translateY(-2px);
+  border-color: rgba(168,85,247,0.4);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 14px rgba(168,85,247,0.18);
 }
+.collectibleCard:hover .collectibleIconHolder { transform: scale(1.08) rotate(3deg); }
 
 .collectibleIconHolder {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 46px; height: 46px;
+  display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   transition: transform 0.25s ease;
 }
 
-.collectibleCard:hover .collectibleIconHolder {
-  transform: scale(1.1) rotate(4deg);
-}
-
 .collectibleInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+  display: flex; flex-direction: column; gap: 1px; min-width: 0;
 }
-
 .collectibleName {
   font-family: var(--font-heading);
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 0.75rem; font-weight: 800; color: #fff;
+  letter-spacing: 0.04em; text-transform: uppercase;
 }
-
 .collectibleReward {
   font-family: var(--font-heading);
-  font-size: 1.05rem;
-  font-weight: 900;
-  letter-spacing: 0.02em;
+  font-size: 1rem; font-weight: 900; letter-spacing: 0.02em;
 }
-
 .collectibleDesc {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.68rem; color: var(--text-muted);
+  line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
-/* 2B. Holographic Center Catcher Stage */
+/* ── Catcher Stage ── */
 .catcherStage {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1.4rem 0 0.8rem 0;
-  background: radial-gradient(ellipse 60% 40% at 50% 60%, rgba(109, 40, 217, 0.18), transparent 75%);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 1rem 0 0.6rem;
+  background: radial-gradient(ellipse 60% 45% at 50% 65%, rgba(109,40,217,0.16), transparent 75%);
   border-radius: var(--radius-md);
-  border: 1px dashed rgba(168, 85, 247, 0.2);
+  border: 1px dashed rgba(168,85,247,0.18);
 }
 
 .catcherPlatformBeam {
-  position: absolute;
-  bottom: 30px;
-  left: 20%;
-  right: 20%;
+  position: absolute; bottom: 28px; left: 22%; right: 22%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(192, 132, 252, 0.6) 50%, transparent);
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+  background: linear-gradient(90deg, transparent, rgba(192,132,252,0.65) 50%, transparent);
+  box-shadow: 0 0 12px rgba(168,85,247,0.6);
 }
 
 .basketContainer {
-  position: relative;
-  width: 170px;
-  height: 85px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative; width: 150px; height: 76px;
+  display: flex; align-items: center; justify-content: center;
   animation: basketFloat 3.2s ease-in-out infinite;
 }
-
 @keyframes basketFloat {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-7px); }
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
 }
 
 .basketSvg {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 4px 18px rgba(168, 85, 247, 0.55));
+  width: 100%; height: 100%;
+  filter: drop-shadow(0 4px 16px rgba(168,85,247,0.55));
 }
 
 .basketEnergyHalo {
-  position: absolute;
-  bottom: -6px;
-  width: 130px;
-  height: 14px;
-  background: radial-gradient(ellipse at 50% 50%, rgba(245, 184, 46, 0.45), transparent 70%);
-  border-radius: 50%;
-  filter: blur(8px);
+  position: absolute; bottom: -8px;
+  width: 120px; height: 14px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(245,184,46,0.45), transparent 70%);
+  border-radius: 50%; filter: blur(8px);
 }
 
 .basketLabel {
-  margin-top: 0.6rem;
+  margin-top: 0.5rem;
   font-family: var(--font-heading);
-  font-size: 0.68rem;
-  font-weight: 800;
-  color: var(--text-dim);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 0.62rem; font-weight: 800;
+  color: var(--text-dim); letter-spacing: 0.14em; text-transform: uppercase;
 }
 
-/* 2C. Multiplier & Combo Progression Track */
+/* ── Multiplier Banner ── */
 .multiplierBanner {
-  background: rgba(10, 12, 26, 0.85);
-  border: 1px solid rgba(168, 85, 247, 0.28);
+  background: rgba(10,12,26,0.85);
+  border: 1px solid rgba(168,85,247,0.25);
   border-radius: var(--radius-lg);
-  padding: 1.1rem 1.4rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
+  padding: 0.95rem 1.2rem;
+  display: flex; flex-direction: column; gap: 0.75rem;
 }
 
-.multHeader {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.flameIcon {
-  color: #fb923c;
-  filter: drop-shadow(0 0 6px rgba(251, 146, 60, 0.5));
-}
-
+.multHeader { display: flex; align-items: center; gap: 8px; }
+.flameIcon { color: #fb923c; filter: drop-shadow(0 0 5px rgba(251,146,60,0.5)); }
 .multBannerTitle {
   font-family: var(--font-heading);
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: #ffd45a;
-  letter-spacing: 0.06em;
+  font-size: 0.74rem; font-weight: 800; color: #ffd45a; letter-spacing: 0.06em;
 }
-
-.multBannerDesc {
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  margin-left: auto;
-}
+.multBannerDesc { font-size: 0.7rem; color: var(--text-muted); margin-left: auto; }
 
 .multiplierSteps {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.8rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
 }
 
 .multStep {
   flex: 1;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-md);
-  padding: 0.65rem 0.8rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md); padding: 0.55rem 0.7rem;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
   transition: all 0.2s ease;
 }
-
 .multStepActive {
-  background: rgba(168, 85, 247, 0.14);
-  border-color: rgba(168, 85, 247, 0.5);
-  box-shadow: 0 0 16px rgba(168, 85, 247, 0.25);
+  background: rgba(168,85,247,0.14); border-color: rgba(168,85,247,0.52);
+  box-shadow: 0 0 16px rgba(168,85,247,0.25);
 }
-
 .multStepMax {
-  background: rgba(245, 184, 46, 0.08);
-  border-color: rgba(245, 184, 46, 0.35);
+  background: rgba(245,184,46,0.07); border-color: rgba(245,184,46,0.32);
 }
 
 .multStepVal {
-  font-family: var(--font-heading);
-  font-size: 1.35rem;
-  font-weight: 900;
-  line-height: 1;
-  color: #ffffff;
+  font-family: var(--font-heading); font-size: 1.3rem; font-weight: 900; color: #fff; line-height: 1;
 }
-
-.multStepActive .multStepVal {
-  color: #ffd45a;
-  text-shadow: 0 0 10px rgba(245, 184, 46, 0.5);
-}
+.multStepActive .multStepVal { color: #ffd45a; text-shadow: 0 0 10px rgba(245,184,46,0.5); }
 
 .multStepTag {
-  font-family: var(--font-heading);
-  font-size: 0.64rem;
-  font-weight: 800;
-  color: #c084fc;
-  letter-spacing: 0.06em;
+  font-family: var(--font-heading); font-size: 0.6rem; font-weight: 800; color: #c084fc; letter-spacing: 0.06em;
 }
+.multStepSub { font-size: 0.62rem; color: var(--text-dim); }
 
-.multStepSub {
-  font-size: 0.66rem;
-  color: var(--text-dim);
-}
+.multStepConnector { display: flex; align-items: center; justify-content: center; color: rgba(168,85,247,0.4); }
+.connectorIcon { color: rgba(168,85,247,0.5); }
 
-.multStepConnector {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(168, 85, 247, 0.4);
-}
-
-.connectorIcon {
-  color: rgba(168, 85, 247, 0.5);
-}
-
-/* 2D. Quick Rule Chips */
+/* ── Rules Chips ── */
 .rulesChipsRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  padding-top: 0.4rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 0.5rem;
+  padding-top: 0.35rem; border-top: 1px solid rgba(255,255,255,0.05);
 }
 
 .ruleChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-full);
-  padding: 0.35rem 0.85rem;
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 999px; padding: 0.28rem 0.75rem;
+  font-size: 0.7rem; font-weight: 600; color: var(--text-secondary);
+  white-space: nowrap;
 }
-
 .chipIconGold   { color: #ffd45a; }
 .chipIconPurple { color: #c084fc; }
 .chipIconBlue   { color: #60a5fa; }
 .chipIconGreen  { color: #4ade80; }
 
-/* ────────────────────────────────────────────────────────────
-   3. BOTTOM ACTION AREA (START CTA & CONTROLS)
-   ──────────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   3. CTA FOOTER
+   ══════════════════════════════════════════════ */
 .ctaFooter {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.9rem;
+  position: relative; z-index: 1; width: 100%;
+  display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
 }
 
 .startBtn {
-  position: relative;
-  width: 100%;
-  max-width: 620px;
-  padding: 1.1rem 2.4rem;
-  border-radius: var(--radius-lg);
+  position: relative; width: 100%; max-width: 560px;
+  padding: 1rem 2rem; border-radius: var(--radius-lg);
   background: linear-gradient(135deg, #ffd45a 0%, #f5b82e 50%, #d97706 100%);
   color: #0b0b14;
-  font-family: var(--font-heading);
-  font-size: 1.15rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 6px 28px rgba(245, 184, 46, 0.45), 0 0 16px rgba(245, 184, 46, 0.3);
-  transition: all 0.2s cubic-bezier(0.1, 0.8, 0.2, 1);
+  font-family: var(--font-heading); font-size: 1.1rem; font-weight: 900; letter-spacing: 0.08em;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  border: none; cursor: pointer;
+  box-shadow: 0 6px 26px rgba(245,184,46,0.45), 0 0 14px rgba(245,184,46,0.28);
+  transition: all 0.2s cubic-bezier(0.1,0.8,0.2,1);
   overflow: hidden;
 }
-
 .startBtn:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 10px 36px rgba(245, 184, 46, 0.6), 0 0 24px rgba(245, 184, 46, 0.4);
+  box-shadow: 0 10px 34px rgba(245,184,46,0.6), 0 0 24px rgba(245,184,46,0.38);
 }
-
-.startBtn:active {
-  transform: translateY(0) scale(0.99);
-}
+.startBtn:active { transform: translateY(0) scale(0.99); }
 
 .startBtnShimmer {
-  position: absolute;
-  top: -50%;
-  left: -60%;
-  width: 40%;
-  height: 200%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
+  position: absolute; top: -50%; left: -60%; width: 40%; height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
   transform: rotate(25deg);
   animation: startShimmer 3s infinite ease-in-out;
   pointer-events: none;
 }
-
 @keyframes startShimmer {
   0%   { left: -60%; }
   60%  { left: 140%; }
   100% { left: 140%; }
 }
-
-.startBtnText {
-  letter-spacing: 0.08em;
-}
+.startBtnText { letter-spacing: 0.08em; }
 
 /* Controls Bar */
 .controlsBar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  font-size: 0.78rem;
-  color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 0.65rem;
+  font-size: 0.74rem; color: var(--text-muted);
 }
-
-.controlsInstruction {
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.controlPills {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
+.controlsInstruction { font-weight: 600; color: var(--text-secondary); }
+.controlPills { display: inline-flex; align-items: center; gap: 5px; }
 .controlPill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-full);
-  padding: 0.22rem 0.65rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #cbd5e1;
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px; padding: 0.2rem 0.6rem;
+  font-size: 0.68rem; font-weight: 700; color: #cbd5e1;
 }
+.controlSeparator { color: rgba(255,255,255,0.2); }
 
-.controlSeparator {
-  color: rgba(255, 255, 255, 0.2);
-}
-
-/* ────────────────────────────────────────────────────────────
-   RESPONSIVE DESIGN
-   ──────────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════ */
 @media (max-width: 860px) {
-  .collectiblesGrid {
-    grid-template-columns: 1fr;
-    gap: 0.65rem;
-  }
-
-  .multiplierSteps {
-    gap: 0.5rem;
-  }
-
-  .multBannerDesc {
-    display: none;
-  }
+  .collectiblesGrid { grid-template-columns: 1fr; gap: 0.55rem; }
+  .multBannerDesc { display: none; }
+  .rulesChipsRow { justify-content: center; }
 }
 
 @media (max-width: 600px) {
-  .lobbyContainer {
-    padding: 0.8rem 1rem 1.4rem 1rem;
-    gap: 1rem;
-  }
+  .lobbyContainer { padding: 0.8rem 0.85rem 1.2rem; gap: 0.8rem; }
+  .arenaPreviewCard { padding: 1rem 0.9rem; gap: 0.9rem; }
+  .startBtn { padding: 0.9rem 1.4rem; font-size: 0.98rem; }
+  .heroTitle { font-size: clamp(1.4rem, 6vw, 2rem); }
+  .controlsBar { flex-direction: column; gap: 0.35rem; text-align: center; }
+  .catcherStage { padding: 0.75rem 0 0.5rem; }
+  .basketContainer { width: 130px; height: 66px; }
+}
 
-  .arenaPreviewCard {
-    padding: 1.1rem 1rem;
-    gap: 1.1rem;
-  }
-
-  .startBtn {
-    padding: 0.95rem 1.6rem;
-    font-size: 1.02rem;
-  }
-
-  .rulesChipsRow {
-    justify-content: center;
-  }
-
-  .controlsBar {
-    flex-direction: column;
-    gap: 0.4rem;
-    text-align: center;
-  }
+@media (max-width: 400px) {
+  .multStep { padding: 0.45rem 0.5rem; }
+  .multStepVal { font-size: 1.1rem; }
+  .arenaPreviewCard { padding: 0.85rem 0.75rem; }
+  .collectibleCard { padding: 0.7rem 0.65rem; gap: 0.6rem; }
+  .collectibleIconHolder { width: 38px; height: 38px; }
 }

@@ -188,3 +188,35 @@
   border-radius: var(--radius-md);
   border: 1px dashed rgba(255, 255, 255, 0.08);
 }
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .timeframePill { width: 100%; }
+  .title { font-size: 1.25rem; }
+  .filtersBar {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+  }
+  .timelineCard {
+    padding: 0.85rem 1rem;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title { font-size: 1.1rem; }
+  .filterBtn { padding: 0.35rem 0.8rem; font-size: 0.74rem; }
+  .timelineCard {
+    padding: 0.75rem 0.85rem;
+    gap: 10px;
+  }
+  .iconContainer { width: 36px; height: 36px; border-radius: 9px; }
+  .itemTitle { font-size: 0.84rem; }
+  .cardMeta { gap: 8px; }
+  .xpDelta, .vesDelta, .gemsDelta { font-size: 0.76rem; }
+}

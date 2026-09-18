@@ -430,7 +430,22 @@
   color: var(--text-muted);
 }
 
+@media (max-width: 768px) {
+  .pageContainer { max-width: 100%; }
+  .statsRow { grid-template-columns: repeat(2, 1fr); }
+  .userHeaderCard { padding: 1.2rem 1.3rem; }
+  .displayName { font-size: 1.25rem; }
+}
+
 @media (max-width: 640px) {
+  .statsRow { grid-template-columns: repeat(2, 1fr); }
+  .userHeaderCard { flex-direction: column; text-align: center; align-items: center; }
+  .levelCardHeader { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+@media (max-width: 480px) {
   .statsRow { grid-template-columns: 1fr; }
-  .userHeaderCard { flex-direction: column; text-align: center; }
+  .userHeaderCard { padding: 1rem 1.1rem; gap: 14px; }
+  .displayName { font-size: 1.1rem; }
+  .optionRow { padding: 0.8rem 1rem; }
 }
